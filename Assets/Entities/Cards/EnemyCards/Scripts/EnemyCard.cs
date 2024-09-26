@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class EnemyCard : MonoBehaviour
 {
-    [SerializeField] private EnemyData _enemyData;
-    //[SerializeField] private Cell _cell
+    [SerializeField] protected EnemyData _enemyData;
+    //[SerializeField] protected Cell _cell
 
-    public bool IsActive { get; private set; }
+    public bool IsActive { get; protected set; }
 
 }
