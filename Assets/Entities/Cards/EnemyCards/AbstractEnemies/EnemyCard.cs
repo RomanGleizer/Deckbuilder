@@ -29,6 +29,8 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
         _hp = _enemyData.Hp;
         _shield = _enemyData.Shield;
 
+        new CommandHandler(this);
+
         InitBehaviours();
     }
 
