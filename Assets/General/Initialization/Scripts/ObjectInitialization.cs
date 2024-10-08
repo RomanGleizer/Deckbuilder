@@ -1,7 +1,7 @@
-﻿using TableMechanics.Entities;
+﻿using Table.Scripts.Entities;
 using UnityEngine;
 
-namespace GeneralMechanics.Initialization
+namespace General.Initialization.Scripts
 {
     /// <summary>
     /// Initialize all objects with the "Initialize" method.
