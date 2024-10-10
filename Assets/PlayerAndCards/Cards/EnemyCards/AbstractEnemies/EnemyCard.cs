@@ -1,5 +1,5 @@
 using UnityEngine;
-using TableMechanics.Entities;
+using Table.Scripts.Entities;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 {
