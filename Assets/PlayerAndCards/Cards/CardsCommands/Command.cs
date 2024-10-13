@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using Table.Scripts.Entities;
 
 public abstract class Command
 {
     public CommandType CommandType { get; protected set; }
+
+    protected bool _isAddToOrder = true;
+    public bool IsAddToOrder => _isAddToOrder;
 
     public abstract void Execute();
 }
@@ -56,10 +60,12 @@ public class SupportCommand : Command
 public class MoveCommand : Command
 {
     private IMover _mover;
+    private Cell _cell;
 
-    public MoveCommand()
+    public MoveCommand(Cell targetCell, bool isAddToOrder)
     {
         CommandType = CommandType.Move;
+        _isAddToOrder = isAddToOrder;
     }
 
     public void SetReceiver(IMover mover)
@@ -69,7 +75,7 @@ public class MoveCommand : Command
 
     public override void Execute()
     {
-        _mover.Move();
+        _mover.MoveToCell(_cell);
     }
 }
 
@@ -88,6 +94,24 @@ public class RowMoveCommand : Command // Command which moves whole row
         while (_moveCommands.Count > 0)
         {
             _moveCommands.Dequeue().Execute();
+        }
+    }
+}
+
+public class SwapCommand : Command
+{
+    private MoveCommand[] _moveCommands;
+
+    public SwapCommand(MoveCommand[] moveCommands)
+    {
+        _moveCommands = moveCommands;
+    }
+
+    public override void Execute()
+    {
+        foreach (MoveCommand moveCommand in _moveCommands)
+        {
+            moveCommand.Execute();
         }
     }
 }

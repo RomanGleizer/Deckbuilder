@@ -1,4 +1,8 @@
-﻿public class Snare
+﻿public class Snare : CommonEnemy
 {
-
+    protected override void InitBehaviours()
+    {
+        _attackBh = new DamageAndDestroyAttackBh(this);
+        base.InitBehaviours();
+    }
 }

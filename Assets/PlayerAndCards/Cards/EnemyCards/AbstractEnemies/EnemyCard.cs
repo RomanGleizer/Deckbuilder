@@ -4,7 +4,7 @@ using Table.Scripts.Entities;
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 {
     [SerializeField] protected EnemyData _enemyData;
-    [SerializeField] protected Cell _cell;
+    [SerializeField] protected Cell _currentCell;
 
     protected int _hp;
     protected int _shield;
@@ -17,7 +17,7 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
     #endregion
 
     public bool IsActive { get; protected set; }
-    public bool IsCanMove => _moveBh.IsCanMove;
+    private Field _field;
 
     private void Awake()
     {
@@ -36,16 +36,20 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 
     protected virtual void InitBehaviours()
     {
-        //_moveBh;
+        _moveBh = new MoveToCellBh(transform, 10);
+
+        _moveBh.OnCellRiched += UpdateCells;
         //_takeDamageBh;
     }
 
-    public virtual void Move()
+    private void UpdateCells(Cell cell)
     {
-        if (IsCanMove)
-        {
-            _moveBh.Move();
-        }
+        _currentCell = cell;
+    }
+
+    public virtual void MoveToCell(Cell cell)
+    {
+        _moveBh.MoveToCell(cell);
     }
 
     public virtual void TakeDamage(int damage)
@@ -56,5 +60,10 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
     public virtual void Death()
     {
         gameObject.SetActive(false); // Change to ObjectPooling
+    }
+
+    private void OnDestroy()
+    {
+        _moveBh.OnCellRiched -= UpdateCells;
     }
 }

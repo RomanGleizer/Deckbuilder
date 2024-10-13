@@ -18,12 +18,13 @@
 
     protected override void InitBehaviours()
     {
-        _attackBh = new DamagePlayerAttackBh();
+        if (_attackBh == null) _attackBh = new DamagePlayerAttackBh(); // default attack
+        base.InitBehaviours();
     }
 
     public void Attack()
     {
-        if (_cell.ColumnId < _attackDistance)
+        if (_currentCell.ColumnId < _attackDistance)
         {
             _attackBh.Attack(_baseEnemyData.Damage);
         }

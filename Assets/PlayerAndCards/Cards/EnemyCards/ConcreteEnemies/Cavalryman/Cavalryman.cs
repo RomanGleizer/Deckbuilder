@@ -1,5 +1,10 @@
 ﻿
-public class Cavalryman : CommonEnemy
+public class Cavalryman : CommonEnemy, IHaveAbility
 {
+    private IAbility _ability;
 
+    public void UseAbility()
+    {
+        _ability.UseOn(_currentCell);
+    }
 }

@@ -14,9 +14,14 @@
         base.Init();
     }
 
+    protected override void InitBehaviours()
+    {
+        base.InitBehaviours();
+    }
+
     public void Attack()
     {
-        if (_cell.ColumnId < _attackDistance)
+        if (_currentCell.ColumnId < _attackDistance)
         {
             _specialAttackBh.Attack();
         }

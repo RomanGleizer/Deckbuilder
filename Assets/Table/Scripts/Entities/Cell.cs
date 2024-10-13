@@ -16,13 +16,17 @@ namespace Table.Scripts.Entities
         public int RowId => _rowId;
         public int ColumnId => _columnId;
         public bool IsHidden => _isHidden;
+        public bool IsBusy { get; set; }
 
         private CellView _cellView;
 
         public CellView CellView => _cellView;
 
-        public event Func<int> OnAtack;
+        public event Action<Command> OnCommandSet;
 
-        // public event Action<CommandInfo command> OnCommandSet;
+        public void SetCommand(Command command)
+        {
+            OnCommandSet?.Invoke(command);
+        }
     }
 }
