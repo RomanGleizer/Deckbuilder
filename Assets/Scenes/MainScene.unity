@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 443116876}
   - component: {fileID: 443116875}
   - component: {fileID: 443116874}
+  - component: {fileID: 443116877}
   m_Layer: 5
   m_Name: HandPanel
   m_TagString: Untagged
@@ -299,7 +300,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 10
+  m_Spacing: -10
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -320,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5245282, g: 0.1542834, b: 0.10985403, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -345,6 +346,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443116872}
   m_CullTransparentMesh: 1
+--- !u!114 &443116877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443116872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c34941fd3e20347a8310849f7ae02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 457037021936114677, guid: df10ef01f75409948a555a5f62b2a17d, type: 3}
+  handPanel: {fileID: 443116873}
+  minCards: 5
+  maxCards: 8
+  drawButton: {fileID: 238209555}
+  cardWidth: 183
+  handWidth: 1003
 --- !u!1 &519493536
 GameObject:
   m_ObjectHideFlags: 0
