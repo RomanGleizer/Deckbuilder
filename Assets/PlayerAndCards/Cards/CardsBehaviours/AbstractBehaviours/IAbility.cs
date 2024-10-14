@@ -2,5 +2,6 @@
 
 public interface IAbility
 {
-    public void UseOn(Cell cell);
+    public bool IsCanUse { get; }
+    public void Use();
 }

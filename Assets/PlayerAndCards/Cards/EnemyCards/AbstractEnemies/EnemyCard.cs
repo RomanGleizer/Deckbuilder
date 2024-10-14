@@ -1,13 +1,18 @@
 using UnityEngine;
 using Table.Scripts.Entities;
+using System;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 {
     [SerializeField] protected EnemyData _enemyData;
     [SerializeField] protected Cell _currentCell;
 
+    private Field _field;
+
     protected int _hp;
     protected int _shield;
+
+    public bool IsActive { get; protected set; }
 
     #region Behaviours
 
@@ -16,8 +21,8 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 
     #endregion
 
-    public bool IsActive { get; protected set; }
-    private Field _field;
+
+    public event Action<Cell> OnMovedToCell; 
 
     private void Awake()
     {
@@ -36,20 +41,22 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover
 
     protected virtual void InitBehaviours()
     {
+        _takeDamageBh = new TakeDamageBh(this);
         _moveBh = new MoveToCellBh(transform, 10);
 
         _moveBh.OnCellRiched += UpdateCells;
-        //_takeDamageBh;
     }
 
     private void UpdateCells(Cell cell)
     {
         _currentCell = cell;
+        cell.IsBusy = true;
+        OnMovedToCell?.Invoke(cell);
     }
 
     public virtual void MoveToCell(Cell cell)
     {
-        _moveBh.MoveToCell(cell);
+        _moveBh.MoveFromTo(_currentCell, cell);
     }
 
     public virtual void TakeDamage(int damage)

@@ -15,13 +15,14 @@ public class MoveToCellBh : IMoveBh
         _movableTransform = movableTransform;
     }
 
-    public void MoveToCell(Cell cell)
+    public void MoveFromTo(Cell fromCell, Cell toCell)
     {
-        if (cell != null && !IsReached(cell))
+        fromCell.IsBusy = false;
+        if (toCell != null && !IsReached(toCell))
         {
-            Vector3.MoveTowards(_movableTransform.position, cell.transform.position, _speed * Time.deltaTime);
+            Vector3.MoveTowards(_movableTransform.position, toCell.transform.position, _speed * Time.deltaTime);
         }
-        else if (IsReached(cell)) RichTargetCell(cell);
+        else if (IsReached(toCell)) RichTargetCell(toCell);
     }
 
     protected virtual void RichTargetCell(Cell cell)

@@ -5,6 +5,6 @@ public class Cavalryman : CommonEnemy, IHaveAbility
 
     public void UseAbility()
     {
-        _ability.UseOn(_currentCell);
+        _ability.Use();
     }
 }
