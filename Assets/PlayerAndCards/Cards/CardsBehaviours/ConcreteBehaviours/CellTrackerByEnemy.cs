@@ -5,7 +5,7 @@ using Table.Scripts.Entities;
 /// <summary>
 /// Tracker that updates the current cell on which the enemy is standing
 /// </summary>
-public class CellTrackerByEnemy : ISubscribable
+public class CellTrackerByEnemy
 {
     private Cell _currentCell;
 
@@ -17,12 +17,7 @@ public class CellTrackerByEnemy : ISubscribable
     public CellTrackerByEnemy(EnemyCard enemyCard)
     {
         UpdateCurrentCell = (cell) => _currentCell = cell;
-    }
-
-    private void Construct(SubscribeService subscribeService) // Add Zenject
-    {
-        _subscribeService = subscribeService;
-        _subscribeService.AddSubscribable(this);
+        new SubscribeHandler(Subscribe, Unsubscribe);
     }
 
     public Cell GetCurrentCell()
@@ -30,14 +25,13 @@ public class CellTrackerByEnemy : ISubscribable
         return _currentCell;
     }
 
-    public void Subscribe()
+    private void Subscribe()
     {
         _enemyCard.OnMovedToCell += UpdateCurrentCell;
     }
 
-    public void Unsubscribe()
+    private void Unsubscribe()
     {
         _enemyCard.OnMovedToCell -= UpdateCurrentCell;
-        _subscribeService.RemoveSubscribable(this);
     }
 }

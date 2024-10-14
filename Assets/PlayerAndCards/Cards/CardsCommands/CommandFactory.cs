@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Table.Scripts.Entities;
 using UnityEngine;
 
@@ -18,9 +19,9 @@ public class CommandFactory
         return new AttackCommand();
     }
     
-    public Command CreateSupportCommand()
+    public Command CreateSupportCommand(PosInOrderType posInOrder)
     {
-        return new SupportCommand();
+        return new SupportCommand(posInOrder);
     }
     
     public Command CreateMoveCommand(Cell targetCell)
@@ -69,5 +70,10 @@ public class CommandFactory
     public Command CreateTakeDamageCommand(int damage)
     {
         return new TakeDamageCommand(damage);
+    }
+
+    public Command CreateInvincibilityCommand()
+    {
+        return new InvincibilityCommand();
     }
 }
