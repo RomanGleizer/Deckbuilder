@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0d50045fe0f4f46aef8ae73ddf2a0c, type: 3}
   m_Name: DrummerData
   m_EditorClassIdentifier: 
-  _hp: 0
+  _hp: 1
   _shield: 0
   _attackDistance: 1

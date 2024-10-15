@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6004ff93c941d974c905c4e61cb349bc, type: 3}
   m_Name: ArmsmanData
   m_EditorClassIdentifier: 
-  _hp: 0
+  _hp: 1
   _shield: 0
