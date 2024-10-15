@@ -40,6 +40,16 @@ namespace Table.Scripts.Entities
                 }
         }
         
+        public Cell[] GetRowByCell(Cell cell, bool includeHidden)
+        {
+            return GetCellsInLine(cell.RowId, isRow: true, includeHidden);
+        }
+        
+        public Cell[] GetColumnByCell(Cell cell, bool includeHidden)
+        {
+            return GetCellsInLine(cell.ColumnId, isRow: false, includeHidden);
+        }
+        
         public Cell GetRandomActiveCell(Cell currentCell)
         {
             var activeCells = new List<Cell>();
@@ -75,6 +85,21 @@ namespace Table.Scripts.Entities
         {
             return row >= 0 && row < _cells.GetLength(0) &&
                    column >= 0 && column < _cells.GetLength(1);
+        }
+        
+        private Cell[] GetCellsInLine(int index, bool isRow, bool includeHidden)
+        {
+            var cells = new List<Cell>();
+            var length = isRow ? _cells.GetLength(1) : _cells.GetLength(0);
+
+            for (var i = 0; i < length; i++)
+            {
+                var cell = isRow ? _cells[index, i] : _cells[i, index];
+                if (includeHidden || !cell.IsHidden)
+                    cells.Add(cell);
+            }
+
+            return cells.ToArray();
         }
     }
 }
