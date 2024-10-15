@@ -28,9 +28,7 @@ namespace Table.Scripts.Entities
                 cell.HighlightCell(highlight);
             });
         }
-        /// <summary>
-        /// Traverses all cells in the table, calling OnCommandSet on each non-hidden cell.
-        /// </summary>
+
         public void SetCommand(Command command)
         {
             TraverseCells(cell =>
