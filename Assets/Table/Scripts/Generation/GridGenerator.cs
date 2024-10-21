@@ -11,6 +11,7 @@ namespace Table.Scripts.Generation
         [SerializeField] private int columns = 5;
         [SerializeField] private float spacing = 0.5f;
         
+        [ContextMenu("Generate Grid")]
         public Cell[,] GenerateGrid()
         {
             var cells = new Cell[rows, columns];
