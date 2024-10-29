@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Custom.Collections;
 
 public class CommandInvoker
 {
-    private Queue<Command> _commands = new Queue<Command>();
+    private CommandQueue _commands;
 
     public void SetCommandInQueue(Command command)
     {
@@ -16,9 +16,14 @@ public class CommandInvoker
 
     public void ExecuteCommandsQueue()
     {
-        while (_commands.Count > 0) // need to add delay in future
+        foreach (var command in _commands)
         {
-            _commands.Dequeue().Execute();
+            command.Execute();
         }
+    }
+
+    public void IncreaseExecuteCount()
+    {
+        _commands.IncreaseExecuteCount();
     }
 }

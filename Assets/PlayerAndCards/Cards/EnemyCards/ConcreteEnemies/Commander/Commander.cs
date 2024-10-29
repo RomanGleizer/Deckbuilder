@@ -1,6 +1,0 @@
-﻿
-
-public class Commander : SupporterEnemy
-{
-
-}

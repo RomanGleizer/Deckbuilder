@@ -1,8 +1,10 @@
-﻿public class DamagePlayerAttackBh : IAttackBh // Attack a player with damage
-{
-    // private ITakerDamage _player;
+﻿using Unity.VisualScripting;
 
-    public void Attack(int damage)
+public class DamagePlayerAttackBh : IAttackBh // Attack a player with damage
+{
+    // protected ITakerDamage _player;
+
+    public virtual void Attack(int damage)
     {
         // _player.TakeDamage(damage);
     }

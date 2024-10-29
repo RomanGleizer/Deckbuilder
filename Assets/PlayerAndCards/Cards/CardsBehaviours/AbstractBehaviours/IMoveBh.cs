@@ -1,5 +1,11 @@
-﻿public interface IMoveBh
+﻿using System;
+using UnityEngine;
+using Table.Scripts.Entities;
+
+public interface IMoveBh
 {
-    public void Move();
-    public bool IsCanMove { get; }
+    public void StartMoveFromTo(Cell fromCell, Cell toCell);
+    public void Update();
+
+    public event Action<Cell> OnCellRiched;
 }

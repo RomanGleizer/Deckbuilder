@@ -28,7 +28,15 @@ namespace Table.Scripts.Entities
                 cell.HighlightCell(highlight);
             });
         }
-        
+
+        public void SetCommand(Command command)
+        {
+            TraverseCells(cell =>
+            {
+                cell.SetCommand(command);
+            });
+        }
+
         private void TraverseCells(Action<Cell> action, bool includeHidden = false)
         {
             for (var row = 0; row < _cells.GetLength(0); row++)
@@ -43,6 +51,11 @@ namespace Table.Scripts.Entities
         public Cell[] GetRowByCell(Cell cell, bool includeHidden)
         {
             return GetCellsInLine(cell.RowId, isRow: true, includeHidden);
+        }
+
+        public Cell[] GetRowByIndex(int index, bool includeHidden)
+        {
+            return GetCellsInLine(index, isRow: true, includeHidden);
         }
         
         public Cell[] GetColumnByCell(Cell cell, bool includeHidden)

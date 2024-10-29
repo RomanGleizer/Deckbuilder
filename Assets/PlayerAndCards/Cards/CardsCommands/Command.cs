@@ -1,10 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Table.Scripts.Entities;
 
-public abstract class Command
+public enum PosInOrderType { First, NoMatter, Last }
+
+public abstract class Command : IPriorityObj, IComparable
 {
     public CommandType CommandType { get; protected set; }
 
+    public int Priority => (int)PosInOrder;
+    public PosInOrderType PosInOrder { get; protected set; }
+
+    protected bool _isAddToOrder = true;
+    public bool IsAddToOrder => _isAddToOrder;
+
+    public Command()
+    {
+        PosInOrder = PosInOrderType.NoMatter;
+        _isAddToOrder = true;
+    }
+
+    public Command(PosInOrderType orderPosType)
+    {
+        PosInOrder = orderPosType;
+        _isAddToOrder = true;
+    }
+
+    public Command(bool isAddToOrder)
+    {
+        _isAddToOrder = isAddToOrder;
+    }
+
     public abstract void Execute();
+
+    public int CompareTo(object obj)
+    {
+        if (this == obj) return 0;
+        else return -1;
+    }
 }
 
 #region Attack And Support Commands
@@ -33,7 +66,7 @@ public class SupportCommand : Command
 {
     private ISupporter _supporter;
 
-    public SupportCommand()
+    public SupportCommand(PosInOrderType posInOrder) : base(posInOrder)
     {
         CommandType = CommandType.Support;
     }
@@ -56,10 +89,12 @@ public class SupportCommand : Command
 public class MoveCommand : Command
 {
     private IMover _mover;
+    private Cell _cell;
 
-    public MoveCommand()
+    public MoveCommand(Cell targetCell, bool isAddToOrder)
     {
         CommandType = CommandType.Move;
+        _isAddToOrder = isAddToOrder;
     }
 
     public void SetReceiver(IMover mover)
@@ -69,7 +104,7 @@ public class MoveCommand : Command
 
     public override void Execute()
     {
-        _mover.Move();
+        _mover.MoveToCell(_cell);
     }
 }
 
@@ -80,6 +115,7 @@ public class RowMoveCommand : Command // Command which moves whole row
     public RowMoveCommand(Queue<MoveCommand> moveCommands)
     {
         CommandType = CommandType.Move;
+        PosInOrder = PosInOrderType.Last;
         _moveCommands = moveCommands;
     }
 
@@ -88,6 +124,24 @@ public class RowMoveCommand : Command // Command which moves whole row
         while (_moveCommands.Count > 0)
         {
             _moveCommands.Dequeue().Execute();
+        }
+    }
+}
+
+public class SwapCommand : Command
+{
+    private MoveCommand[] _moveCommands;
+
+    public SwapCommand(MoveCommand[] moveCommands)
+    {
+        _moveCommands = moveCommands;
+    }
+
+    public override void Execute()
+    {
+        foreach (MoveCommand moveCommand in _moveCommands)
+        {
+            moveCommand.Execute();
         }
     }
 }
@@ -120,3 +174,18 @@ public class TakeDamageCommand : Command
 }
 
 #endregion
+
+public class InvincibilityCommand : Command
+{
+    private IInvincibilable _invincibilable;
+
+    public void SetReceiver(IInvincibilable invincibilable)
+    {
+        _invincibilable = invincibilable;   
+    }
+
+    public override void Execute()
+    {
+        _invincibilable.ActivateInvincibility();
+    }
+}

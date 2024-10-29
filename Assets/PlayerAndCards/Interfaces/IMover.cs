@@ -1,6 +1,7 @@
+using Table.Scripts.Entities;
+using UnityEngine;
+
 public interface IMover
 {
-    public void Move();
-    public bool IsCanMove { get; }
-
+    public void MoveToCell(Cell cell);
 }

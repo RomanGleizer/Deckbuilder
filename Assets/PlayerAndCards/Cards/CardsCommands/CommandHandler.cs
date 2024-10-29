@@ -37,13 +37,16 @@ public class CommandHandler
             isCorrectCommand = true;
         }
 
-        if (isCorrectCommand) _commandInvoker.SetCommandInQueue(command);
-        else if (_takerDamage != null && command is TakeDamageCommand takeDamageCommand)
+        if (command.IsAddToOrder)
         {
-            takeDamageCommand.SetReceiver(_takerDamage);
+            if (isCorrectCommand) _commandInvoker.SetCommandInQueue(command);
+            else if (_takerDamage != null && command is TakeDamageCommand takeDamageCommand)
+            {
+                takeDamageCommand.SetReceiver(_takerDamage);
 
-            isCorrectCommand = true;
-            _commandInvoker.SetCommandAndExecute(command);
+                isCorrectCommand = true;
+                _commandInvoker.SetCommandAndExecute(command);
+            }
         }
         
         if (!isCorrectCommand)
