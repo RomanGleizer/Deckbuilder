@@ -4,7 +4,8 @@ using Table.Scripts.Entities;
 
 public interface IMoveBh
 {
-    public void MoveFromTo(Cell fromCell, Cell toCell);
+    public void StartMoveFromTo(Cell fromCell, Cell toCell);
+    public void Update();
 
     public event Action<Cell> OnCellRiched;
 }

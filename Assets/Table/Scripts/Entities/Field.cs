@@ -52,6 +52,11 @@ namespace Table.Scripts.Entities
         {
             return GetCellsInLine(cell.RowId, isRow: true, includeHidden);
         }
+
+        public Cell[] GetRowByIndex(int index, bool includeHidden)
+        {
+            return GetCellsInLine(index, isRow: true, includeHidden);
+        }
         
         public Cell[] GetColumnByCell(Cell cell, bool includeHidden)
         {

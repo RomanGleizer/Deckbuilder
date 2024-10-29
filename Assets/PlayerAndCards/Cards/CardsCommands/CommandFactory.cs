@@ -4,14 +4,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using Table.Scripts.Entities;
 using UnityEngine;
+using Zenject;
 
 public class CommandFactory
 {
     private Field _field;
 
-    public CommandFactory(Field field)
+    public void SetField(Field field)
     {
-        _field = field; 
+        _field = field;
     }
 
     public Command CreateAttackCommand()
