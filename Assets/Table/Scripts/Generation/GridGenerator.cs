@@ -17,9 +17,6 @@ namespace Table.Scripts.Generation
         [ContextMenu("Generate Grid")]
         public Cell[,] GenerateGrid()
         {
-            //Undo.SetCurrentGroupName("GenerateGrid");
-            //int group = Undo.GetCurrentGroup();
-
             var cells = new Cell[rows, columns];
 
             for (var row = 0; row < rows; row++)
@@ -41,7 +38,6 @@ namespace Table.Scripts.Generation
                 }
             }
 
-            //Undo.CollapseUndoOperations(group);
             return cells;
         }
     }

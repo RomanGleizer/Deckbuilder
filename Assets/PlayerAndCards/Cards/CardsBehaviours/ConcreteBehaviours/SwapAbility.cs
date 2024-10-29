@@ -1,4 +1,5 @@
 ﻿using Table.Scripts.Entities;
+using Zenject;
 
 public class SwapAbility : IAbility
 {
@@ -9,11 +10,15 @@ public class SwapAbility : IAbility
 
     public bool IsCanUse => _cellTracker.GetCurrentCell().ColumnId > 0;
 
-    public SwapAbility(CommandFactory commandFactory, Field field, EnemyCard enemyCard)
+    [Inject]
+    private void Construct(CommandFactory commandFactory, Field field)
     {
         _commandFactory = commandFactory;
         _field = field;
+    }
 
+    public SwapAbility(EnemyCard enemyCard)
+    {
         _cellTracker = new CellTrackerByEnemy(enemyCard);
     }
 

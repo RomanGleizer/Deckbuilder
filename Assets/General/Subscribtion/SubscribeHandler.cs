@@ -1,4 +1,5 @@
 ﻿using System;
+using Zenject;
 
 /// <summary>
 /// Handler that simplifies subscribing and unsubscribing
@@ -16,7 +17,8 @@ public class SubscribeHandler : ISubscribable
         UnsubscribeAction = unsubscribeAction;
     }
 
-    private void Construct(SubscribeService subscribeService) // Add Zenject
+    [Inject]
+    private void Construct(SubscribeService subscribeService)
     {
         _subscribeService = subscribeService;
         _subscribeService.AddSubscribable(this);

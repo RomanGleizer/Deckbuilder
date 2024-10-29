@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Table.Scripts.Entities;
 using UnityEngine;
+using Zenject;
 
 public class GiveInvincibilitySupportBh : ISupportBh
 {
@@ -14,7 +15,8 @@ public class GiveInvincibilitySupportBh : ISupportBh
         _cellTrackerByEnemy = new CellTrackerByEnemy(enemyCard);
     }
 
-    private void Construct(CommandFactory commandFactory, Field field) // Add Zenject
+    [Inject]
+    private void Construct(CommandFactory commandFactory, Field field)
     {
         _commandFactory = commandFactory;
         _field = field;
