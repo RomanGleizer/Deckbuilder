@@ -21,12 +21,12 @@ namespace Table.Scripts.Entities
 
         public event Action<Command> OnCommandSet;
 
-        public void Initialize(int rowId, int columnId, bool isHidden, CellView cellView)
+        public void Initialize(int rowId, int columnId, bool isHidden)
         {
             _rowId = rowId;
             _columnId = columnId;
             _isHidden = isHidden;
-            _cellView = cellView;
+            _cellView = new CellView();
         }
         
         public void HighlightCell(bool highlight)
