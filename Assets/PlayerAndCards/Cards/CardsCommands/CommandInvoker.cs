@@ -2,7 +2,7 @@
 
 public class CommandInvoker
 {
-    private CommandQueue _commands;
+    private CommandQueue _commands = new CommandQueue();
 
     public void SetCommandInQueue(Command command)
     {

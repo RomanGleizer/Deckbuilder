@@ -17,6 +17,8 @@ public class CellTrackerByEnemy
     public CellTrackerByEnemy(EnemyCard enemyCard)
     {
         UpdateCurrentCell = (cell) => _currentCell = cell;
+
+        _currentCell = enemyCard.CurrentCell;
         new SubscribeHandler(Subscribe, Unsubscribe);
     }
 

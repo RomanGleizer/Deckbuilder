@@ -1,6 +1,7 @@
 using UnityEngine;
 using Table.Scripts.Entities;
 using System;
+using Zenject;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincibilable
 {
@@ -22,18 +23,30 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
 
     #endregion
 
+    public Cell CurrentCell => _currentCell;
+    public event Action<Cell> OnMovedToCell;
 
-    public event Action<Cell> OnMovedToCell; 
+    private CommandHandler _commandHandler;
+
+    protected IInstantiator _instantiator; // for instantiate non-MonoBehaviour objs by Zenject
+
+    [Inject]
+    private void Construct(IInstantiator instantiator)
+    {
+        _instantiator = instantiator;
+    }
 
     public virtual void Init()
     {
         _hp = _enemyData.Hp;
         _shield = _enemyData.Shield;
 
-        new CommandHandler(this);
-        new SubscribeHandler(Subscribe, Unsubscribe);
+        _commandHandler = _instantiator.Instantiate<CommandHandler>(new object[] { this });
 
         InitBehaviours();
+
+        var subscribeHandler = _instantiator.Instantiate<SubscribeHandler>();
+        subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
     }
 
     protected virtual void InitBehaviours()
@@ -51,7 +64,7 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
 
     private void Update()
     {
-        _moveBh.Update();
+        if (_moveBh != null) _moveBh.Update();
     }
 
     public virtual void MoveToCell(Cell cell)
@@ -67,9 +80,15 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
         }
     }
 
+    private void SetCommand(Command command)
+    {
+        _commandHandler.HandleCommand(command);
+    }
+
     public void ActivateInvincibility()
     {
         _isInvincibility = true;
+        Debug.Log("Activate invincibility on " + gameObject.name);
         //_turnManager.OnTurnFinished += DeactivateInvincibility;
     }
 
@@ -81,11 +100,13 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
     protected virtual void Subscribe()
     {
         _moveBh.OnCellRiched += UpdateCells;
+        _currentCell.OnCommandSet += SetCommand;
     }
 
     protected virtual void Unsubscribe()
     {
         _moveBh.OnCellRiched -= UpdateCells;
+        _currentCell.OnCommandSet -= SetCommand;
         //if (_isInvincibility) _turnManager.OnTurnFinished -= DeactivateInvincibility;
     }
 

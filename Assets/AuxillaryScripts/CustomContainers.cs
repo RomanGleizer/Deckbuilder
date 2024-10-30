@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Custom.Collections
 {
@@ -9,7 +10,7 @@ namespace Custom.Collections
     /// </summary>
     public class CommandQueue : IEnumerable<Command>
     {
-        private CustomPriorityQueue<Command> _commands;
+        private CustomPriorityQueue<Command> _commands = new CustomPriorityQueue<Command>();
 
         private int _executeCount = 1;
 
@@ -80,13 +81,47 @@ namespace Custom.Collections
 
         public void InsertByPriority(T value)
         {
+            if (_startNode == null)
+            {
+                _startNode = new Node<T>(value);
+                _lastNode = _startNode;
+                return;
+            }
+
             _currentNode = _startNode;
 
-            while (_currentNode.Value.Priority <= value.Priority)
+            while (_currentNode.Value.Priority <= value.Priority && _currentNode.NextNode != null)
             {
                 _currentNode = _currentNode.NextNode;
             }
 
+            if (_currentNode.NextNode == null) PushBack(value);
+            else if (_currentNode.PrevNode == null) PushFront(value);
+            else PushBetween(value);
+        }
+
+        private void PushBack(T value)
+        {
+            var node = new Node<T>(value);
+
+            _currentNode.NextNode = node;
+            node.PrevNode = _currentNode;
+
+            _lastNode = node;
+        }
+
+        private void PushFront(T value)
+        {
+            var node = new Node<T>(value);
+
+            _currentNode.PrevNode = node;
+            node.NextNode = _currentNode;
+
+            _startNode = node;
+        }
+
+        private void PushBetween(T value)
+        {
             var node = new Node<T>(value);
 
             node.PrevNode = _currentNode.PrevNode;
@@ -99,7 +134,11 @@ namespace Custom.Collections
         public T PopFront()
         {
             var value = _startNode.Value;
-            Remove(_startNode.Value);
+
+            _startNode = _startNode.NextNode;
+            _startNode.PrevNode.NextNode = null;
+
+            Remove(value);
             return value;
         }
 

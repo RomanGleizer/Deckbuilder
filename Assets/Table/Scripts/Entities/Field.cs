@@ -12,13 +12,25 @@ namespace Table.Scripts.Entities
         
         public void Initialize()
         {
-            if (gridGenerator == null)
-            {
-                Debug.LogError("GridGenerator reference is missing!");
-                return;
-            }
+            //if (gridGenerator == null)
+            //{
+            //    Debug.LogError("GridGenerator reference is missing!");
+            //    return;
+            //}
 
-            _cells = gridGenerator.GenerateGrid();
+            //_cells = gridGenerator.GenerateGrid();
+
+            var cells = GetComponentsInChildren<Cell>(); // как варик, но можно что-то получше придумать
+
+            _cells = new Cell[3, 5];
+
+            int j = -1;
+            for (int i = 0; i < cells.Length; ++i)
+            {
+                if (i % 5 == 0) ++j;
+
+                _cells[j, i % 5] = cells[i];
+            }
         }
         
         public void HighlightActiveCells(bool highlight)

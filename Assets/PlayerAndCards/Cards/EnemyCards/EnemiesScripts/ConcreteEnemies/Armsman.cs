@@ -1,8 +1,10 @@
-﻿public class Armsman : SupporterEnemy
+﻿using UnityEngine;
+
+public class Armsman : SupporterEnemy
 {
     protected override void InitBehaviours()
     {
         base.InitBehaviours();
-        _supportBh = new GiveInvincibilitySupportBh(this);
+        _supportBh = _instantiator.Instantiate<GiveInvincibilitySupportBh>(new object[] {this});
     }
 }

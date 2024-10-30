@@ -38,12 +38,15 @@ public class GiveInvincibilitySupportBh : ISupportBh
         List<Cell> cells = new List<Cell>();
         var currentCell = _cellTrackerByEnemy.GetCurrentCell();
 
-        for (int i = 0; i < 2; ++i)
+        for (int i = -1; i < 2; ++i)
         {
-            for (int j = 0; j < 2; ++j)
+            for (int j = -1; j < 2; ++j)
             {
-                var cell = _field.FindCell(currentCell, new Vector2(i, j), 1);
-                if (cell != null) cells.Add(cell);
+                if (i * j == 0 && (i != 0 || j != 0))
+                {
+                    var cell = _field.FindCell(currentCell, new Vector2(i, j), 1);
+                    if (cell != null) cells.Add(cell);
+                }
             }
         }
 
