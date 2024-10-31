@@ -1,4 +1,4 @@
-﻿public class Drummer : CommonEnemy
+﻿public class Drummer : SpecialEnemy
 {
 
 }

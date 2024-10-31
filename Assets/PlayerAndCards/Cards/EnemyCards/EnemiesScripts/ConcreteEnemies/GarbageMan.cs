@@ -1,4 +1,4 @@
-﻿public class GarbageMan : CommonEnemy
+﻿public class GarbageMan : SpecialEnemy
 {
 
 }

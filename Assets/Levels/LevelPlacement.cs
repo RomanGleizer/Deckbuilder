@@ -1,25 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelPlacement", menuName = "New Data/New LevelPlacement")]
 public class LevelPlacement : ScriptableObject
 {
-    [SerializeField] private FieldEntityMarkerRow[] _markerTable;
+    [SerializeField] private RowPlacement[] _rowPlacements;
 
-    public FieldEntityMarkerRow[] MarkerTable => _markerTable;
+    public RowPlacement[] RowPlacements => _rowPlacements;
 }
 
 [Serializable]
-public class FieldEntityMarkerRow
+public class RowPlacement
 {
     [SerializeField] private EntityType[] _rowMarkers;
-
     public EntityType[] RowMarkers => _rowMarkers;
+
+#if UNITY_EDITOR
+    public RowPlacement(Stack<EntityType> entityTypes)
+    {
+        _rowMarkers = new EntityType[entityTypes.Count];
+        entityTypes.CopyTo(_rowMarkers, 0);
+    }
+#endif
 }
 
 public enum EntityType
 {
-    Empty,
     Armsman,
     Cavalryman,
     Commander,

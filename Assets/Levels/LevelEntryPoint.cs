@@ -3,9 +3,6 @@ using Zenject;
 
 public class LevelEntryPoint : MonoBehaviour
 {
-    [SerializeField] private LevelPlacement _levelPlacement;
-    [SerializeField] private Transform _spawnPoint;
-
     private LevelInitializator _levelInitializator;
 
     [Inject]
@@ -16,7 +13,7 @@ public class LevelEntryPoint : MonoBehaviour
 
     private void Awake()
     {
-        _levelInitializator.InitializeLevel(_levelPlacement, _spawnPoint.position.x);
+        _levelInitializator.InitializeLevel();
     }
 
     private void Start()

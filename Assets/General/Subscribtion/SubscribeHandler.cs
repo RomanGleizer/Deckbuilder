@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Zenject;
 
 /// <summary>
@@ -11,19 +12,31 @@ public class SubscribeHandler : ISubscribable
     private Action SubscribeAction;
     private Action UnsubscribeAction;
 
-    public SubscribeHandler(Action subscribeAction, Action unsubscribeAction)
-    {
-        SubscribeAction = subscribeAction;
-        UnsubscribeAction = unsubscribeAction;
-    }
-
     [Inject]
     private void Construct(SubscribeService subscribeService)
     {
         _subscribeService = subscribeService;
         _subscribeService.AddSubscribable(this);
 
-        Subscribe();
+        if (SubscribeAction != null) Subscribe();
+    }
+
+    public SubscribeHandler()
+    {
+
+    }
+
+    public SubscribeHandler(Action subscribeAction, Action unsubscribeAction)
+    {
+        SetSubscribeActions(subscribeAction, unsubscribeAction);
+    }
+
+    public void SetSubscribeActions(Action subscribeAction, Action unsubscribeAction)
+    {
+        SubscribeAction = subscribeAction;
+        UnsubscribeAction = unsubscribeAction;
+
+        if (_subscribeService) Subscribe();
     }
 
     public void Subscribe()

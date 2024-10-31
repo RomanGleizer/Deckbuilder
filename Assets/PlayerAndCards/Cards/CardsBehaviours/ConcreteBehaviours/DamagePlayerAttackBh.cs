@@ -1,8 +1,16 @@
-﻿using Unity.VisualScripting;
+﻿using PlayerAndCards.Player;
+using Unity.VisualScripting;
+using Zenject;
 
-public class DamagePlayerAttackBh : IAttackBh // Attack a player with damage
+public class DamagePlayerAttackBh : IAttackBh
 {
-    // protected ITakerDamage _player;
+    //protected ITakerDamage _player;
+
+    //[Inject]
+    //private void Construct(Player player)
+    //{
+    //    _player = player;
+    //}
 
     public virtual void Attack(int damage)
     {

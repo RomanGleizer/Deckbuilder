@@ -1,23 +1,32 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class CommandHandler
 {
     private CommandInvoker _commandInvoker;
 
     private IAttacker _attacker;
-    private IMover _mover;
+    private IMoverToCell _mover;
     private ISupporter _supporter;
     private ITakerDamage _takerDamage;
+    private IInvincibilable _invincibilable;
 
     public CommandHandler(MonoBehaviour card)
     {
         _attacker = card as IAttacker;
-        _mover = card as IMover;
+        _mover = card as IMoverToCell;
         _supporter = card as ISupporter;
         _takerDamage = card as ITakerDamage;
+        _invincibilable = card as IInvincibilable;
     }
 
-    public void HandleCommand(Command command)
+    [Inject]
+    private void Construct(CommandInvoker commandInvoker)
+    {
+        _commandInvoker = commandInvoker;
+    }
+
+    public void HandleCommand(Command command) // TODO: слишком перегружен + нарушается DRY - подумать как переделать
     {
         bool isCorrectCommand = false;
 
@@ -36,17 +45,24 @@ public class CommandHandler
             supportCommand.SetReceiver(_supporter);
             isCorrectCommand = true;
         }
-
-        if (command.IsAddToOrder)
+        else if (_invincibilable != null && command is InvincibilityCommand invincibilityCommand)
         {
-            if (isCorrectCommand) _commandInvoker.SetCommandInQueue(command);
-            else if (_takerDamage != null && command is TakeDamageCommand takeDamageCommand)
-            {
-                takeDamageCommand.SetReceiver(_takerDamage);
+            invincibilityCommand.SetReceiver(_invincibilable);
+            isCorrectCommand = true;
+        }
+        else if (_takerDamage != null && command is TakeDamageCommand takeDamageCommand)
+        {
+            takeDamageCommand.SetReceiver(_takerDamage);
+            isCorrectCommand = true;
+        }
 
-                isCorrectCommand = true;
+        if (command.IsAddToOrder && isCorrectCommand)
+        {
+            if (command is TakeDamageCommand takeDamageCommand || command is InvincibilityCommand invincibilityCommand)
+            {
                 _commandInvoker.SetCommandAndExecute(command);
             }
+            else _commandInvoker.SetCommandInQueue(command);
         }
         
         if (!isCorrectCommand)

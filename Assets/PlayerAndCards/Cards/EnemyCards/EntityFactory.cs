@@ -52,7 +52,7 @@ public class CavalrymanFactory : EntityFactory
     }
 }
 
-public class CommanderFactory : EntityFactory
+public class EntityCommanderFactory : EntityFactory
 {
     private const string PATH = "Commander";
 

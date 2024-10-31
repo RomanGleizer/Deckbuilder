@@ -17,6 +17,7 @@ public class ProjectContextInstaller : MonoInstaller
         BindInstantiator();
         BindSubscribeService();
 
+        BindCommandInvoker();
         BindCommandFactory();
     }
 
@@ -28,6 +29,11 @@ public class ProjectContextInstaller : MonoInstaller
     private void BindSubscribeService()
     {
         Container.Bind<SubscribeService>().FromComponentInNewPrefab(_subscribeService).AsSingle();
+    }
+
+    private void BindCommandInvoker()
+    {
+        Container.Bind<CommandInvoker>().FromNew().AsSingle();
     }
 
     private void BindCommandFactory()

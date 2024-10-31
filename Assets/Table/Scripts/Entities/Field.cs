@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Table.Scripts.Generation;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Table.Scripts.Entities
 {
@@ -10,15 +11,33 @@ namespace Table.Scripts.Entities
         [SerializeField] private GridGenerator gridGenerator;
         private Cell[,] _cells;
         
+        public int CollumnsCount { get; private set; }
+        public int RowsCount { get; private set; }
+
         public void Initialize()
         {
-            if (gridGenerator == null)
-            {
-                Debug.LogError("GridGenerator reference is missing!");
-                return;
-            }
+            //if (gridGenerator == null)
+            //{
+            //    Debug.LogError("GridGenerator reference is missing!");
+            //    return;
+            //}
 
-            _cells = gridGenerator.GenerateGrid();
+            //_cells = gridGenerator.GenerateGrid();
+
+            CollumnsCount = 5;
+            RowsCount = 3;
+
+            var cells = GetComponentsInChildren<Cell>(); // как варик, но можно что-то получше придумать
+
+            _cells = new Cell[RowsCount, CollumnsCount];
+
+            int j = -1;
+            for (int i = 0; i < cells.Length; ++i)
+            {
+                if (i % CollumnsCount == 0) ++j;
+
+                _cells[j, i % CollumnsCount] = cells[i];
+            }
         }
         
         public void HighlightActiveCells(bool highlight)
@@ -84,8 +103,8 @@ namespace Table.Scripts.Entities
         
         public Cell FindCell(Cell currentCell, Vector2 direction, int length)
         {
-            var newRow = currentCell.RowId + (int)direction.x * length;
-            var newColumn = currentCell.ColumnId + (int)direction.y * length;
+            var newRow = currentCell.RowId + (int)direction.y * length;
+            var newColumn = currentCell.ColumnId + (int)direction.x * length;
 
             if (IsWithinBounds(newRow, newColumn))
                 return _cells[newRow, newColumn];
@@ -93,13 +112,26 @@ namespace Table.Scripts.Entities
             Debug.LogError("Target cell is out of bounds.");
             return null;
         }
-        
+
         private bool IsWithinBounds(int row, int column)
         {
             return row >= 0 && row < _cells.GetLength(0) &&
                    column >= 0 && column < _cells.GetLength(1);
         }
-        
+
+        public Cell FindFirstFreeCellFromRow(int rowIndex)
+        {
+            var row = GetRowByIndex(rowIndex, true);
+
+            foreach (var cell in row)
+            {
+                if (!cell.IsBusy) return cell;
+            }
+
+            Debug.Log("All cells is busy.");
+            return null;
+        }
+
         private Cell[] GetCellsInLine(int index, bool isRow, bool includeHidden)
         {
             var cells = new List<Cell>();

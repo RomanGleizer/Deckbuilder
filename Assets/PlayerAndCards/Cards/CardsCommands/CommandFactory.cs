@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Table.Scripts.Entities;
 using UnityEngine;
-using Zenject;
 
 public class CommandFactory
 {
@@ -30,27 +27,63 @@ public class CommandFactory
         return new MoveCommand(targetCell, true);
     }
 
-    public Command CreateRowMoveCommand(Cell mainCell, Vector2 moveDirection)
+    public Command CreateRowMoveForwardCommand(Cell mainCell)
     {
         var row = _field.GetRowByCell(mainCell, true);
-        var queue = new Queue<MoveCommand>();
+        return CreateRowMoveCommandWithoutBusyCells(row);
+    }
 
+    private Command CreateRowMoveCommandWithoutBusyCells(Cell[] sortedRow)
+    {
+        var queue = new Queue<MoveCommand>();
         int unbusyCells = 0;
 
-        if (moveDirection.x > 0) row = row.Reverse().ToArray();
-
-        foreach (var cell in row)
+        for (int i = 0; i < sortedRow.Length; ++i)
         {
+            var cell = sortedRow[i];
+
             if (!cell.IsBusy) unbusyCells++;
-            else
+            else if (unbusyCells > 0)
             {
-                var targetCell = _field.FindCell(cell, moveDirection, unbusyCells);
+                var targetCell = sortedRow[i - unbusyCells];
 
                 var command = new MoveCommand(targetCell, false);
                 cell.SetCommand(command);
                 queue.Enqueue(command);
+            }
+        }
 
-                unbusyCells = 0;
+        return new RowMoveCommand(queue);
+    }
+
+    public Command CreateRowMoveBackwardCommand(Cell mainCell)
+    {
+        var row = _field.GetRowByCell(mainCell, true);
+
+        return CreateRowMoveCommand(mainCell, row[row.Length - 1], row);
+    }
+
+    private Command CreateRowMoveCommand(Cell fromCell, Cell toCell, Cell[] sortedRow)
+    {
+        bool isStartMove = false;
+        var queue = new Queue<MoveCommand>();
+
+        for (int i = 0; i < sortedRow.Length; ++i)
+        {
+            var cell = sortedRow[i];
+
+            if (!isStartMove && cell == fromCell) isStartMove = true;
+            if (!isStartMove) continue;
+
+            if (cell == toCell) break;
+            if (!cell.IsBusy) break;
+
+            if (i != sortedRow.Length - 1)
+            {
+                var targetCell = sortedRow[i + 1];
+                var command = new MoveCommand(targetCell, false);
+                cell.SetCommand(command);
+                queue.Enqueue(command);
             }
         }
 
