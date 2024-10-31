@@ -3,15 +3,20 @@ using Table.Scripts.Entities;
 using System;
 using Zenject;
 
-public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincibilable
+public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable
 {
     [SerializeField] protected EnemyData _enemyData;
     [SerializeField] protected Cell _currentCell;
+
+    public EntityType EntityType => _enemyData.Type;
+    public Cell CurrentCell => _currentCell;
 
     private Field _field;
 
     protected int _hp;
     protected int _shield;
+
+    public float Speed => _enemyData.Speed;
 
     public bool IsActive { get; protected set; }
     private bool _isInvincibility;
@@ -23,7 +28,6 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
 
     #endregion
 
-    public Cell CurrentCell => _currentCell;
     public event Action<Cell> OnMovedToCell;
 
     private CommandHandler _commandHandler;
@@ -49,27 +53,45 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
     }
 
+    public void SetStartCell(Cell cell)
+    {
+        UpdateCells(cell);
+        //if (!_currentCell)
+        //{
+        //    _currentCell = cell;
+        //    UpdateCells(cell);
+        //}
+        //else throw new System.InvalidOperationException("Start cell already exist! Cannot set start cell!");
+    }
+
     protected virtual void InitBehaviours()
     {
         _takeDamageBh = new TakeDamageBh(this);
-        _moveBh = new MoveToCellBh(transform, _enemyData.Speed);
     }
 
     private void UpdateCells(Cell cell)
     {
+        if (_currentCell) _currentCell.OnCommandSet -= SetCommand;
         _currentCell = cell;
-        cell.IsBusy = true;
+        _currentCell.OnCommandSet += SetCommand;
+
         OnMovedToCell?.Invoke(cell);
+
+        if (_moveBh is IMoveToCellBh moveToCellBh) moveToCellBh.OnCellRiched -= UpdateCells;
     }
 
     private void Update()
     {
-        if (_moveBh != null) _moveBh.Update();
+        if (_moveBh != null) _moveBh.UpdateBh();
     }
 
-    public virtual void MoveToCell(Cell cell)
+    public void StartMove(IMoveBh moveBh)
     {
-        _moveBh.StartMoveFromTo(_currentCell, cell);
+        _moveBh = moveBh;
+        _moveBh.Init(transform, Speed);
+        _moveBh.StartMove();
+
+        if (_moveBh is IMoveToCellBh moveToCellBh) moveToCellBh.OnCellRiched += UpdateCells;
     }
 
     public virtual void TakeDamage(int damage)
@@ -99,14 +121,13 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMover, IInvincib
 
     protected virtual void Subscribe()
     {
-        _moveBh.OnCellRiched += UpdateCells;
-        _currentCell.OnCommandSet += SetCommand;
+        if (_currentCell) _currentCell.OnCommandSet += SetCommand;
     }
 
     protected virtual void Unsubscribe()
     {
-        _moveBh.OnCellRiched -= UpdateCells;
-        _currentCell.OnCommandSet -= SetCommand;
+        if (_moveBh != null && _moveBh is IMoveToCellBh moveToCellBh) moveToCellBh.OnCellRiched -= UpdateCells;
+        if (_currentCell) _currentCell.OnCommandSet -= SetCommand;
         //if (_isInvincibility) _turnManager.OnTurnFinished -= DeactivateInvincibility;
     }
 

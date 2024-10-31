@@ -1,4 +1,5 @@
 ﻿using PlayerAndCards.Player;
+using System;
 using Table.Scripts.Entities;
 using UnityEngine;
 using Zenject;
@@ -6,9 +7,12 @@ using Zenject;
 public class SceneContextInstaller : MonoInstaller
 {
     [SerializeField] private LevelPlacement _levelPlacement;
+    [SerializeField] private QueuesEditorVisual _queueVisual;
 
     [SerializeField] private Field _field;
     [SerializeField] private Player _player;
+
+    [SerializeField] private Transform _spawnPoint;
 
     private CommandFactory _commandFactory;
 
@@ -28,7 +32,19 @@ public class SceneContextInstaller : MonoInstaller
         BindField();
         BindPlayer();
         BindEntitySpawnSystem();
+
+        BindLevelPlacementStackController();
         BindLevelInitializator();
+    }
+
+    private void BindLevelPlacementStackController()
+    {
+#if UNITY_EDITOR
+        var levelPlacementStack = new LevelPlacementStack(_levelPlacement, _queueVisual);
+#else
+        var levelPlacementStack = new LevelPlacementStack(_levelPlacement);
+#endif
+        Container.Bind<LevelPlacementStackController>().FromNew().AsSingle().WithArguments(new object[] {levelPlacementStack, _spawnPoint});
     }
 
     private void BindField()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Table.Scripts.Entities;
 
 public enum PosInOrderType { First, NoMatter, Last }
@@ -88,27 +89,36 @@ public class SupportCommand : Command
 
 public class MoveCommand : Command
 {
-    private IMover _mover;
+    private IMoverToCell _mover;
     private Cell _cell;
 
     public MoveCommand(Cell targetCell, bool isAddToOrder)
     {
         CommandType = CommandType.Move;
         _isAddToOrder = isAddToOrder;
+        _cell = targetCell;
     }
 
-    public void SetReceiver(IMover mover)
+    public void SetReceiver(IMoverToCell mover)
     {
         _mover = mover;
     }
 
     public override void Execute()
     {
-        _mover.MoveToCell(_cell);
+        Debug.Log("Execute move command");
+        
+        IMoveToCellBh moveBh = new MoveToCellBh(); // TODO: добавить ObjectPooling 
+        moveBh.SetParameters(_mover.CurrentCell, _cell);
+
+        _mover.StartMove(moveBh);
     }
 }
 
-public class RowMoveCommand : Command // Command which moves whole row
+/// <summary>
+/// Command which moves choosed cells in the row
+/// </summary>
+public class RowMoveCommand : Command
 {
     private Queue<MoveCommand> _moveCommands;
 
@@ -121,10 +131,27 @@ public class RowMoveCommand : Command // Command which moves whole row
 
     public override void Execute()
     {
+        Debug.Log("Execute row move command");
         while (_moveCommands.Count > 0)
         {
             _moveCommands.Dequeue().Execute();
         }
+    }
+}
+
+public class SpawnFromQueueCommand : Command
+{
+    public override void Execute()
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class ReleaseToQueueCommand : Command
+{
+    public override void Execute()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -139,6 +166,8 @@ public class SwapCommand : Command
 
     public override void Execute()
     {
+        Debug.Log("Execute swap command");
+
         foreach (MoveCommand moveCommand in _moveCommands)
         {
             moveCommand.Execute();

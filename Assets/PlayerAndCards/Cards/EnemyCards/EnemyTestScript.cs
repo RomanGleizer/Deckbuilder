@@ -8,11 +8,11 @@ public class EnemyTestScript : MonoBehaviour // Script to test enemy interaction
 
     [SerializeField] private EnemyCard[] _initedEnemyCards;
 
-    void Start()
+    void Awake()
     {
-        var concreteEnemy = _enemyCard as Armsman;
+        //var concreteEnemy = _enemyCard as Pioneer;
         InitEnemies();
-        concreteEnemy.Support();
+        //concreteEnemy.Attack();
     }
 
     private void InitEnemies()
@@ -20,6 +20,7 @@ public class EnemyTestScript : MonoBehaviour // Script to test enemy interaction
         foreach (var enemy in _initedEnemyCards)
         {
             enemy.Init();
+            enemy.SetStartCell(enemy.CurrentCell);
         }
     }
 }

@@ -1,20 +1,40 @@
 ﻿using Table.Scripts.Entities;
+using UnityEngine;
+using Zenject;
 
 public class SpawnAttackBh : ISpecialAttackBh // Pioneer special attack
 {
-    //private IEnemyFactory _enemyFactory; // Factory with snare spawn
+    private EntitySpawnSystem _spawnSystem;
     private Field _field;
 
-    private Cell _currentCell; 
+    private CellTrackerByEnemy _cellTracker;
 
-    public SpawnAttackBh(Cell currentCell)
+    private CommandFactory _commandFactory;
+    private CommandInvoker _commandInvoker;
+
+    public SpawnAttackBh(EnemyCard enemyCard)
     {
-        _currentCell = currentCell;
+        _cellTracker = new CellTrackerByEnemy(enemyCard);
+    }
+
+    [Inject]
+    private void Construct(EntitySpawnSystem spawnSystem, Field field, CommandFactory commandFactory, CommandInvoker commandInvoker)
+    {
+        _spawnSystem = spawnSystem;
+        _field = field;
+
+        _commandFactory = commandFactory;
+        _commandInvoker = commandInvoker;
     }
 
     public void Attack()
     {
-        // _field.GetRandomCellExcept(_currentCell);
-        // _enemyFactory.Spawn(_currentCell);
+        var currentCell = _cellTracker.GetCurrentCell();
+        var randomCell = _field.GetRandomActiveCell(currentCell);
+
+        var command = _commandFactory.CreateRowMoveBackwardCommand(randomCell);
+        _commandInvoker.SetCommandAndExecute(command);
+
+        var snare = _spawnSystem.SpawnEntity(EntityType.Snare, randomCell);
     }
 }

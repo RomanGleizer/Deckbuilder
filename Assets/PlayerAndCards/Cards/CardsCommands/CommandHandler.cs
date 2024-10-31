@@ -6,7 +6,7 @@ public class CommandHandler
     private CommandInvoker _commandInvoker;
 
     private IAttacker _attacker;
-    private IMover _mover;
+    private IMoverToCell _mover;
     private ISupporter _supporter;
     private ITakerDamage _takerDamage;
     private IInvincibilable _invincibilable;
@@ -14,7 +14,7 @@ public class CommandHandler
     public CommandHandler(MonoBehaviour card)
     {
         _attacker = card as IAttacker;
-        _mover = card as IMover;
+        _mover = card as IMoverToCell;
         _supporter = card as ISupporter;
         _takerDamage = card as ITakerDamage;
         _invincibilable = card as IInvincibilable;

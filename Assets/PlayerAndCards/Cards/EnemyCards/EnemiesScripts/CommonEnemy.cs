@@ -18,7 +18,7 @@
 
     protected override void InitBehaviours()
     {
-        if (_attackBh == null) _attackBh = new DamagePlayerAttackBh(); // default attack
+        if (_attackBh == null) _attackBh = _instantiator.Instantiate<DamagePlayerAttackBh>(); // default attack
         base.InitBehaviours();
     }
 
