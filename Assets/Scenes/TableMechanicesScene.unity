@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 661830462}
   - component: {fileID: 661830461}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -357,7 +357,9 @@ MonoBehaviour:
   cellPrefab: {fileID: 7586967254010000345, guid: 090cb0ff422470c45901a6f9fd64c9fd, type: 3}
   rows: 3
   columns: 5
-  spacing: 0.5
+  spacing: 1.32
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  field: {fileID: 661830461}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

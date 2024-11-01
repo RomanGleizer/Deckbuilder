@@ -1,6 +1,6 @@
-using UnityEngine;
 using Table.Scripts.Entities;
 using Table.Scripts.EntityProperties;
+using UnityEngine;
 using UnityEditor;
 
 namespace Table.Scripts.Generation
@@ -10,10 +10,10 @@ namespace Table.Scripts.Generation
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private int rows = 3;
         [SerializeField] private int columns = 5;
-        [SerializeField] private float spacing = 0.5f;
+        [SerializeField] private float spacing = 1.3f;
+        [SerializeField] private Color highlightColor = Color.yellow;
+        [SerializeField] private Field field;
 
-        [SerializeField] private Field _field;
-        
         [ContextMenu("Generate Grid")]
         public Cell[,] GenerateGrid()
         {
@@ -23,15 +23,14 @@ namespace Table.Scripts.Generation
             {
                 for (var column = 0; column < columns; column++)
                 {
-                    var position = new Vector2(column * (1 + spacing), row * (1 + spacing));
-
-                    var cellObject = Instantiate(cellPrefab, position, Quaternion.identity);
-                    cellObject.transform.SetParent(_field.transform);
-
+                    var position = new Vector2(column * (1 + spacing), -row * (1 + spacing));
+                    var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
                     if (!cellObject.TryGetComponent(out Cell cell))
                         continue;
 
-                    cell.Initialize(row, column, isHidden: false);
+                    var cellView = new CellView(cellObject.transform, highlightColor);
+                    cell.Initialize(row, column, isHidden: false, cellView);
+
                     cells[row, column] = cell;
 
                     Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
