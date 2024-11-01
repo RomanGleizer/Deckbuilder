@@ -2,6 +2,7 @@
 using System;
 using Table.Scripts.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class SceneContextInstaller : MonoInstaller
@@ -10,7 +11,7 @@ public class SceneContextInstaller : MonoInstaller
     [SerializeField] private QueuesEditorVisual _queueVisual;
 
     [SerializeField] private Field _field;
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerData playerData;
 
     [SerializeField] private Transform _spawnPoint;
 
@@ -27,6 +28,7 @@ public class SceneContextInstaller : MonoInstaller
         _commandFactory = commandFactory;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void Bind()
     {
         BindField();
@@ -56,7 +58,7 @@ public class SceneContextInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        BindService(_player);
+        BindService(playerData);
     }
 
     private void BindEntitySpawnSystem()
