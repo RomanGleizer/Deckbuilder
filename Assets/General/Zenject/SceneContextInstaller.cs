@@ -11,7 +11,7 @@ public class SceneContextInstaller : MonoInstaller
     [SerializeField] private QueuesEditorVisual _queueVisual;
 
     [SerializeField] private Field _field;
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] private Player _player;
 
     [SerializeField] private Transform _spawnPoint;
 
@@ -58,7 +58,7 @@ public class SceneContextInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        BindService(playerData);
+        BindService(_player);
     }
 
     private void BindEntitySpawnSystem()
