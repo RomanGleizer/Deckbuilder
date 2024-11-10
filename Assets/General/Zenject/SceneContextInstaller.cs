@@ -2,6 +2,7 @@
 using System;
 using Table.Scripts.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class SceneContextInstaller : MonoInstaller
@@ -27,6 +28,7 @@ public class SceneContextInstaller : MonoInstaller
         _commandFactory = commandFactory;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void Bind()
     {
         BindField();

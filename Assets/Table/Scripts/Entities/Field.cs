@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Table.Scripts.Generation;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Table.Scripts.Entities
 {
@@ -11,35 +10,20 @@ namespace Table.Scripts.Entities
         [SerializeField] private GridGenerator gridGenerator;
         private Cell[,] _cells;
         
-        public int CollumnsCount { get; private set; }
-        public int RowsCount { get; private set; }
-
+        public int RowsCount => _cells.GetLength(0);
+        public int ColumnsCount => _cells.GetLength(1);
+        
         public void Initialize()
         {
-            //if (gridGenerator == null)
-            //{
-            //    Debug.LogError("GridGenerator reference is missing!");
-            //    return;
-            //}
-
-            //_cells = gridGenerator.GenerateGrid();
-
-            CollumnsCount = 5;
-            RowsCount = 3;
-
-            var cells = GetComponentsInChildren<Cell>(); // как варик, но можно что-то получше придумать
-
-            _cells = new Cell[RowsCount, CollumnsCount];
-
-            int j = -1;
-            for (int i = 0; i < cells.Length; ++i)
+            if (gridGenerator== null)
             {
-                if (i % CollumnsCount == 0) ++j;
-
-                _cells[j, i % CollumnsCount] = cells[i];
+                Debug.LogError("GridGenerator reference is missing!");
+                return;
             }
+
+            InitializeCellsFromScene();
         }
-        
+
         public void HighlightActiveCells(bool highlight)
         {
             TraverseCells(cell =>
@@ -145,6 +129,29 @@ namespace Table.Scripts.Entities
             }
 
             return cells.ToArray();
+        }
+        
+        private void InitializeCellsFromScene()
+        {
+            var cellsList = new List<Cell>(GetComponentsInChildren<Cell>());
+            if (cellsList.Count == 0)
+            {
+                Debug.LogError("No cells found on the scene.");
+                return;
+            }
+
+            var rows = cellsList[0].RowId + 1; 
+            var columns = cellsList[0].ColumnId + 1;
+            
+            foreach (var cell in cellsList)
+            {
+                rows = Math.Max(rows, cell.RowId + 1);
+                columns = Math.Max(columns, cell.ColumnId + 1);
+            }
+
+            _cells = new Cell[rows, columns];
+            foreach (var cell in cellsList)
+                _cells[cell.RowId, cell.ColumnId] = cell;
         }
     }
 }

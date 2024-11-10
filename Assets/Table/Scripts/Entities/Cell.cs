@@ -9,24 +9,26 @@ namespace Table.Scripts.Entities
         [SerializeField] private int _rowId;
         [SerializeField] private int _columnId;
         [SerializeField] private bool _isHidden;
-
-
+        
         public int RowId => _rowId;
         public int ColumnId => _columnId;
         public bool IsHidden => _isHidden;
         public bool IsBusy { get; set; }
 
         private CellView _cellView;
+        private bool _isHighlighted;
+        
         public CellView CellView => _cellView;
 
         public event Action<Command> OnCommandSet;
 
-        public void Initialize(int rowId, int columnId, bool isHidden)
+        public void Initialize(int rowId, int columnId, bool isHidden, CellView cellView)
         {
             _rowId = rowId;
             _columnId = columnId;
             _isHidden = isHidden;
-            _cellView = new CellView();
+            _cellView = cellView;
+            _isHighlighted = false;
         }
         
         public void HighlightCell(bool highlight)

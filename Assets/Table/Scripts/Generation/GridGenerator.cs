@@ -1,7 +1,7 @@
-using UnityEngine;
 using Table.Scripts.Entities;
 using Table.Scripts.EntityProperties;
 using UnityEditor;
+using UnityEngine;
 
 namespace Table.Scripts.Generation
 {
@@ -10,35 +10,57 @@ namespace Table.Scripts.Generation
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private int rows = 3;
         [SerializeField] private int columns = 5;
-        [SerializeField] private float spacing = 0.5f;
+        [SerializeField] private float spacing;
+        [SerializeField] private Color highlightColor = Color.yellow;
+        [SerializeField] private Field field;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private float topOffset = 0.5f;
+        [SerializeField] private float rightOffset = 0.5f;
 
-        [SerializeField] private Field _field;
-        
         [ContextMenu("Generate Grid")]
-        public Cell[,] GenerateGrid()
+        public void GenerateGrid()
         {
+            if (mainCamera == null)
+            {
+                mainCamera = Camera.main;
+                if (mainCamera == null)
+                {
+                    Debug.LogError("Main camera cannot be found in the scene.");
+                    return;
+                }
+            }
+
+            var cameraHeight = 2f * mainCamera.orthographicSize;
+            var cameraWidth = cameraHeight * mainCamera.aspect;
+            
+            var cellSize = cellPrefab.GetComponent<Renderer>().bounds.size;
+            
+            var startPosition = new Vector2(
+                mainCamera.transform.position.x + (cameraWidth / 2) - (cellSize.x / 2) - rightOffset,
+                mainCamera.transform.position.y + (cameraHeight / 2) - (cellSize.y / 2) - topOffset
+            );
+
             var cells = new Cell[rows, columns];
 
             for (var row = 0; row < rows; row++)
-            {
                 for (var column = 0; column < columns; column++)
                 {
-                    var position = new Vector2(column * (1 + spacing), row * (1 + spacing));
+                    var position = new Vector2(
+                        startPosition.x - column * (cellSize.x + spacing),
+                        startPosition.y - row * (cellSize.y + spacing)
+                    );
 
-                    var cellObject = Instantiate(cellPrefab, position, Quaternion.identity);
-                    cellObject.transform.SetParent(_field.transform);
-
+                    var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
                     if (!cellObject.TryGetComponent(out Cell cell))
                         continue;
 
-                    cell.Initialize(row, column, isHidden: false);
+                    var cellView = new CellView(cellObject.transform, highlightColor);
+                    cell.Initialize(row, column, isHidden: false, cellView);
+
                     cells[row, column] = cell;
 
                     Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
                 }
-            }
-
-            return cells;
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using PlayerAndCards.Interfaces;
+using UnityEngine;
 
 namespace PlayerAndCards.Player
 {
-    [CreateAssetMenu(fileName = "Player", menuName = "Player")]
-    public class Player : ScriptableObject
+    public class Player : MonoBehaviour, ITakeDamagable
     {
-        [SerializeField] private int _health;
-        [SerializeField] private int _shield;
-        [SerializeField] private int _maxEnergy;
+        [SerializeField] private PlayerData _playerData;
+        
+        public void TakeDamage(int damage)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

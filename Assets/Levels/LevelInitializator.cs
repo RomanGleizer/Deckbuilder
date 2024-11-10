@@ -22,7 +22,7 @@ public class LevelInitializator
     {
         for (int i = 0; i < _field.RowsCount; ++i)
         {
-            for (int j = 0; j < _field.CollumnsCount; ++j)
+            for (int j = 0; j < _field.ColumnsCount; ++j)
             {
                 _stackController.SpawnEntityFromPlacementStack(i);
             }
