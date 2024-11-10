@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Game.Table.Scripts.Generation;
-using Table.Scripts.Entities;
 using UnityEngine;
 
 namespace Game.Table.Scripts.Entities
