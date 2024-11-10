@@ -1,4 +1,4 @@
-﻿using PlayerAndCards.Player;
+using PlayerAndCards.Player;
 using System;
 using Table.Scripts.Entities;
 using UnityEngine;
@@ -28,7 +28,6 @@ public class SceneContextInstaller : MonoInstaller
         _commandFactory = commandFactory;
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     private void Bind()
     {
         BindField();
@@ -46,7 +45,7 @@ public class SceneContextInstaller : MonoInstaller
 #else
         var levelPlacementStack = new LevelPlacementStack(_levelPlacement);
 #endif
-        Container.Bind<LevelPlacementStackController>().FromNew().AsSingle().WithArguments(new object[] {levelPlacementStack, _spawnPoint});
+        Container.Bind<LevelPlacementStackController>().FromNew().AsSingle().WithArguments(new object[] { levelPlacementStack, _spawnPoint });
     }
 
     private void BindField()
