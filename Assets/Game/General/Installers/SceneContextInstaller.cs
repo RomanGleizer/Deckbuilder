@@ -1,5 +1,6 @@
-using PlayerAndCards.Player;
 using System;
+using Game.PlayerAndCards.PlayerScripts;
+using Game.Table.Scripts.Entities;
 using Table.Scripts.Entities;
 using TMPro;
 using UnityEngine;
