@@ -1,4 +1,5 @@
-﻿using Game.PlayerAndCards.PlayerScripts.Interfaces;
+﻿using System;
+using Game.PlayerAndCards.PlayerScripts.Interfaces;
 using PlayerAndCards.Interfaces;
 using UnityEngine;
 
@@ -8,25 +9,16 @@ namespace Game.PlayerAndCards.PlayerScripts
     {
         [SerializeField] private PlayerData _playerData;
 
-        private float _stunEndTime;
-
-        public bool IsStunned { get; private set; }
+        private PlayerData _playerDataInstance;
+        
+        private void Awake()
+        {
+            _playerDataInstance = ScriptableObject.Instantiate(_playerData);
+        }
 
         public void TakeDamage(int damage)
         {
-            _playerData.Health -= damage;
-        }
-
-        public void Stun(float duration)
-        {
-            IsStunned = true;
-            _stunEndTime = Time.time + duration;
-        }
-
-        private void Update()
-        {
-            if (!IsStunned || !(Time.time >= _stunEndTime)) return;
-            IsStunned = false;
+            _playerDataInstance.Health -= damage;
         }
     }
 }
