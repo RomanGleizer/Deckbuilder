@@ -26,4 +26,13 @@
             _specialAttackBh.Attack();
         }
     }
+
+    public override void CreatePriorityCommand()
+    {
+        if (_currentCell.ColumnId < _attackDistance)
+        {
+            var command = _commandFactory.CreateAttackCommand();
+            _commandHandler.HandleCommand(command);
+        }
+    }
 }

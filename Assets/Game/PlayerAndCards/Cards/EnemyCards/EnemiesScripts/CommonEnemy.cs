@@ -29,4 +29,13 @@
             _attackBh.Attack(_baseEnemyData.Damage);
         }
     }
+
+    public override void CreatePriorityCommand()
+    {
+        if (_currentCell.ColumnId < _attackDistance)
+        {
+            var command = _commandFactory.CreateAttackCommand();
+            _commandHandler.HandleCommand(command);
+        }
+    }
 }

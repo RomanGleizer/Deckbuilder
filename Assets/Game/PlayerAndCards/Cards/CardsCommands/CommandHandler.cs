@@ -10,6 +10,7 @@ public class CommandHandler
     private ISupporter _supporter;
     private ITakerDamage _takerDamage;
     private IInvincibilable _invincibilable;
+    private IHavePriorityCommand _havePriorityCommand;
 
     public CommandHandler(MonoBehaviour card)
     {
@@ -18,6 +19,7 @@ public class CommandHandler
         _supporter = card as ISupporter;
         _takerDamage = card as ITakerDamage;
         _invincibilable = card as IInvincibilable;
+        _havePriorityCommand = card as IHavePriorityCommand;
     }
 
     [Inject]
@@ -53,6 +55,11 @@ public class CommandHandler
         else if (_takerDamage != null && command is TakeDamageCommand takeDamageCommand)
         {
             takeDamageCommand.SetReceiver(_takerDamage);
+            isCorrectCommand = true;
+        }
+        else if (_havePriorityCommand != null && command is ActionCommand actionCommand)
+        {
+            actionCommand.SetReceiver(_havePriorityCommand);
             isCorrectCommand = true;
         }
 

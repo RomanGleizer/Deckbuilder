@@ -5,4 +5,10 @@
         base.InitBehaviours();
         _supportBh = new ActivateSecondAttackSupportBh();
     }
+
+    public override void CreatePriorityCommand()
+    {
+        var command = _commandFactory.CreateSupportCommand(PosInOrderType.Last);
+        _commandHandler.HandleCommand(command);
+    }
 }

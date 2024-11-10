@@ -110,4 +110,9 @@ public class CommandFactory
     {
         return new InvincibilityCommand();
     }
+
+    public Command CreateActionCommand()
+    {
+        return new ActionCommand();
+    }
 }

@@ -218,3 +218,23 @@ public class InvincibilityCommand : Command
         _invincibilable.ActivateInvincibility();
     }
 }
+
+public class ActionCommand : Command
+{
+    private IHavePriorityCommand _havePriorityCommand;
+
+    public ActionCommand() : base() 
+    {
+        _isAddToOrder = false;
+    }
+
+    public void SetReceiver(IHavePriorityCommand havePriorityCommand)
+    {
+        _havePriorityCommand = havePriorityCommand;
+    }
+
+    public override void Execute()
+    {
+        _havePriorityCommand.CreatePriorityCommand();
+    }
+}

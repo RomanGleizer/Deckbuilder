@@ -3,7 +3,7 @@ using Table.Scripts.Entities;
 using System;
 using Zenject;
 
-public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable
+public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand
 {
     [SerializeField] protected EnemyData _enemyData;
     [SerializeField] protected Cell _currentCell;
@@ -30,14 +30,21 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
     public event Action<Cell> OnMovedToCell;
 
-    private CommandHandler _commandHandler;
+    protected CommandHandler _commandHandler;
+    protected CommandFactory _commandFactory;
 
     protected IInstantiator _instantiator; // for instantiate non-MonoBehaviour objs by Zenject
 
+    private TurnManager _turnManager;
+
     [Inject]
-    private void Construct(IInstantiator instantiator)
+    private void Construct(IInstantiator instantiator, CommandFactory commandFactory, TurnManager turnManager)
     {
         _instantiator = instantiator;
+
+        _commandFactory = commandFactory;
+
+        _turnManager = turnManager;
     }
 
     public virtual void Init()
@@ -131,8 +138,17 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         //if (_isInvincibility) _turnManager.OnTurnFinished -= DeactivateInvincibility;
     }
 
+    public void OnMouseDown() // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+    {
+        if (_turnManager.IsPlayerTurn) Death();
+    }
+
     public virtual void Death()
     {
         gameObject.SetActive(false); // Change to ObjectPooling
+        _currentCell.IsBusy = false;
+        _currentCell = null;
     }
+
+    public abstract void CreatePriorityCommand();
 }

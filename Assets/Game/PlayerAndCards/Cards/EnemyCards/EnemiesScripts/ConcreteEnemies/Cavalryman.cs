@@ -13,4 +13,16 @@ public class Cavalryman : CommonEnemy, IHaveAbility
     {
         _ability.Use();
     }
+
+    public override void CreatePriorityCommand()
+    {
+        Command command;
+        if (CurrentCell.ColumnId > 0)
+        {
+            command = _commandFactory.CreateSwapCommand(CurrentCell);
+        }
+        else command = _commandFactory.CreateAttackCommand();
+
+        _commandHandler.HandleCommand(command);
+    }
 }

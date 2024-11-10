@@ -7,4 +7,10 @@ public class Armsman : SupporterEnemy
         base.InitBehaviours();
         _supportBh = _instantiator.Instantiate<GiveInvincibilitySupportBh>(new object[] {this});
     }
+
+    public override void CreatePriorityCommand()
+    {
+        var command = _commandFactory.CreateSupportCommand(PosInOrderType.First);
+        _commandHandler.HandleCommand(command);
+    }
 }

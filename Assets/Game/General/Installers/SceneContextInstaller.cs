@@ -1,8 +1,10 @@
 using PlayerAndCards.Player;
 using System;
 using Table.Scripts.Entities;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Zenject;
 
 public class SceneContextInstaller : MonoInstaller
@@ -17,6 +19,9 @@ public class SceneContextInstaller : MonoInstaller
 
     private CommandFactory _commandFactory;
 
+    [SerializeField] private Button _switchButton;
+    [SerializeField] private TextMeshProUGUI _turnWarningText;
+ 
     public override void InstallBindings()
     {
         Bind();
@@ -33,6 +38,8 @@ public class SceneContextInstaller : MonoInstaller
         BindField();
         BindPlayer();
         BindEntitySpawnSystem();
+
+        BindTurnSystems();
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
@@ -63,6 +70,13 @@ public class SceneContextInstaller : MonoInstaller
     private void BindEntitySpawnSystem()
     {
         Container.Bind<EntitySpawnSystem>().FromNew().AsSingle();
+    }
+
+    private void BindTurnSystems()
+    {
+        Container.Bind<TurnManager>().FromNew().AsSingle().WithArguments(_switchButton, _turnWarningText);
+        Container.Instantiate<EnemiesTurnController>();
+        Container.Instantiate<PlayerTurnController>();
     }
 
     private void BindLevelInitializator()
