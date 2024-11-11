@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
-using Table.Scripts.Generation;
+using Game.Table.Scripts.Generation;
+using Table.Scripts.Entities;
 using UnityEngine;
 
-namespace Table.Scripts.Entities
+namespace Game.Table.Scripts.Entities
 {
     public class Field : MonoBehaviour
     {
         [SerializeField] private GridGenerator gridGenerator;
         private Cell[,] _cells;
+        private readonly List<Cell> _traversedCells = new();
         
         public int RowsCount => _cells.GetLength(0);
         public int ColumnsCount => _cells.GetLength(1);
-        
+
         public void Initialize()
         {
-            if (gridGenerator== null)
+            if (gridGenerator == null)
             {
                 Debug.LogError("GridGenerator reference is missing!");
                 return;
@@ -39,18 +41,26 @@ namespace Table.Scripts.Entities
                 cell.SetCommand(command);
             });
         }
-
-        private void TraverseCells(Action<Cell> action, bool includeHidden = false)
+        
+        public void TraverseCells(Action<Cell> action, bool includeHidden = false)
         {
+            _traversedCells.Clear();
+            
             for (var row = 0; row < _cells.GetLength(0); row++)
                 for (var column = 0; column < _cells.GetLength(1); column++)
                 {
                     var cell = _cells[row, column];
-                    if (includeHidden || !cell.IsHidden)
-                        action(cell);
+                    if (!includeHidden && cell.IsHidden) continue;
+                    action(cell);
+                    _traversedCells.Add(cell);
                 }
         }
         
+        public Cell[] GetTraversedCells()
+        {
+            return _traversedCells.ToArray();
+        }
+
         public Cell[] GetRowByCell(Cell cell, bool includeHidden)
         {
             return GetCellsInLine(cell.RowId, isRow: true, includeHidden);
@@ -60,12 +70,12 @@ namespace Table.Scripts.Entities
         {
             return GetCellsInLine(index, isRow: true, includeHidden);
         }
-        
+
         public Cell[] GetColumnByCell(Cell cell, bool includeHidden)
         {
             return GetCellsInLine(cell.ColumnId, isRow: false, includeHidden);
         }
-        
+
         public Cell GetRandomActiveCell(Cell currentCell)
         {
             var activeCells = new List<Cell>();
@@ -84,7 +94,7 @@ namespace Table.Scripts.Entities
             var randomIndex = UnityEngine.Random.Range(0, activeCells.Count);
             return activeCells[randomIndex];
         }
-        
+
         public Cell FindCell(Cell currentCell, Vector2 direction, int length)
         {
             var newRow = currentCell.RowId + (int)direction.y * length;
@@ -112,7 +122,7 @@ namespace Table.Scripts.Entities
                 if (!cell.IsBusy) return cell;
             }
 
-            Debug.Log("All cells is busy.");
+            Debug.Log("All cells are busy.");
             return null;
         }
 
@@ -130,7 +140,7 @@ namespace Table.Scripts.Entities
 
             return cells.ToArray();
         }
-        
+
         private void InitializeCellsFromScene()
         {
             var cellsList = new List<Cell>(GetComponentsInChildren<Cell>());
@@ -140,9 +150,9 @@ namespace Table.Scripts.Entities
                 return;
             }
 
-            var rows = cellsList[0].RowId + 1; 
+            var rows = cellsList[0].RowId + 1;
             var columns = cellsList[0].ColumnId + 1;
-            
+
             foreach (var cell in cellsList)
             {
                 rows = Math.Max(rows, cell.RowId + 1);

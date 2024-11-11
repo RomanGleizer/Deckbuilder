@@ -1,6 +1,7 @@
 using UnityEngine;
 using Table.Scripts.Entities;
 using System;
+using Game.Table.Scripts.Entities;
 using Zenject;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand
@@ -138,7 +139,7 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         //if (_isInvincibility) _turnManager.OnTurnFinished -= DeactivateInvincibility;
     }
 
-    public void OnMouseDown() // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+    public void OnMouseDown() // РўРµСЃС‚РѕРІС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїСЂРѕРІРµСЂРєРё РёРіСЂРѕРІРѕРіРѕ С†РёРєР»Р°. TODO: РїРѕС‚РѕРј СѓРґР°Р»РёС‚СЊ
     {
         if (_turnManager.IsPlayerTurn) Death();
     }

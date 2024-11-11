@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 238209557}
   - component: {fileID: 238209556}
   - component: {fileID: 238209555}
+  - component: {fileID: 238209558}
   m_Layer: 5
   m_Name: RedrawCardButton
   m_TagString: Untagged
@@ -661,6 +662,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238209553}
   m_CullTransparentMesh: 1
+--- !u!114 &238209558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238209553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df71b17ac62eb54439dd659eed2905c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manager: {fileID: 443116877}
 --- !u!1 &239537524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +2788,7 @@ GameObject:
   - component: {fileID: 854641116}
   - component: {fileID: 854641115}
   - component: {fileID: 854641114}
+  - component: {fileID: 854641117}
   m_Layer: 5
   m_Name: SkipMoveButton
   m_TagString: Untagged
@@ -2883,6 +2898,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854641112}
   m_CullTransparentMesh: 1
+--- !u!114 &854641117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854641112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4eccc7327777b044bf1868126593549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manager: {fileID: 443116877}
 --- !u!1 &906812244
 GameObject:
   m_ObjectHideFlags: 0
