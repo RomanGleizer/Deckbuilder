@@ -49,10 +49,10 @@ public class MoveToCellBh : BaseMoveBh, IMoveToCellBh
 
     public override void StartMove()
     {
-        if (_previousCell != null) _previousCell.IsBusy = false;
+        if (_previousCell != null) _previousCell.ReleaseCell();
         if (_targetCell != null && !IsReached(_targetCell))
         {
-            _targetCell.IsBusy = true;
+            _targetCell.SetCardOnCell(_movableTransform.GetComponent<EnemyCard>());
             _isMoving = true;
         }
     }

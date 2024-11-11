@@ -1,29 +1,32 @@
-﻿using Custom.Collections;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public class CommandInvoker
 {
-    private CommandQueue _commands = new CommandQueue();
+    private CommandQueueController _commands;
+
+    public CommandInvoker()
+    {
+        _commands = new CommandQueueController();
+    }
 
     public void SetCommandInQueue(Command command)
     {
-        _commands.Enqueue(command);
+        _commands.InsertByPriority(command);
     }
 
     public void SetCommandAndExecute(Command command)
     {
-        command.Execute();
+        _ = command.Execute();
     }
 
-    public void ExecuteCommandsQueue()
+    public async Task ExecuteCommandsQueue()
     {
-        foreach (var command in _commands)
-        {
-            command.Execute();
-        }
+        await _commands.ExecuteCommandsQueue();
     }
 
-    public void IncreaseExecuteCount()
+    public async Task RepeatAttackCommands()
     {
-        _commands.IncreaseExecuteCount();
+        await _commands.RepeatAttackCommands();
     }
 }

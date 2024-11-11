@@ -18,7 +18,7 @@ public class MoveTestScript : MonoBehaviour
 
     private void Start()
     {
-        var command = _commandFactory.CreateRowMoveForwardCommand(_mainCell);
+        var command = _commandFactory.CreateRowMoveForwardCommand(_mainCell, false);
         _commandInvoker.SetCommandAndExecute(command);
     }
 }

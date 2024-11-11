@@ -5,7 +5,7 @@
 
     public override void Init()
     {
-        _supporterEnemyData = TypeChanger.ChangeObjectType<EnemyData, SupporterEnemyData>(_enemyData);
+        _supporterEnemyData = TypeChanger.ChangeObjectTypeWithException<EnemyData, SupporterEnemyData>(_enemyData);
 
         base.Init();
     }

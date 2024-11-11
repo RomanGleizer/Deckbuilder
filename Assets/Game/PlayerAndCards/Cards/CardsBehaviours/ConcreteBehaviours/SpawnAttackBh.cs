@@ -8,6 +8,7 @@ public class SpawnAttackBh : ISpecialAttackBh // Pioneer special attack
     private EntitySpawnSystem _spawnSystem;
     private Field _field;
 
+    private EnemyCard _enemyCard;
     private CellTrackerByEnemy _cellTracker;
 
     private CommandFactory _commandFactory;
@@ -15,14 +16,16 @@ public class SpawnAttackBh : ISpecialAttackBh // Pioneer special attack
 
     public SpawnAttackBh(EnemyCard enemyCard)
     {
-        _cellTracker = new CellTrackerByEnemy(enemyCard);
+        _enemyCard = enemyCard;
     }
 
     [Inject]
-    private void Construct(EntitySpawnSystem spawnSystem, Field field, CommandFactory commandFactory, CommandInvoker commandInvoker)
+    private void Construct(IInstantiator instantiator, EntitySpawnSystem spawnSystem, Field field, CommandFactory commandFactory, CommandInvoker commandInvoker)
     {
         _spawnSystem = spawnSystem;
         _field = field;
+
+        _cellTracker = instantiator.Instantiate<CellTrackerByEnemy>(new object[] { _enemyCard });
 
         _commandFactory = commandFactory;
         _commandInvoker = commandInvoker;
@@ -33,7 +36,7 @@ public class SpawnAttackBh : ISpecialAttackBh // Pioneer special attack
         var currentCell = _cellTracker.GetCurrentCell();
         var randomCell = _field.GetRandomActiveCell(currentCell);
 
-        var command = _commandFactory.CreateRowMoveBackwardCommand(randomCell);
+        var command = _commandFactory.CreateRowMoveBackwardCommand(randomCell, false);
         _commandInvoker.SetCommandAndExecute(command);
 
         var snare = _spawnSystem.SpawnEntity(EntityType.Snare, randomCell);

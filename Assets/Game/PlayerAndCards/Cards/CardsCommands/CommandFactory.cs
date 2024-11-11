@@ -3,38 +3,78 @@ using System.Collections.Generic;
 using Game.Table.Scripts.Entities;
 using Table.Scripts.Entities;
 using UnityEngine;
+using Zenject;
 
 public class CommandFactory
 {
     private Field _field;
+
+    private CommandInvoker _commandInvoker;
+
+    private float _commandExecuteDelay;
 
     public void SetField(Field field)
     {
         _field = field;
     }
 
-    public Command CreateAttackCommand()
+    public CommandFactory(float commandExecuteDelay)
     {
-        return new AttackCommand();
-    }
-    
-    public Command CreateSupportCommand(PosInOrderType posInOrder)
-    {
-        return new SupportCommand(posInOrder);
-    }
-    
-    public Command CreateMoveCommand(Cell targetCell)
-    {
-        return new MoveCommand(targetCell, true);
+        _commandExecuteDelay = commandExecuteDelay;
     }
 
-    public Command CreateRowMoveForwardCommand(Cell mainCell)
+    [Inject]
+    private void Construct(CommandInvoker commandInvoker)
+    {
+        _commandInvoker = commandInvoker;
+    }
+
+    public Command CreateAttackCommand(IAttacker receiver, bool isAddToOrder = true)
+    {
+        var command = new AttackCommand();
+        command.SetReceiver(receiver);
+        command.DelayInSec = _commandExecuteDelay;
+
+        if (isAddToOrder) AddComandInQueue(command);
+        return command;
+    }
+    
+    public Command CreateSupportCommand(ISupporter receiver, PosInOrderType posInOrder = PosInOrderType.First, bool isAddToOrder = true)
+    {
+        var command = new SupportCommand(posInOrder);
+        command.SetReceiver(receiver);
+        command.DelayInSec = _commandExecuteDelay;
+
+        if (isAddToOrder) AddComandInQueue(command);
+        return command;
+    }
+
+    public Command CreateAsyncSupportCommand(IAsyncSupporter receiver, PosInOrderType posInOrder = PosInOrderType.First, bool isAddToOrder = true)
+    {
+        var command = new AsyncSupportCommand(posInOrder);
+
+        command.SetReceiver(receiver);
+
+        if (isAddToOrder) AddComandInQueue(command);
+        return command;
+    }
+    
+    public Command CreateMoveCommand(IMoverToCell receiver, Cell targetCell, bool isAddToOrder = true)
+    {
+        var command = new MoveCommand(targetCell);
+        command.SetReceiver(receiver);
+
+        if (isAddToOrder) AddComandInQueue(command);
+        return command;
+    }
+
+    public Command CreateRowMoveForwardCommand(Cell mainCell, bool isAddToOrder = true)
     {
         var row = _field.GetRowByCell(mainCell, true);
-        return CreateRowMoveCommandWithoutBusyCells(row);
+        return CreateRowMoveCommandWithoutBusyCells(row, isAddToOrder);
     }
 
-    private Command CreateRowMoveCommandWithoutBusyCells(Cell[] sortedRow)
+    private Command CreateRowMoveCommandWithoutBusyCells(Cell[] sortedRow, bool isAddToOrder = true)
     {
         var queue = new Queue<MoveCommand>();
         int unbusyCells = 0;
@@ -48,23 +88,31 @@ public class CommandFactory
             {
                 var targetCell = sortedRow[i - unbusyCells];
 
-                var command = new MoveCommand(targetCell, false);
-                cell.SetCommand(command);
+                var mover = cell.GetObjectOnCell<IMoverToCell>();
+                var command = CreateMoveCommand(mover, targetCell, false) as MoveCommand;
+
                 queue.Enqueue(command);
             }
         }
 
-        return new RowMoveCommand(queue);
+        var rowMoveCommand = new RowMoveCommand(queue);
+        rowMoveCommand.DelayInSec = _commandExecuteDelay;
+        if (isAddToOrder) AddComandInQueue(rowMoveCommand);
+
+        return rowMoveCommand;
     }
 
-    public Command CreateRowMoveBackwardCommand(Cell mainCell)
+    public Command CreateRowMoveBackwardCommand(Cell mainCell, bool isAddToOrder = true)
     {
         var row = _field.GetRowByCell(mainCell, true);
 
-        return CreateRowMoveCommand(mainCell, row[row.Length - 1], row);
+        var command = CreateRowMoveCommand(mainCell, row[row.Length - 1], row, isAddToOrder);
+        command.DelayInSec = 0;
+        
+        return command;
     }
 
-    private Command CreateRowMoveCommand(Cell fromCell, Cell toCell, Cell[] sortedRow)
+    private Command CreateRowMoveCommand(Cell fromCell, Cell toCell, Cell[] sortedRow, bool isAddToOrder = true)
     {
         bool isStartMove = false;
         var queue = new Queue<MoveCommand>();
@@ -82,38 +130,38 @@ public class CommandFactory
             if (i != sortedRow.Length - 1)
             {
                 var targetCell = sortedRow[i + 1];
-                var command = new MoveCommand(targetCell, false);
-                cell.SetCommand(command);
+
+                var mover = cell.GetObjectOnCell<IMoverToCell>();
+                var command = CreateMoveCommand(mover, targetCell, false) as MoveCommand;
+
                 queue.Enqueue(command);
             }
         }
 
-        return new RowMoveCommand(queue);
+        var rowMoveCommand = new RowMoveCommand(queue);
+        rowMoveCommand.DelayInSec = _commandExecuteDelay;
+        if (isAddToOrder) AddComandInQueue(rowMoveCommand);
+
+        return rowMoveCommand;
     }
 
-    public Command CreateSwapCommand(Cell currentCell)
+    public Command CreateSwapCommand(Cell currentCell, bool isAddToOrder = true)
     {
         var nextCell = _field.FindCell(currentCell, Vector2.left, 1);
-        var commands = new MoveCommand[2] { new MoveCommand(nextCell, false), new MoveCommand(currentCell, false) };
+        var commands = new MoveCommand[2];
 
-        currentCell.SetCommand(commands[0]);
-        nextCell.SetCommand(commands[1]);
+        commands[0] = CreateMoveCommand(currentCell.GetObjectOnCell<IMoverToCell>(), nextCell, false) as MoveCommand;
+        commands[1] = CreateMoveCommand(nextCell.GetObjectOnCell<IMoverToCell>(), currentCell, false) as MoveCommand;
 
-        return new SwapCommand(commands);
+        var swapCommand = new SwapCommand(commands);
+        swapCommand.DelayInSec = _commandExecuteDelay;
+        if (isAddToOrder) AddComandInQueue(swapCommand);
+
+        return swapCommand;
     }
 
-    public Command CreateTakeDamageCommand(int damage)
+    private void AddComandInQueue(Command command)
     {
-        return new TakeDamageCommand(damage);
-    }
-
-    public Command CreateInvincibilityCommand()
-    {
-        return new InvincibilityCommand();
-    }
-
-    public Command CreateActionCommand()
-    {
-        return new ActionCommand();
+        _commandInvoker.SetCommandInQueue(command);
     }
 }

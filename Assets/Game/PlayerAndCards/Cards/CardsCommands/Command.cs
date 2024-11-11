@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Table.Scripts.Entities;
+using UnityEditor.Experimental.GraphView;
+using System.Threading.Tasks;
 
 public enum PosInOrderType { First, NoMatter, Last }
 
@@ -12,27 +14,38 @@ public abstract class Command : IPriorityObj, IComparable
     public int Priority => (int)PosInOrder;
     public PosInOrderType PosInOrder { get; protected set; }
 
-    protected bool _isAddToOrder = true;
-    public bool IsAddToOrder => _isAddToOrder;
+    private int _delayInMillisec = 0;
+    public float DelayInSec
+    { 
+        set 
+        {
+            if (value < 0) _delayInMillisec = 0;
+            else _delayInMillisec = (int)(value * 1000);
+        } 
+    }
+
+    protected bool _isBlocked;
 
     public Command()
     {
         PosInOrder = PosInOrderType.NoMatter;
-        _isAddToOrder = true;
     }
 
     public Command(PosInOrderType orderPosType)
     {
         PosInOrder = orderPosType;
-        _isAddToOrder = true;
     }
 
-    public Command(bool isAddToOrder)
+    public async virtual Task Execute()
     {
-        _isAddToOrder = isAddToOrder;
+        if (_isBlocked) return;
+        await Task.Delay(_delayInMillisec);
     }
 
-    public abstract void Execute();
+    public void BlockCommand()
+    {
+        _isBlocked = true;
+    }
 
     public int CompareTo(object obj)
     {
@@ -57,8 +70,11 @@ public class AttackCommand : Command
         _attacker = attacker;
     }
     
-    public override void Execute()
+    public async override Task Execute()
     {
+        if (_isBlocked) return;
+        await base.Execute();
+        Debug.Log(_attacker + " execute AttackCommand");
         _attacker.Attack();
     }
 }
@@ -77,9 +93,31 @@ public class SupportCommand : Command
         _supporter = supporter;
     }
 
-    public override void Execute()
+    public async override Task Execute()
     {
+        await base.Execute();
+        Debug.Log(_supporter + " execute SupportCommand");
         _supporter.Support();
+    }
+}
+
+public class AsyncSupportCommand : Command
+{
+    private IAsyncSupporter _supporter;
+
+    public AsyncSupportCommand(PosInOrderType posInOrder) : base(posInOrder)
+    {
+        CommandType = CommandType.Support;
+    }
+
+    public void SetReceiver(IAsyncSupporter supporter)
+    {
+        _supporter = supporter;
+    }
+
+    public async override Task Execute()
+    {
+        await _supporter.Support();
     }
 }
 
@@ -92,10 +130,9 @@ public class MoveCommand : Command
     private IMoverToCell _mover;
     private Cell _cell;
 
-    public MoveCommand(Cell targetCell, bool isAddToOrder)
+    public MoveCommand(Cell targetCell)
     {
         CommandType = CommandType.Move;
-        _isAddToOrder = isAddToOrder;
         _cell = targetCell;
     }
 
@@ -104,10 +141,9 @@ public class MoveCommand : Command
         _mover = mover;
     }
 
-    public override void Execute()
+    public async override Task Execute()
     {
-        Debug.Log("Execute move command");
-        
+        await base.Execute();
         IMoveToCellBh moveBh = new MoveToCellBh(); // TODO: добавить ObjectPooling 
         moveBh.SetParameters(_mover.CurrentCell, _cell);
 
@@ -129,29 +165,30 @@ public class RowMoveCommand : Command
         _moveCommands = moveCommands;
     }
 
-    public override void Execute()
+    public async override Task Execute()
     {
+        await base.Execute();
         Debug.Log("Execute row move command");
         while (_moveCommands.Count > 0)
         {
-            _moveCommands.Dequeue().Execute();
+            await _moveCommands.Dequeue().Execute();
         }
     }
 }
 
 public class SpawnFromQueueCommand : Command
 {
-    public override void Execute()
+    public async override Task Execute()
     {
-        throw new NotImplementedException();
+        await base.Execute();
     }
 }
 
 public class ReleaseToQueueCommand : Command
 {
-    public override void Execute()
+    public async override Task Execute()
     {
-        throw new NotImplementedException();
+        await base.Execute();
     }
 }
 
@@ -162,79 +199,19 @@ public class SwapCommand : Command
     public SwapCommand(MoveCommand[] moveCommands)
     {
         _moveCommands = moveCommands;
+        CommandType = CommandType.Ability;
     }
 
-    public override void Execute()
+    public async override Task Execute()
     {
+        await base.Execute();
         Debug.Log("Execute swap command");
 
         foreach (MoveCommand moveCommand in _moveCommands)
         {
-            moveCommand.Execute();
+            await moveCommand.Execute();
         }
     }
 }
 
 #endregion
-
-#region Take Damage Commands
-
-public class TakeDamageCommand : Command
-{
-    private int _damage;
-
-    private ITakerDamage _takerDamage;
-
-    public TakeDamageCommand(int damage)
-    {
-        CommandType = CommandType.TakeDamage;
-        _damage = damage;
-    }
-
-    public void SetReceiver(ITakerDamage takerDamage)
-    {
-        _takerDamage = takerDamage;
-    }
-
-    public override void Execute()
-    {
-        _takerDamage.TakeDamage(_damage);
-    }
-}
-
-#endregion
-
-public class InvincibilityCommand : Command
-{
-    private IInvincibilable _invincibilable;
-
-    public void SetReceiver(IInvincibilable invincibilable)
-    {
-        _invincibilable = invincibilable;   
-    }
-
-    public override void Execute()
-    {
-        _invincibilable.ActivateInvincibility();
-    }
-}
-
-public class ActionCommand : Command
-{
-    private IHavePriorityCommand _havePriorityCommand;
-
-    public ActionCommand() : base() 
-    {
-        _isAddToOrder = false;
-    }
-
-    public void SetReceiver(IHavePriorityCommand havePriorityCommand)
-    {
-        _havePriorityCommand = havePriorityCommand;
-    }
-
-    public override void Execute()
-    {
-        _havePriorityCommand.CreatePriorityCommand();
-    }
-}
