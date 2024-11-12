@@ -1,6 +1,5 @@
 using Game.Table.Scripts.Entities;
-using Table.Scripts.Entities;
-using Table.Scripts.EntityProperties;
+using Game.Table.Scripts.EntityProperties;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace Game.Table.Scripts.Generation
         [SerializeField] private Camera mainCamera;
         [SerializeField] private float topOffset = 0.5f;
         [SerializeField] private float rightOffset = 0.5f;
-        
+
         [ContextMenu("Generate Grid")]
         public void GenerateGrid()
         {
@@ -33,16 +32,11 @@ namespace Game.Table.Scripts.Generation
 
             var cameraHeight = 2f * mainCamera.orthographicSize;
             var cameraWidth = cameraHeight * mainCamera.aspect;
-    
             var cellSize = cellPrefab.GetComponent<Renderer>().bounds.size;
-    
-            // Стартовая позиция в правом верхнем углу
             var startPosition = new Vector2(
                 mainCamera.transform.position.x + (cameraWidth / 2) - (cellSize.x / 2) - rightOffset,
                 mainCamera.transform.position.y + (cameraHeight / 2) - (cellSize.y / 2) - topOffset
             );
-
-            var cells = new Cell[rows, columns];
 
             for (var row = 0; row < rows; row++)
             for (var column = columns - 1; column >= 0; column--)
@@ -54,12 +48,19 @@ namespace Game.Table.Scripts.Generation
 
                 var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
                 if (!cellObject.TryGetComponent(out Cell cell))
+                {
+                    Debug.LogError("Cell prefab does not have a Cell component.");
                     continue;
+                }
+                
+                if (cellObject.GetComponent<Renderer>() == null)
+                {
+                    Debug.LogError("Cell prefab does not have a Renderer component.");
+                    continue;
+                }
 
-                var cellView = new CellView(cellObject.transform, highlightColor);
-                cell.Initialize(row, column, isHidden: false, cellView);
-
-                cells[row, column] = cell;
+                var isHidden = column is 3 or 4;
+                cell.Initialize(row, column, isHidden);
 
                 Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
             }

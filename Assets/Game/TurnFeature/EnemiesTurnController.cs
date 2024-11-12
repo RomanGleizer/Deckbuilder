@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Table.Scripts.Entities;
 using UnityEngine;
 using Zenject;
 

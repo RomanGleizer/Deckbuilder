@@ -1,5 +1,5 @@
 ﻿using System;
-using Table.Scripts.Entities;
+using Game.Table.Scripts.Entities;
 using UnityEditor.Build;
 using UnityEngine;
 

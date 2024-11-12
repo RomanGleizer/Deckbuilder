@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Table.Scripts.Entities;
 using UnityEditor.Experimental.GraphView;
 using System.Threading.Tasks;
 using Zenject;
 using System.Threading;
+using Game.Table.Scripts.Entities;
 
 public enum PosInOrderType { First, NoMatter, Last }
 
