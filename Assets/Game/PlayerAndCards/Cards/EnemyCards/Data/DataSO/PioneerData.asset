@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0d50045fe0f4f46aef8ae73ddf2a0c, type: 3}
   m_Name: PioneerData
   m_EditorClassIdentifier: 
+  _type: 5
   _hp: 1
   _shield: 0
+  _speed: 10
   _attackDistance: 3

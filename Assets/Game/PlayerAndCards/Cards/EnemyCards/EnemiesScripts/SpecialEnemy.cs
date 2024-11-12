@@ -7,7 +7,7 @@
 
     public override void Init()
     {
-        _specialEnemyData = TypeChanger.ChangeObjectType<EnemyData, SpecialEnemyData>(_enemyData);
+        _specialEnemyData = TypeChanger.ChangeObjectTypeWithException<EnemyData, SpecialEnemyData>(_enemyData);
 
         _attackDistance = _specialEnemyData.AttackDistance;
 
@@ -31,8 +31,8 @@
     {
         if (_currentCell.ColumnId < _attackDistance)
         {
-            var command = _commandFactory.CreateAttackCommand();
-            _commandHandler.HandleCommand(command);
+            var command = _commandFactory.CreateAttackCommand(this);
+            command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
         }
     }
 }

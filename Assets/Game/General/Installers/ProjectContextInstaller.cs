@@ -6,6 +6,7 @@ using Zenject;
 public class ProjectContextInstaller : MonoInstaller
 {
     [SerializeField] private SubscribeService _subscribeService;
+    [SerializeField] private float _commandExecuteDelay;
 
     public override void InstallBindings()
     {
@@ -38,6 +39,6 @@ public class ProjectContextInstaller : MonoInstaller
 
     private void BindCommandFactory()
     {
-        Container.Bind<CommandFactory>().FromNew().AsSingle();
+        Container.Bind<CommandFactory>().FromNew().AsSingle().WithArguments(_commandExecuteDelay);
     }
 }

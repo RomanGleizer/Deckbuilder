@@ -21,8 +21,8 @@ public class Cavalryman : CommonEnemy, IHaveAbility
         {
             command = _commandFactory.CreateSwapCommand(CurrentCell);
         }
-        else command = _commandFactory.CreateAttackCommand();
+        else command = _commandFactory.CreateAttackCommand(this);
 
-        _commandHandler.HandleCommand(command);
+        command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
     }
 }

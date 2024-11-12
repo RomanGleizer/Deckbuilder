@@ -33,14 +33,6 @@ namespace Game.Table.Scripts.Entities
                 cell.HighlightCell(highlight);
             });
         }
-
-        public void SetCommand(Command command)
-        {
-            TraverseCells(cell =>
-            {
-                cell.SetCommand(command);
-            });
-        }
         
         public void TraverseCells(Action<Cell> action, bool includeHidden = false)
         {
@@ -51,13 +43,14 @@ namespace Game.Table.Scripts.Entities
                 {
                     var cell = _cells[row, column];
                     if (!includeHidden && cell.IsHidden) continue;
-                    action(cell);
+                    action?.Invoke(cell);
                     _traversedCells.Add(cell);
                 }
         }
         
         public Cell[] GetTraversedCells()
         {
+            TraverseCells(null);
             return _traversedCells.ToArray();
         }
 

@@ -3,6 +3,7 @@ using Table.Scripts.Entities;
 using System;
 using Game.Table.Scripts.Entities;
 using Zenject;
+using System.Threading.Tasks;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand
 {
@@ -31,12 +32,16 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
     public event Action<Cell> OnMovedToCell;
 
-    protected CommandHandler _commandHandler;
     protected CommandFactory _commandFactory;
 
     protected IInstantiator _instantiator; // for instantiate non-MonoBehaviour objs by Zenject
 
     private TurnManager _turnManager;
+
+    // Тестовые зависимости. TODO: удалить.
+    private SpriteRenderer _spriteRenderer;
+    private Color _activeColor;
+    private Color _defaultColor;
 
     [Inject]
     private void Construct(IInstantiator instantiator, CommandFactory commandFactory, TurnManager turnManager)
@@ -53,23 +58,22 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         _hp = _enemyData.Hp;
         _shield = _enemyData.Shield;
 
-        _commandHandler = _instantiator.Instantiate<CommandHandler>(new object[] { this });
-
         InitBehaviours();
 
         var subscribeHandler = _instantiator.Instantiate<SubscribeHandler>();
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
+
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>(); // TODO: удалить
+        _activeColor = Color.green; // TODO: удалить
     }
 
     public void SetStartCell(Cell cell)
     {
-        UpdateCells(cell);
-        //if (!_currentCell)
-        //{
-        //    _currentCell = cell;
-        //    UpdateCells(cell);
-        //}
-        //else throw new System.InvalidOperationException("Start cell already exist! Cannot set start cell!");
+        if (_currentCell == null)
+        {
+            UpdateCells(cell);
+        }
+        else throw new System.InvalidOperationException("Start cell already exist! Cannot set start cell!");
     }
 
     protected virtual void InitBehaviours()
@@ -79,9 +83,8 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
     private void UpdateCells(Cell cell)
     {
-        if (_currentCell) _currentCell.OnCommandSet -= SetCommand;
         _currentCell = cell;
-        _currentCell.OnCommandSet += SetCommand;
+        _currentCell.SetCardOnCell(this);
 
         OnMovedToCell?.Invoke(cell);
 
@@ -110,11 +113,6 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         }
     }
 
-    private void SetCommand(Command command)
-    {
-        _commandHandler.HandleCommand(command);
-    }
-
     public void ActivateInvincibility()
     {
         _isInvincibility = true;
@@ -129,13 +127,12 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
     protected virtual void Subscribe()
     {
-        if (_currentCell) _currentCell.OnCommandSet += SetCommand;
+        
     }
 
     protected virtual void Unsubscribe()
     {
         if (_moveBh != null && _moveBh is IMoveToCellBh moveToCellBh) moveToCellBh.OnCellRiched -= UpdateCells;
-        if (_currentCell) _currentCell.OnCommandSet -= SetCommand;
         //if (_isInvincibility) _turnManager.OnTurnFinished -= DeactivateInvincibility;
     }
 
@@ -144,10 +141,21 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         if (_turnManager.IsPlayerTurn) Death();
     }
 
+    protected void HiglightActivingEnemy() // Тестовый метод для визуального различия. TODO: потом удалить
+    {
+        _defaultColor = _spriteRenderer.color;
+        _spriteRenderer.color = _activeColor;
+    }
+
+    protected void UnhiglightActivingEnemy() // Тестовый метод для визуального различия. TODO: потом удалить
+    {
+        _spriteRenderer.color = _defaultColor;
+    }
+
     public virtual void Death()
     {
         gameObject.SetActive(false); // Change to ObjectPooling
-        _currentCell.IsBusy = false;
+        _currentCell.ReleaseCellFrom(this);
         _currentCell = null;
     }
 

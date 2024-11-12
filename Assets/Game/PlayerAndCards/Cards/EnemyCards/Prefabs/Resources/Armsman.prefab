@@ -64,6 +64,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2976562707735126222}
   m_SourcePrefab: {fileID: 100100000, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+--- !u!212 &1656657229150647578 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2311715968736385008, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+  m_PrefabInstance: {fileID: 3956831822368350954}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5903234974868638500 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7423618264951892430, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
@@ -83,3 +88,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyData: {fileID: 11400000, guid: e52d002f6bb549243b52e6d9b083f49e, type: 2}
   _currentCell: {fileID: 0}
+  _spriteRenderer: {fileID: 1656657229150647578}
+  _activeColor: {r: 0.05105853, g: 1, b: 0, a: 1}

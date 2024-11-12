@@ -6,9 +6,11 @@
     private int _attackDistance;
     private int _damage;
 
+    private Command _command;
+
     public override void Init()
     {
-        _baseEnemyData = TypeChanger.ChangeObjectType<EnemyData, CommonEnemyData>(_enemyData);
+        _baseEnemyData = TypeChanger.ChangeObjectTypeWithException<EnemyData, CommonEnemyData>(_enemyData);
         
         _attackDistance = _baseEnemyData.AttackDistance;
         _damage = _baseEnemyData.Damage;
@@ -32,10 +34,17 @@
 
     public override void CreatePriorityCommand()
     {
+        _command = null;
         if (_currentCell.ColumnId < _attackDistance)
         {
-            var command = _commandFactory.CreateAttackCommand();
-            _commandHandler.HandleCommand(command);
+            _command = _commandFactory.CreateAttackCommand(this);
+            _command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
         }
+    }
+
+    public override void Death()
+    {
+        base.Death();
+        if (_command != null) _command.BlockCommand();
     }
 }

@@ -53,12 +53,16 @@ public class LevelPlacementStack
         UpdateEditorVisual();
     }
 
-    public EntityType Pop(int rowIndex)
+    public EntityType? Pop(int rowIndex)
     {
-        var value = _mainStack[rowIndex].Pop();
-        UpdateEditorVisual();
+        if (_mainStack[rowIndex].Count > 0)
+        {
+            var value = _mainStack[rowIndex].Pop();
+            UpdateEditorVisual();
 
-        return value;
+            return value;
+        }
+        return null;
     }
 
     private void UpdateEditorVisual()

@@ -8,19 +8,23 @@ public class GiveInvincibilitySupportBh : ISupportBh
 {
     private CommandFactory _commandFactory;
 
+    private EnemyCard _enemyCard;
+
     private CellTrackerByEnemy _cellTrackerByEnemy;
     private Field _field;
 
     public GiveInvincibilitySupportBh(EnemyCard enemyCard)
     {
-        _cellTrackerByEnemy = new CellTrackerByEnemy(enemyCard);
+        _enemyCard = enemyCard;
     }
 
     [Inject]
-    private void Construct(CommandFactory commandFactory, Field field)
+    private void Construct(IInstantiator instantiator, CommandFactory commandFactory, Field field)
     {
         _commandFactory = commandFactory;
         _field = field;
+
+        _cellTrackerByEnemy = instantiator.Instantiate<CellTrackerByEnemy>(new object[] {_enemyCard});
     }
 
     public void Support()
@@ -29,8 +33,8 @@ public class GiveInvincibilitySupportBh : ISupportBh
 
         foreach (var cell in cells) 
         {
-            var command = _commandFactory.CreateInvincibilityCommand();
-            cell.SetCommand(command);
+            var invincibilable = cell.GetObjectOnCell<IInvincibilable>();
+            if (invincibilable != null) invincibilable.ActivateInvincibility();
         }
     }
 

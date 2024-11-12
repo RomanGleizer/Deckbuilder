@@ -9,16 +9,17 @@ namespace Table.Scripts.Entities
         [SerializeField] private int _rowId;
         [SerializeField] private int _columnId;
         [SerializeField] private bool _isHidden;
-        
+
         public int RowId => _rowId;
         public int ColumnId => _columnId;
         public bool IsHidden => _isHidden;
-        public bool IsBusy { get; set; }
+        public bool IsBusy { get; private set; }
 
         private CellView _cellView;
         private bool _isHighlighted;
-        
+
         public CellView CellView => _cellView;
+        private EnemyCard _enemyCard; // TODO: поменять на карты, когда появятся
 
         public event Action<Command> OnCommandSet;
 
@@ -30,7 +31,7 @@ namespace Table.Scripts.Entities
             _cellView = cellView;
             _isHighlighted = false;
         }
-        
+
         public void HighlightCell(bool highlight)
         {
             if (highlight)
@@ -39,10 +40,29 @@ namespace Table.Scripts.Entities
                 _cellView.DeactivateHighlighting();
         }
 
-
-        public void SetCommand(Command command)
+        public void SetCardOnCell(EnemyCard enemyCard)
         {
-            OnCommandSet?.Invoke(command);
+            IsBusy = true;
+            _enemyCard = enemyCard;
+        }
+
+        public void ReleaseCellFrom(EnemyCard enemyCard)
+        {
+            if (_enemyCard == enemyCard)
+            {
+                IsBusy = false;
+                _enemyCard = null;
+            }
+        }
+
+        public T GetObjectOnCell<T>()
+        {
+            var obj = TypeChanger.ChangeObjectTypeWithNull<EnemyCard, T>(_enemyCard);
+            if (obj == null)
+            {
+                Debug.Log($"Cell [{RowId},{ColumnId}] doesn't have object with type  {typeof(T)}! Return null!");
+            }
+            return obj;
         }
     }
 }

@@ -10,7 +10,7 @@ public abstract class EnemyData : ScriptableObject
     [SerializeField] private int _shield;
     [SerializeField] private int _speed = 10;
 
-    public EntityType Type;
+    public EntityType Type => _type;
 
     public int Hp => _hp;
     public int Shield => _shield;
