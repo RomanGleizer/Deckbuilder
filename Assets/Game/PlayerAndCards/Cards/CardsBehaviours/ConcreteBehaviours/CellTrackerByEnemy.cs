@@ -1,6 +1,6 @@
 ﻿using System;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
-using Table.Scripts.Entities;
 using Zenject;
 
 

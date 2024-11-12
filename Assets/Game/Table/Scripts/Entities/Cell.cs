@@ -1,8 +1,8 @@
 ﻿using System;
+using Game.Table.Scripts.EntityProperties;
 using UnityEngine;
-using Table.Scripts.EntityProperties;
 
-namespace Table.Scripts.Entities
+namespace Game.Table.Scripts.Entities
 {
     public class Cell : MonoBehaviour
     {
@@ -23,23 +23,45 @@ namespace Table.Scripts.Entities
 
         public event Action<Command> OnCommandSet;
 
-        public void Initialize(int rowId, int columnId, bool isHidden, CellView cellView)
+        public void Initialize(int rowId, int columnId, bool isHidden)
         {
             _rowId = rowId;
             _columnId = columnId;
             _isHidden = isHidden;
-            _cellView = cellView;
             _isHighlighted = false;
         }
 
         public void HighlightCell(bool highlight)
         {
+            if (_cellView == null)
+            {
+                InitializeCellView();
+            }
+
+            if (_cellView == null)
+            {
+                Debug.LogError($"Failed to initialize CellView for cell [{_rowId}, {_columnId}]");
+                return;
+            }
+
             if (highlight)
                 _cellView.ActivateHighlighting();
             else
                 _cellView.DeactivateHighlighting();
         }
 
+        private void InitializeCellView()
+        {
+            var component = GetComponent<Renderer>();
+            if (component == null)
+            {
+                Debug.LogError($"Renderer not found on Cell [{_rowId}, {_columnId}]");
+                return;
+            }
+
+            _cellView = new CellView(transform, Color.yellow);
+        }
+        
         public void SetCardOnCell(EnemyCard enemyCard)
         {
             IsBusy = true;
@@ -48,11 +70,9 @@ namespace Table.Scripts.Entities
 
         public void ReleaseCellFrom(EnemyCard enemyCard)
         {
-            if (_enemyCard == enemyCard)
-            {
-                IsBusy = false;
-                _enemyCard = null;
-            }
+            if (_enemyCard != enemyCard) return;
+            IsBusy = false;
+            _enemyCard = null;
         }
 
         public T GetObjectOnCell<T>()

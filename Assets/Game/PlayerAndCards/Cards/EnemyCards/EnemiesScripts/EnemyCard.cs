@@ -1,5 +1,4 @@
 using UnityEngine;
-using Table.Scripts.Entities;
 using System;
 using Game.Table.Scripts.Entities;
 using Zenject;

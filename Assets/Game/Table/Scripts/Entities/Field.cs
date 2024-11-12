@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Game.Table.Scripts.Generation;
-using Table.Scripts.Entities;
 using UnityEngine;
 
 namespace Game.Table.Scripts.Entities
@@ -14,6 +13,15 @@ namespace Game.Table.Scripts.Entities
         
         public int RowsCount => _cells.GetLength(0);
         public int ColumnsCount => _cells.GetLength(1);
+
+        private void Awake()
+        {
+            InitializeCellsFromScene();
+            TraverseCells(cell =>
+            {
+                cell.HighlightCell(true);
+            });
+        }
 
         public void Initialize()
         {
@@ -37,16 +45,17 @@ namespace Game.Table.Scripts.Entities
         public void TraverseCells(Action<Cell> action, bool includeHidden = false)
         {
             _traversedCells.Clear();
-            
+    
+            for (var column = 0; column < _cells.GetLength(1); column++)
             for (var row = 0; row < _cells.GetLength(0); row++)
-                for (var column = 0; column < _cells.GetLength(1); column++)
-                {
-                    var cell = _cells[row, column];
-                    if (!includeHidden && cell.IsHidden) continue;
-                    action?.Invoke(cell);
-                    _traversedCells.Add(cell);
-                }
+            {
+                var cell = _cells[row, column];
+                if (!includeHidden && cell.IsHidden) continue;
+                action?.Invoke(cell);
+                _traversedCells.Add(cell);
+            }
         }
+
         
         public Cell[] GetTraversedCells()
         {
@@ -80,7 +89,7 @@ namespace Game.Table.Scripts.Entities
 
             if (activeCells.Count == 0)
             {
-                Debug.LogError("No active cells available.");
+                Debug.Log("No active cells available.");
                 return null;
             }
 
