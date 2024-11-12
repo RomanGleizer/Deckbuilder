@@ -49,10 +49,11 @@ public class MoveToCellBh : BaseMoveBh, IMoveToCellBh
 
     public override void StartMove()
     {
-        if (_previousCell != null) _previousCell.ReleaseCell();
+        var enemyCard = _movableTransform.GetComponent<EnemyCard>();
+        if (_previousCell != null) _previousCell.ReleaseCellFrom(enemyCard);
         if (_targetCell != null && !IsReached(_targetCell))
         {
-            _targetCell.SetCardOnCell(_movableTransform.GetComponent<EnemyCard>());
+            _targetCell.SetCardOnCell(enemyCard);
             _isMoving = true;
         }
     }
@@ -94,6 +95,12 @@ public class MoveToDestinationBh : BaseMoveBh, IMoveToDestinationBh
     {
         _movableTransform.position = Vector3.MoveTowards(_movableTransform.position, _destination, _speed * Time.deltaTime);
         if (IsReached()) RichTarget();
+    }
+
+    protected override void RichTarget()
+    {
+        base.RichTarget();
+        OnPosRiched?.Invoke();
     }
 
     private bool IsReached()

@@ -46,10 +46,13 @@ namespace Table.Scripts.Entities
             _enemyCard = enemyCard;
         }
 
-        public void ReleaseCell()
+        public void ReleaseCellFrom(EnemyCard enemyCard)
         {
-            IsBusy = false;
-            _enemyCard = null;
+            if (_enemyCard == enemyCard)
+            {
+                IsBusy = false;
+                _enemyCard = null;
+            }
         }
 
         public T GetObjectOnCell<T>()
@@ -57,7 +60,7 @@ namespace Table.Scripts.Entities
             var obj = TypeChanger.ChangeObjectTypeWithNull<EnemyCard, T>(_enemyCard);
             if (obj == null)
             {
-                Debug.Log("Cell doesn't have object with type " + typeof(T) + "! Return null!");
+                Debug.Log($"Cell [{RowId},{ColumnId}] doesn't have object with type  {typeof(T)}! Return null!");
             }
             return obj;
         }

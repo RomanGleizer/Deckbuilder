@@ -38,6 +38,7 @@
         if (_currentCell.ColumnId < _attackDistance)
         {
             _command = _commandFactory.CreateAttackCommand(this);
+            _command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Threading.Tasks;
 using Zenject;
+using System.Threading;
 
 public class RepeatAttackSupportBh : IAsyncSupportBh
 {
@@ -12,9 +13,9 @@ public class RepeatAttackSupportBh : IAsyncSupportBh
         _invoker = invoker;
     }
 
-    public async Task Support()
+    public async Task Support(CancellationToken token)
     {
         Debug.Log("RepeatAttackCommands");
-        await _invoker.RepeatAttackCommands();
+        await _invoker.RepeatAttackCommands(token);
     }
 }

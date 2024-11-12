@@ -4,8 +4,33 @@ using UnityEngine;
 using Table.Scripts.Entities;
 using UnityEditor.Experimental.GraphView;
 using System.Threading.Tasks;
+using Zenject;
+using System.Threading;
 
 public enum PosInOrderType { First, NoMatter, Last }
+
+public class CommandVisual // Тестовый класс. TODO: потом удалить
+{
+    private Action ActivateAction;
+    private Action DeactivateAction;
+
+
+    public CommandVisual(Action ActivateAction, Action DeactivateAction)
+    {
+        this.ActivateAction = ActivateAction;
+        this.DeactivateAction = DeactivateAction;
+    }
+
+    public void ActivateVisual()
+    {
+        ActivateAction?.Invoke();
+    }
+
+    public void DeactivateVisual() 
+    {
+        DeactivateAction?.Invoke();
+    }
+}
 
 public abstract class Command : IPriorityObj, IComparable
 {
@@ -26,6 +51,8 @@ public abstract class Command : IPriorityObj, IComparable
 
     protected bool _isBlocked;
 
+    protected CommandVisual _visual;
+
     public Command()
     {
         PosInOrder = PosInOrderType.NoMatter;
@@ -36,10 +63,17 @@ public abstract class Command : IPriorityObj, IComparable
         PosInOrder = orderPosType;
     }
 
-    public async virtual Task Execute()
+    public void SetVisual(Action activateVisual, Action deactivateVisual)
+    {
+        _visual = new CommandVisual(activateVisual, deactivateVisual);
+    }
+
+    public async virtual Task Execute(CancellationToken token)
     {
         if (_isBlocked) return;
-        await Task.Delay(_delayInMillisec);
+        if (_visual != null) _visual.ActivateVisual();
+        await Task.Delay(_delayInMillisec, cancellationToken : token);
+        if (_visual != null && !token.IsCancellationRequested) _visual.DeactivateVisual();
     }
 
     public void BlockCommand()
@@ -70,12 +104,11 @@ public class AttackCommand : Command
         _attacker = attacker;
     }
     
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
         if (_isBlocked) return;
-        await base.Execute();
-        Debug.Log(_attacker + " execute AttackCommand");
-        _attacker.Attack();
+        await base.Execute(token);
+        if (!token.IsCancellationRequested) _attacker.Attack();
     }
 }
 
@@ -93,11 +126,10 @@ public class SupportCommand : Command
         _supporter = supporter;
     }
 
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        await base.Execute();
-        Debug.Log(_supporter + " execute SupportCommand");
-        _supporter.Support();
+        await base.Execute(token);
+        if (!token.IsCancellationRequested) _supporter.Support();
     }
 }
 
@@ -115,9 +147,11 @@ public class AsyncSupportCommand : Command
         _supporter = supporter;
     }
 
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        await _supporter.Support();
+        _visual.ActivateVisual();
+        await _supporter.Support(token);
+        if (!token.IsCancellationRequested) _visual.DeactivateVisual();
     }
 }
 
@@ -141,9 +175,11 @@ public class MoveCommand : Command
         _mover = mover;
     }
 
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        await base.Execute();
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+
         IMoveToCellBh moveBh = new MoveToCellBh(); // TODO: добавить ObjectPooling 
         moveBh.SetParameters(_mover.CurrentCell, _cell);
 
@@ -156,39 +192,74 @@ public class MoveCommand : Command
 /// </summary>
 public class RowMoveCommand : Command
 {
-    private Queue<MoveCommand> _moveCommands;
+    private Queue<Command> _commands;
 
-    public RowMoveCommand(Queue<MoveCommand> moveCommands)
+    public RowMoveCommand(Queue<Command> commands)
     {
         CommandType = CommandType.Move;
         PosInOrder = PosInOrderType.Last;
-        _moveCommands = moveCommands;
+        _commands = commands;
     }
 
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        await base.Execute();
-        Debug.Log("Execute row move command");
-        while (_moveCommands.Count > 0)
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        while (_commands.Count > 0)
         {
-            await _moveCommands.Dequeue().Execute();
+            await _commands.Dequeue().Execute(token);
+            if (token.IsCancellationRequested) return;
         }
     }
 }
 
 public class SpawnFromQueueCommand : Command
 {
-    public async override Task Execute()
+    private LevelPlacementStackController _stackController;
+    private int _rowIndex;
+
+    public SpawnFromQueueCommand(int rowIndex)
     {
-        await base.Execute();
+        _rowIndex = rowIndex;
+    }
+
+    [Inject]
+    private void Construct(LevelPlacementStackController stackController)
+    {
+        _stackController = stackController;
+    }
+
+    public async override Task Execute(CancellationToken token)
+    {
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        _stackController.SpawnEntityFromPlacementStack(_rowIndex);
     }
 }
 
 public class ReleaseToQueueCommand : Command
 {
-    public async override Task Execute()
+    private LevelPlacementStackController _stackController;
+    private int _rowIndex;
+    private EnemyCard _entity;
+
+    public ReleaseToQueueCommand(int rowIndex, EnemyCard entity)
     {
-        await base.Execute();
+        _rowIndex = rowIndex;
+        _entity = entity;
+    }
+
+    [Inject]
+    private void Construct(LevelPlacementStackController stackController)
+    {
+        _stackController = stackController;
+    }
+
+    public async override Task Execute(CancellationToken token)
+    {
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        _stackController.SetEntityToPlacementStack(_rowIndex, _entity);
     }
 }
 
@@ -200,16 +271,18 @@ public class SwapCommand : Command
     {
         _moveCommands = moveCommands;
         CommandType = CommandType.Ability;
+        PosInOrder = PosInOrderType.NoMatter;
     }
 
-    public async override Task Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        await base.Execute();
-        Debug.Log("Execute swap command");
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
 
         foreach (MoveCommand moveCommand in _moveCommands)
         {
-            await moveCommand.Execute();
+            await moveCommand.Execute(token);
+            if (token.IsCancellationRequested) return;
         }
     }
 }

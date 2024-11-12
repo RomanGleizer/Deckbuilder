@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CommandInvoker
@@ -15,18 +17,18 @@ public class CommandInvoker
         _commands.InsertByPriority(command);
     }
 
-    public void SetCommandAndExecute(Command command)
+    public async Task SetCommandAndExecute(Command command, CancellationToken token)
     {
-        _ = command.Execute();
+        _ = command.Execute(token);
     }
 
-    public async Task ExecuteCommandsQueue()
+    public async Task ExecuteCommandsQueue(CancellationToken token)
     {
-        await _commands.ExecuteCommandsQueue();
+        await _commands.ExecuteCommandsQueue(token);
     }
 
-    public async Task RepeatAttackCommands()
+    public async Task RepeatAttackCommands(CancellationToken token)
     {
-        await _commands.RepeatAttackCommands();
+        await _commands.RepeatAttackCommands(token);
     }
 }

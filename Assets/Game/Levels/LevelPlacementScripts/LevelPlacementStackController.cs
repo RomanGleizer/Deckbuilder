@@ -40,11 +40,19 @@ public class LevelPlacementStackController
     public EnemyCard SpawnEntityFromPlacementStack(int rowIndex)
     {
         var entityType = _placementStack.Pop(rowIndex);
-        var entity = _entitySpawnSystem.SpawnEntity(entityType);
+
+        if (entityType == null)
+        {
+            Debug.Log("Stack elements is finished");
+            return null;
+        }
+
+        var cell = _field.FindFirstFreeCellFromRow(rowIndex);
+        EnemyCard entity = null;
+        if (cell != null) entity = _entitySpawnSystem.SpawnEntity(entityType.Value);
 
         if (entity != null)
         {
-            var cell = _field.FindFirstFreeCellFromRow(rowIndex);
             MoveEntityToSpawnCell(cell, entity);
         }
 
@@ -71,13 +79,14 @@ public class LevelPlacementStackController
 
     private void MoveEntityToDefaultPoint(EnemyCard entity)
     {
-        _moveToSpawnBh.SetParameters(new Vector2(_spawnPointX, entity.CurrentCell.transform.position.y));
+        _destroyingEnemy = entity;
         entity.StartMove(_moveToSpawnBh);
+        _moveToSpawnBh.SetParameters(new Vector2(_spawnPointX, entity.CurrentCell.transform.position.y));
     }
 
     private void DestroyEntity()
     {
-        MonoBehaviour.Destroy(_destroyingEnemy); // TODO: добавить ObjectPooling
+        MonoBehaviour.Destroy(_destroyingEnemy.gameObject); // TODO: добавить ObjectPooling
     }
 
     private void Subscribe()

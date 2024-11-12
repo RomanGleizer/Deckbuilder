@@ -13,9 +13,12 @@ public class CommandFactory
 
     private float _commandExecuteDelay;
 
-    public void SetField(Field field)
+    private IInstantiator _instantiator;
+
+    public void SetParams(Field field, IInstantiator instantiator)
     {
         _field = field;
+        _instantiator = instantiator;
     }
 
     public CommandFactory(float commandExecuteDelay)
@@ -71,13 +74,22 @@ public class CommandFactory
     public Command CreateRowMoveForwardCommand(Cell mainCell, bool isAddToOrder = true)
     {
         var row = _field.GetRowByCell(mainCell, true);
-        return CreateRowMoveCommandWithoutBusyCells(row, isAddToOrder);
+
+        var queue = CreateMoveRowCommandsQueueWithoutBusyCells(row, out int unbusyCells, isAddToOrder);
+
+        for (int i = 0; i < unbusyCells; i++)
+        {
+            queue.Enqueue(_instantiator.Instantiate<SpawnFromQueueCommand>(new object[] { mainCell.RowId }));
+        }
+
+        return CreateRowMoveCommand(queue);
     }
 
-    private Command CreateRowMoveCommandWithoutBusyCells(Cell[] sortedRow, bool isAddToOrder = true)
+
+    private Queue<Command> CreateMoveRowCommandsQueueWithoutBusyCells(Cell[] sortedRow, out int unbusyCells, bool isAddToOrder = true)
     {
-        var queue = new Queue<MoveCommand>();
-        int unbusyCells = 0;
+        var queue = new Queue<Command>();
+        unbusyCells = 0;
 
         for (int i = 0; i < sortedRow.Length; ++i)
         {
@@ -95,27 +107,32 @@ public class CommandFactory
             }
         }
 
-        var rowMoveCommand = new RowMoveCommand(queue);
-        rowMoveCommand.DelayInSec = _commandExecuteDelay;
-        if (isAddToOrder) AddComandInQueue(rowMoveCommand);
-
-        return rowMoveCommand;
+        return queue;
     }
 
     public Command CreateRowMoveBackwardCommand(Cell mainCell, bool isAddToOrder = true)
     {
         var row = _field.GetRowByCell(mainCell, true);
 
-        var command = CreateRowMoveCommand(mainCell, row[row.Length - 1], row, isAddToOrder);
+        var queue = CreateMoveRowCommandsQueue(mainCell, row[row.Length - 1], row, isAddToOrder);
+
+        var entity = row[row.Length - 1].GetObjectOnCell<EnemyCard>();
+        Debug.Log(entity);
+        if (entity != null)
+        {
+            queue.Enqueue(_instantiator.Instantiate<ReleaseToQueueCommand>(new object[] { mainCell.RowId, entity}));
+        }
+
+        var command = CreateRowMoveCommand(queue, false);
         command.DelayInSec = 0;
         
         return command;
     }
 
-    private Command CreateRowMoveCommand(Cell fromCell, Cell toCell, Cell[] sortedRow, bool isAddToOrder = true)
+    private Queue<Command> CreateMoveRowCommandsQueue(Cell fromCell, Cell toCell, Cell[] sortedRow, bool isAddToOrder = true)
     {
         bool isStartMove = false;
-        var queue = new Queue<MoveCommand>();
+        var queue = new Queue<Command>();
 
         for (int i = 0; i < sortedRow.Length; ++i)
         {
@@ -138,6 +155,11 @@ public class CommandFactory
             }
         }
 
+        return queue;
+    }
+
+    private Command CreateRowMoveCommand(Queue<Command> queue, bool isAddToOrder = true)
+    {
         var rowMoveCommand = new RowMoveCommand(queue);
         rowMoveCommand.DelayInSec = _commandExecuteDelay;
         if (isAddToOrder) AddComandInQueue(rowMoveCommand);

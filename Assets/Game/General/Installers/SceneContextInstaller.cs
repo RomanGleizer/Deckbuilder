@@ -59,7 +59,7 @@ public class SceneContextInstaller : MonoInstaller
     private void BindField()
     {
         BindService(_field);
-        _commandFactory.SetField(_field);
+        _commandFactory.SetParams(_field, Container);
         _field.Initialize();
     }
 

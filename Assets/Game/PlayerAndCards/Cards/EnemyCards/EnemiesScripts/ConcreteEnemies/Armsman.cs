@@ -10,6 +10,7 @@ public class Armsman : SupporterEnemy
 
     public override void CreatePriorityCommand()
     {
-        _commandFactory.CreateSupportCommand(this);
+        var command = _commandFactory.CreateSupportCommand(this);
+        command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
     }
 }

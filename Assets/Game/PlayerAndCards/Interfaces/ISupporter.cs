@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 public interface ISupporter
 {
@@ -7,5 +8,5 @@ public interface ISupporter
 
 public interface IAsyncSupporter
 {
-    public Task Support();
+    public Task Support(CancellationToken token);
 }

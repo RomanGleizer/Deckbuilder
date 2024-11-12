@@ -3,6 +3,7 @@ using Table.Scripts.Entities;
 using System;
 using Game.Table.Scripts.Entities;
 using Zenject;
+using System.Threading.Tasks;
 
 public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand
 {
@@ -37,6 +38,11 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
     private TurnManager _turnManager;
 
+    // Тестовые зависимости. TODO: удалить.
+    private SpriteRenderer _spriteRenderer;
+    private Color _activeColor;
+    private Color _defaultColor;
+
     [Inject]
     private void Construct(IInstantiator instantiator, CommandFactory commandFactory, TurnManager turnManager)
     {
@@ -56,14 +62,15 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
 
         var subscribeHandler = _instantiator.Instantiate<SubscribeHandler>();
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
+
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>(); // TODO: удалить
+        _activeColor = Color.green; // TODO: удалить
     }
 
     public void SetStartCell(Cell cell)
     {
         if (_currentCell == null)
         {
-            Debug.Log("SetStartCell");
-            _currentCell = cell;
             UpdateCells(cell);
         }
         else throw new System.InvalidOperationException("Start cell already exist! Cannot set start cell!");
@@ -134,10 +141,21 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         if (_turnManager.IsPlayerTurn) Death();
     }
 
+    protected void HiglightActivingEnemy() // Тестовый метод для визуального различия. TODO: потом удалить
+    {
+        _defaultColor = _spriteRenderer.color;
+        _spriteRenderer.color = _activeColor;
+    }
+
+    protected void UnhiglightActivingEnemy() // Тестовый метод для визуального различия. TODO: потом удалить
+    {
+        _spriteRenderer.color = _defaultColor;
+    }
+
     public virtual void Death()
     {
         gameObject.SetActive(false); // Change to ObjectPooling
-        _currentCell.ReleaseCell();
+        _currentCell.ReleaseCellFrom(this);
         _currentCell = null;
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 public class Commander : EnemyCard, IAsyncSupporter
 {
@@ -20,11 +21,12 @@ public class Commander : EnemyCard, IAsyncSupporter
 
     public override void CreatePriorityCommand()
     {
-        _commandFactory.CreateAsyncSupportCommand(this, PosInOrderType.Last);
+        var command = _commandFactory.CreateAsyncSupportCommand(this, PosInOrderType.Last);
+        command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
     }
 
-    public async Task Support()
+    public async Task Support(CancellationToken token)
     {
-        await _supportBh.Support();
+        await _supportBh.Support(token);
     }
 }
