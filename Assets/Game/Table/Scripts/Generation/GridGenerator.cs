@@ -1,5 +1,4 @@
 using Game.Table.Scripts.Entities;
-using Game.Table.Scripts.EntityProperties;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +9,8 @@ namespace Game.Table.Scripts.Generation
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private int rows = 3;
         [SerializeField] private int columns = 5;
-        [SerializeField] private float spacing;
+        [SerializeField] private float horizontalSpacing = 0.1f;
+        [SerializeField] private float verticalSpacing = 0.1f;
         [SerializeField] private Color highlightColor = Color.yellow;
         [SerializeField] private Field field;
         [SerializeField] private Camera mainCamera;
@@ -42,8 +42,8 @@ namespace Game.Table.Scripts.Generation
             for (var column = columns - 1; column >= 0; column--)
             {
                 var position = new Vector2(
-                    startPosition.x - (columns - 1 - column) * (cellSize.x + spacing),
-                    startPosition.y - row * (cellSize.y + spacing)
+                    startPosition.x - (columns - 1 - column) * (cellSize.x + horizontalSpacing),
+                    startPosition.y - row * (cellSize.y + verticalSpacing)
                 );
 
                 var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
@@ -65,6 +65,5 @@ namespace Game.Table.Scripts.Generation
                 Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
             }
         }
-
     }
 }
