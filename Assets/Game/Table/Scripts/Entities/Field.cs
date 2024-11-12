@@ -14,6 +14,15 @@ namespace Game.Table.Scripts.Entities
         public int RowsCount => _cells.GetLength(0);
         public int ColumnsCount => _cells.GetLength(1);
 
+        private void Awake()
+        {
+            InitializeCellsFromScene();
+            TraverseCells(cell =>
+            {
+                cell.HighlightCell(true);
+            });
+        }
+
         public void Initialize()
         {
             if (gridGenerator == null)
