@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Game.Table.Scripts.Entities;
 using UnityEngine;
@@ -70,20 +71,19 @@ public class CommandFactory
         return command;
     }
 
-    public Command CreateRowMoveForwardCommand(Cell mainCell, bool isAddToOrder = true)
+    public Command CreateRowMoveForwardCommand(int rowIndex, bool isAddToOrder = true)
     {
-        var row = _field.GetRowByCell(mainCell, true);
+        var row = _field.GetRowByIndex(rowIndex, true);
 
         var queue = CreateMoveRowCommandsQueueWithoutBusyCells(row, out int unbusyCells, isAddToOrder);
 
         for (int i = 0; i < unbusyCells; i++)
         {
-            queue.Enqueue(_instantiator.Instantiate<SpawnFromQueueCommand>(new object[] { mainCell.RowId }));
+            queue.Enqueue(_instantiator.Instantiate<SpawnFromQueueCommand>(new object[] { rowIndex }));
         }
 
         return CreateRowMoveCommand(queue);
     }
-
 
     private Queue<Command> CreateMoveRowCommandsQueueWithoutBusyCells(Cell[] sortedRow, out int unbusyCells, bool isAddToOrder = true)
     {
