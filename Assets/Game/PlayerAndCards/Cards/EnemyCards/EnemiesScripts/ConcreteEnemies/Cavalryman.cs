@@ -14,7 +14,7 @@ public class Cavalryman : CommonEnemy, IHaveAbility
         _ability.Use();
     }
 
-    public override void CreatePriorityCommand()
+    public override Command CreatePriorityCommand()
     {
         Command command;
         if (CurrentCell.ColumnId > 0)
@@ -24,5 +24,6 @@ public class Cavalryman : CommonEnemy, IHaveAbility
         else command = _commandFactory.CreateAttackCommand(this);
 
         command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
+        return command;
     }
 }

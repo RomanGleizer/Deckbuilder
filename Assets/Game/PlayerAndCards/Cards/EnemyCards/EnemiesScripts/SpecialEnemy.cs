@@ -27,12 +27,15 @@
         }
     }
 
-    public override void CreatePriorityCommand()
+    public override Command CreatePriorityCommand()
     {
+        Command command = null;
         if (_currentCell.ColumnId < _attackDistance)
         {
-            var command = _commandFactory.CreateAttackCommand(this);
+            command = _commandFactory.CreateAttackCommand(this);
             command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
         }
+
+        return command; 
     }
 }

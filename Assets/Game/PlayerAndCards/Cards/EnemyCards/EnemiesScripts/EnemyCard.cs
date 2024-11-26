@@ -158,5 +158,5 @@ public abstract class EnemyCard : MonoBehaviour, ITakerDamage, IMoverToCell, IIn
         _currentCell = null;
     }
 
-    public abstract void CreatePriorityCommand();
+    public abstract Command CreatePriorityCommand();
 }

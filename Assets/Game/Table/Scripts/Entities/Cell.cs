@@ -21,7 +21,7 @@ namespace Game.Table.Scripts.Entities
         public CellView CellView => _cellView;
         private EnemyCard _enemyCard; // TODO: поменять на карты, когда появятся
 
-        public event Action<Command> OnCommandSet;
+        public event Action<Cell> OnObjDestroyed;
 
         public void Initialize(int rowId, int columnId, bool isHidden)
         {
@@ -71,6 +71,8 @@ namespace Game.Table.Scripts.Entities
         public void ReleaseCellFrom(EnemyCard enemyCard)
         {
             if (_enemyCard != enemyCard) return;
+            if (!_enemyCard.gameObject.activeInHierarchy) OnObjDestroyed?.Invoke(this);
+
             IsBusy = false;
             _enemyCard = null;
         }

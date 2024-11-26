@@ -19,10 +19,11 @@ public class Commander : EnemyCard, IAsyncSupporter
         _supportBh = _instantiator.Instantiate<RepeatAttackSupportBh>();
     }
 
-    public override void CreatePriorityCommand()
+    public override Command CreatePriorityCommand()
     {
         var command = _commandFactory.CreateAsyncSupportCommand(this, PosInOrderType.Last);
         command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
+        return command;
     }
 
     public async Task Support(CancellationToken token)

@@ -32,7 +32,7 @@
         }
     }
 
-    public override void CreatePriorityCommand()
+    public override Command CreatePriorityCommand()
     {
         _command = null;
         if (_currentCell.ColumnId < _attackDistance)
@@ -40,6 +40,8 @@
             _command = _commandFactory.CreateAttackCommand(this);
             _command.SetVisual(HiglightActivingEnemy, UnhiglightActivingEnemy);
         }
+
+        return _command;
     }
 
     public override void Death()

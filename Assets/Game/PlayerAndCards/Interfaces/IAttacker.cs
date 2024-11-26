@@ -5,5 +5,5 @@
 
 public interface IHavePriorityCommand
 {
-    public void CreatePriorityCommand();
+    public Command CreatePriorityCommand();
 }

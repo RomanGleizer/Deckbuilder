@@ -52,6 +52,7 @@ public abstract class Command : IPriorityObj, IComparable
     protected bool _isBlocked;
 
     protected CommandVisual _visual;
+    protected ValueCancelToken _valueCancelToken;
 
     public Command()
     {
@@ -68,9 +69,14 @@ public abstract class Command : IPriorityObj, IComparable
         _visual = new CommandVisual(activateVisual, deactivateVisual);
     }
 
+    public void SetValueCancellationToken(ValueCancelToken valueCancelToken)
+    {
+        _valueCancelToken = valueCancelToken;
+    }
+
     public async virtual Task Execute(CancellationToken token)
     {
-        if (_isBlocked) return;
+        if (_isBlocked || (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest)) return;
         if (_visual != null) _visual.ActivateVisual();
         await Task.Delay(_delayInMillisec, cancellationToken : token);
         if (_visual != null && !token.IsCancellationRequested) _visual.DeactivateVisual();
@@ -106,7 +112,7 @@ public class AttackCommand : Command
     
     public async override Task Execute(CancellationToken token)
     {
-        if (_isBlocked) return;
+        if (_isBlocked || (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest)) return;
         await base.Execute(token);
         if (!token.IsCancellationRequested) _attacker.Attack();
     }
@@ -128,6 +134,7 @@ public class SupportCommand : Command
 
     public async override Task Execute(CancellationToken token)
     {
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
         await base.Execute(token);
         if (!token.IsCancellationRequested) _supporter.Support();
     }
@@ -149,6 +156,7 @@ public class AsyncSupportCommand : Command
 
     public async override Task Execute(CancellationToken token)
     {
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
         _visual.ActivateVisual();
         await _supporter.Support(token);
         if (!token.IsCancellationRequested) _visual.DeactivateVisual();
@@ -177,6 +185,7 @@ public class MoveCommand : Command
 
     public async override Task Execute(CancellationToken token)
     {
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
         await base.Execute(token);
         if (token.IsCancellationRequested) return;
 
@@ -276,6 +285,8 @@ public class SwapCommand : Command
 
     public async override Task Execute(CancellationToken token)
     {
+        Debug.Log(_valueCancelToken.IsCancellationRequest);
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
         await base.Execute(token);
         if (token.IsCancellationRequested) return;
 
