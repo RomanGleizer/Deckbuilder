@@ -6,7 +6,7 @@ public class DeckOpenButton : CustomButton
 {
     protected override void OnClick()
     {
-        //здесть бует открытие колоды
+        //здесь будет открытие колоды
         throw new System.NotImplementedException();
     }
 }
