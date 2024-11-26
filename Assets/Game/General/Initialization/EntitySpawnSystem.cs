@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Table.Scripts.Entities;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
 using Zenject;
 

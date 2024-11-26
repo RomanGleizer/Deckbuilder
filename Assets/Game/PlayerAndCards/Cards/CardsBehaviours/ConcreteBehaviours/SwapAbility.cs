@@ -1,6 +1,5 @@
 ﻿using Game.Table.Scripts.Entities;
 using UnityEngine;
-using Table.Scripts.Entities;
 using Zenject;
 
 public class SwapAbility : IAbility

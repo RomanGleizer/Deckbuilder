@@ -1,6 +1,4 @@
 using Game.Table.Scripts.Entities;
-using Table.Scripts.Entities;
-using Table.Scripts.EntityProperties;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,13 +9,14 @@ namespace Game.Table.Scripts.Generation
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private int rows = 3;
         [SerializeField] private int columns = 5;
-        [SerializeField] private float spacing;
+        [SerializeField] private float horizontalSpacing = 0.1f;
+        [SerializeField] private float verticalSpacing = 0.1f;
         [SerializeField] private Color highlightColor = Color.yellow;
         [SerializeField] private Field field;
         [SerializeField] private Camera mainCamera;
         [SerializeField] private float topOffset = 0.5f;
         [SerializeField] private float rightOffset = 0.5f;
-        
+
         [ContextMenu("Generate Grid")]
         public void GenerateGrid()
         {
@@ -33,37 +32,38 @@ namespace Game.Table.Scripts.Generation
 
             var cameraHeight = 2f * mainCamera.orthographicSize;
             var cameraWidth = cameraHeight * mainCamera.aspect;
-    
             var cellSize = cellPrefab.GetComponent<Renderer>().bounds.size;
-    
-            // Стартовая позиция в правом верхнем углу
             var startPosition = new Vector2(
                 mainCamera.transform.position.x + (cameraWidth / 2) - (cellSize.x / 2) - rightOffset,
                 mainCamera.transform.position.y + (cameraHeight / 2) - (cellSize.y / 2) - topOffset
             );
 
-            var cells = new Cell[rows, columns];
-
             for (var row = 0; row < rows; row++)
             for (var column = columns - 1; column >= 0; column--)
             {
                 var position = new Vector2(
-                    startPosition.x - (columns - 1 - column) * (cellSize.x + spacing),
-                    startPosition.y - row * (cellSize.y + spacing)
+                    startPosition.x - (columns - 1 - column) * (cellSize.x + horizontalSpacing),
+                    startPosition.y - row * (cellSize.y + verticalSpacing)
                 );
 
                 var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
                 if (!cellObject.TryGetComponent(out Cell cell))
+                {
+                    Debug.LogError("Cell prefab does not have a Cell component.");
                     continue;
+                }
+                
+                if (cellObject.GetComponent<Renderer>() == null)
+                {
+                    Debug.LogError("Cell prefab does not have a Renderer component.");
+                    continue;
+                }
 
-                var cellView = new CellView(cellObject.transform, highlightColor);
-                cell.Initialize(row, column, isHidden: false, cellView);
-
-                cells[row, column] = cell;
+                var isHidden = column is 3 or 4;
+                cell.Initialize(row, column, isHidden);
 
                 Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
             }
         }
-
     }
 }
