@@ -8,9 +8,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2311715968736385008, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311715968736385008, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8078432
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311715968736385008, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.86666673
+      objectReference: {fileID: 0}
     - target: {fileID: 2314682011391051083, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_text
       value: "\u041F\u0438\u043E\u043D\u0435\u0440"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.x
+      value: 1.2475
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1340851045, guid: b2ab4e5a208af0c4db304a210e2565b1, type: 3}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4656637272387828382, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_LocalPosition.x

@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0449\u0438\u043A"
       objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.x
+      value: 1.2475
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1593656065, guid: 2436b2e03a852b546b6e9a2573abe832, type: 3}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4656637272387828382, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -55,6 +71,10 @@ PrefabInstance:
     - target: {fileID: 7423618264951892430, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_Name
       value: Drummer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081932519091562319, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
