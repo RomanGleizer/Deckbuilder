@@ -37,5 +37,7 @@ public enum EntityType
     Snare,
     Sniper,
     Spy,
-    Swordsman
+    Swordsman,
+    Rock,
+    Chest
 }

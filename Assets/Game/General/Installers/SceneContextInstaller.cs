@@ -1,7 +1,6 @@
 using System;
 using Game.PlayerAndCards.PlayerScripts;
 using Game.Table.Scripts.Entities;
-using Table.Scripts.Entities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -59,7 +58,7 @@ public class SceneContextInstaller : MonoInstaller
     private void BindField()
     {
         BindService(_field);
-        _commandFactory.SetField(_field);
+        _commandFactory.SetParams(_field, Container);
         _field.Initialize();
     }
 

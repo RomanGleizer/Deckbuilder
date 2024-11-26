@@ -75,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _subscribeService: {fileID: 8466044356708294222, guid: af80e4e7195993d47b8c3f18c11a2744, type: 3}
+  _commandExecuteDelay: 1

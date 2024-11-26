@@ -1,9 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Table.Scripts.Entities;
+using UnityEditor.Experimental.GraphView;
+using System.Threading.Tasks;
+using Zenject;
+using System.Threading;
+using Game.Table.Scripts.Entities;
 
 public enum PosInOrderType { First, NoMatter, Last }
+
+public class CommandVisual // Тестовый класс. TODO: потом удалить
+{
+    private Action ActivateAction;
+    private Action DeactivateAction;
+
+
+    public CommandVisual(Action ActivateAction, Action DeactivateAction)
+    {
+        this.ActivateAction = ActivateAction;
+        this.DeactivateAction = DeactivateAction;
+    }
+
+    public void ActivateVisual()
+    {
+        ActivateAction?.Invoke();
+    }
+
+    public void DeactivateVisual() 
+    {
+        DeactivateAction?.Invoke();
+    }
+}
 
 public abstract class Command : IPriorityObj, IComparable
 {
@@ -12,27 +39,53 @@ public abstract class Command : IPriorityObj, IComparable
     public int Priority => (int)PosInOrder;
     public PosInOrderType PosInOrder { get; protected set; }
 
-    protected bool _isAddToOrder = true;
-    public bool IsAddToOrder => _isAddToOrder;
+    private int _delayInMillisec = 0;
+    public float DelayInSec
+    { 
+        set 
+        {
+            if (value < 0) _delayInMillisec = 0;
+            else _delayInMillisec = (int)(value * 1000);
+        } 
+    }
+
+    protected bool _isBlocked;
+
+    protected CommandVisual _visual;
+    protected ValueCancelToken _valueCancelToken;
 
     public Command()
     {
         PosInOrder = PosInOrderType.NoMatter;
-        _isAddToOrder = true;
     }
 
     public Command(PosInOrderType orderPosType)
     {
         PosInOrder = orderPosType;
-        _isAddToOrder = true;
     }
 
-    public Command(bool isAddToOrder)
+    public void SetVisual(Action activateVisual, Action deactivateVisual)
     {
-        _isAddToOrder = isAddToOrder;
+        _visual = new CommandVisual(activateVisual, deactivateVisual);
     }
 
-    public abstract void Execute();
+    public void SetValueCancellationToken(ValueCancelToken valueCancelToken)
+    {
+        _valueCancelToken = valueCancelToken;
+    }
+
+    public async virtual Task Execute(CancellationToken token)
+    {
+        if (_isBlocked || (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest)) return;
+        if (_visual != null) _visual.ActivateVisual();
+        await Task.Delay(_delayInMillisec, cancellationToken : token);
+        if (_visual != null && !token.IsCancellationRequested) _visual.DeactivateVisual();
+    }
+
+    public void BlockCommand()
+    {
+        _isBlocked = true;
+    }
 
     public int CompareTo(object obj)
     {
@@ -57,9 +110,11 @@ public class AttackCommand : Command
         _attacker = attacker;
     }
     
-    public override void Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        _attacker.Attack();
+        if (_isBlocked || (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest)) return;
+        await base.Execute(token);
+        if (!token.IsCancellationRequested) _attacker.Attack();
     }
 }
 
@@ -77,9 +132,34 @@ public class SupportCommand : Command
         _supporter = supporter;
     }
 
-    public override void Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        _supporter.Support();
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
+        await base.Execute(token);
+        if (!token.IsCancellationRequested) _supporter.Support();
+    }
+}
+
+public class AsyncSupportCommand : Command
+{
+    private IAsyncSupporter _supporter;
+
+    public AsyncSupportCommand(PosInOrderType posInOrder) : base(posInOrder)
+    {
+        CommandType = CommandType.Support;
+    }
+
+    public void SetReceiver(IAsyncSupporter supporter)
+    {
+        _supporter = supporter;
+    }
+
+    public async override Task Execute(CancellationToken token)
+    {
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
+        _visual.ActivateVisual();
+        await _supporter.Support(token);
+        if (!token.IsCancellationRequested) _visual.DeactivateVisual();
     }
 }
 
@@ -92,10 +172,9 @@ public class MoveCommand : Command
     private IMoverToCell _mover;
     private Cell _cell;
 
-    public MoveCommand(Cell targetCell, bool isAddToOrder)
+    public MoveCommand(Cell targetCell)
     {
         CommandType = CommandType.Move;
-        _isAddToOrder = isAddToOrder;
         _cell = targetCell;
     }
 
@@ -104,10 +183,12 @@ public class MoveCommand : Command
         _mover = mover;
     }
 
-    public override void Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        Debug.Log("Execute move command");
-        
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+
         IMoveToCellBh moveBh = new MoveToCellBh(); // TODO: добавить ObjectPooling 
         moveBh.SetParameters(_mover.CurrentCell, _cell);
 
@@ -120,38 +201,74 @@ public class MoveCommand : Command
 /// </summary>
 public class RowMoveCommand : Command
 {
-    private Queue<MoveCommand> _moveCommands;
+    private Queue<Command> _commands;
 
-    public RowMoveCommand(Queue<MoveCommand> moveCommands)
+    public RowMoveCommand(Queue<Command> commands)
     {
         CommandType = CommandType.Move;
         PosInOrder = PosInOrderType.Last;
-        _moveCommands = moveCommands;
+        _commands = commands;
     }
 
-    public override void Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        Debug.Log("Execute row move command");
-        while (_moveCommands.Count > 0)
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        while (_commands.Count > 0)
         {
-            _moveCommands.Dequeue().Execute();
+            await _commands.Dequeue().Execute(token);
+            if (token.IsCancellationRequested) return;
         }
     }
 }
 
 public class SpawnFromQueueCommand : Command
 {
-    public override void Execute()
+    private LevelPlacementStackController _stackController;
+    private int _rowIndex;
+
+    public SpawnFromQueueCommand(int rowIndex)
     {
-        throw new NotImplementedException();
+        _rowIndex = rowIndex;
+    }
+
+    [Inject]
+    private void Construct(LevelPlacementStackController stackController)
+    {
+        _stackController = stackController;
+    }
+
+    public async override Task Execute(CancellationToken token)
+    {
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        _stackController.SpawnEntityFromPlacementStack(_rowIndex);
     }
 }
 
 public class ReleaseToQueueCommand : Command
 {
-    public override void Execute()
+    private LevelPlacementStackController _stackController;
+    private int _rowIndex;
+    private EnemyCard _entity;
+
+    public ReleaseToQueueCommand(int rowIndex, EnemyCard entity)
     {
-        throw new NotImplementedException();
+        _rowIndex = rowIndex;
+        _entity = entity;
+    }
+
+    [Inject]
+    private void Construct(LevelPlacementStackController stackController)
+    {
+        _stackController = stackController;
+    }
+
+    public async override Task Execute(CancellationToken token)
+    {
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        _stackController.SetEntityToPlacementStack(_rowIndex, _entity);
     }
 }
 
@@ -162,79 +279,23 @@ public class SwapCommand : Command
     public SwapCommand(MoveCommand[] moveCommands)
     {
         _moveCommands = moveCommands;
+        CommandType = CommandType.Ability;
+        PosInOrder = PosInOrderType.NoMatter;
     }
 
-    public override void Execute()
+    public async override Task Execute(CancellationToken token)
     {
-        Debug.Log("Execute swap command");
+        Debug.Log(_valueCancelToken.IsCancellationRequest);
+        if (_valueCancelToken != null && _valueCancelToken.IsCancellationRequest) return;
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
 
         foreach (MoveCommand moveCommand in _moveCommands)
         {
-            moveCommand.Execute();
+            await moveCommand.Execute(token);
+            if (token.IsCancellationRequested) return;
         }
     }
 }
 
 #endregion
-
-#region Take Damage Commands
-
-public class TakeDamageCommand : Command
-{
-    private int _damage;
-
-    private ITakerDamage _takerDamage;
-
-    public TakeDamageCommand(int damage)
-    {
-        CommandType = CommandType.TakeDamage;
-        _damage = damage;
-    }
-
-    public void SetReceiver(ITakerDamage takerDamage)
-    {
-        _takerDamage = takerDamage;
-    }
-
-    public override void Execute()
-    {
-        _takerDamage.TakeDamage(_damage);
-    }
-}
-
-#endregion
-
-public class InvincibilityCommand : Command
-{
-    private IInvincibilable _invincibilable;
-
-    public void SetReceiver(IInvincibilable invincibilable)
-    {
-        _invincibilable = invincibilable;   
-    }
-
-    public override void Execute()
-    {
-        _invincibilable.ActivateInvincibility();
-    }
-}
-
-public class ActionCommand : Command
-{
-    private IHavePriorityCommand _havePriorityCommand;
-
-    public ActionCommand() : base() 
-    {
-        _isAddToOrder = false;
-    }
-
-    public void SetReceiver(IHavePriorityCommand havePriorityCommand)
-    {
-        _havePriorityCommand = havePriorityCommand;
-    }
-
-    public override void Execute()
-    {
-        _havePriorityCommand.CreatePriorityCommand();
-    }
-}

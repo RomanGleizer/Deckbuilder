@@ -1,36 +1,35 @@
 ﻿using Game.Table.Scripts.Entities;
 using UnityEngine;
-using Table.Scripts.Entities;
 using Zenject;
 
 public class SwapAbility : IAbility
 {
     private CommandFactory _commandFactory;
-    private CommandInvoker _commandInvoker;
 
     private Field _field;
 
     private CellTrackerByEnemy _cellTracker;
+    private EnemyCard _enemyCard;
 
     public bool IsCanUse => _cellTracker.GetCurrentCell().ColumnId > 0;
 
     [Inject]
-    private void Construct(CommandFactory commandFactory, Field field, CommandInvoker commandInvoker)
+    private void Construct(IInstantiator instantiator, CommandFactory commandFactory, Field field)
     {
         _commandFactory = commandFactory;
-        _commandInvoker = commandInvoker;
         _field = field;
+
+        _cellTracker = instantiator.Instantiate<CellTrackerByEnemy>(new object[] { _enemyCard });
     }
 
     public SwapAbility(EnemyCard enemyCard)
     {
-        _cellTracker = new CellTrackerByEnemy(enemyCard);
+        _enemyCard = enemyCard;
     }
 
     public void Use()
     {
         var cell = _cellTracker.GetCurrentCell();
-        var command = _commandFactory.CreateSwapCommand(cell);
-        _commandInvoker.SetCommandInQueue(command);
+        _commandFactory.CreateSwapCommand(cell);
     }
 }

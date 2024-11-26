@@ -1,5 +1,7 @@
 ﻿using System;
-using Table.Scripts.Entities;
+using Game.Table.Scripts.Entities;
+using UnityEngine;
+using Zenject;
 
 
 /// <summary>
@@ -18,8 +20,15 @@ public class CellTrackerByEnemy
     {
         UpdateCurrentCell = (cell) => _currentCell = cell;
 
+        _enemyCard = enemyCard;
         _currentCell = enemyCard.CurrentCell;
-        new SubscribeHandler(Subscribe, Unsubscribe);
+    }
+
+    [Inject]
+    private void Construct(IInstantiator instantiator)
+    {
+        var subscribeHandler = instantiator.Instantiate<SubscribeHandler>();
+        subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
     }
 
     public Cell GetCurrentCell()

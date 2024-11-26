@@ -5,7 +5,7 @@
     /// </summary>
     /// <returns> Changed object</returns>
 
-    public static TOUT ChangeObjectType<TIN, TOUT>(TIN currentObject)
+    public static TOUT ChangeObjectTypeWithException<TIN, TOUT>(TIN currentObject)
     {
         if (currentObject is TOUT type)
         {
@@ -15,5 +15,14 @@
         {
             throw new System.ArgumentException(typeof(TIN) + " should have " + typeof(TOUT) + " type. Not " + currentObject.GetType() + " type!");
         }
+    }
+
+    public static TOUT ChangeObjectTypeWithNull<TIN, TOUT>(TIN currentObject)
+    {
+        if (currentObject is TOUT type)
+        {
+            return type;
+        }
+        return default(TOUT);
     }
 }

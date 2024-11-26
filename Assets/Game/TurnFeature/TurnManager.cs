@@ -10,6 +10,8 @@ public class TurnManager
     private Button _switchTurnButton;
     private TextMeshProUGUI _turnWarningText;
 
+    private CommandInvoker _commandInvoker;
+
     private bool _isPlayerTurn = true;
     public bool IsPlayerTurn => _isPlayerTurn;
 
@@ -31,7 +33,7 @@ public class TurnManager
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
     }
 
-    private void ChangeTurn()
+    public void ChangeTurn()
     {
         if (!_isPlayerTurn) ChangeToPlayerTurn();
         else ChangeToEnemiesTurn();

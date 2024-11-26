@@ -1,4 +1,4 @@
-using Table.Scripts.Entities;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
 
 public interface IMover
