@@ -9,7 +9,7 @@ public class LevelPlacementStackController
     private EntitySpawnSystem _entitySpawnSystem;
     private Field _field;
 
-    private EnemyCard _destroyingEnemy;
+    private EntityCard _destroyingEntity;
     private IMoveToDestinationBh _moveToSpawnBh;
 
     private float _spawnPointX;
@@ -36,7 +36,7 @@ public class LevelPlacementStackController
         _moveToSpawnBh = new MoveToDestinationBh(); // TODO: добавить ObjectPooling
     }
 
-    public EnemyCard SpawnEntityFromPlacementStack(int rowIndex)
+    public EntityCard SpawnEntityFromPlacementStack(int rowIndex)
     {
         var entityType = _placementStack.Pop(rowIndex);
 
@@ -47,7 +47,7 @@ public class LevelPlacementStackController
         }
 
         var cell = _field.FindFirstFreeCellFromRow(rowIndex);
-        EnemyCard entity = null;
+        EntityCard entity = null;
         if (cell != null) entity = _entitySpawnSystem.SpawnEntity(entityType.Value);
 
         if (entity != null)
@@ -58,7 +58,7 @@ public class LevelPlacementStackController
         return entity;
     }
 
-    public void SetEntityToPlacementStack(int rowIndex, EnemyCard entity)
+    public void SetEntityToPlacementStack(int rowIndex, EntityCard entity)
     {
         var entityType = entity.EntityType;
         _placementStack.Push(rowIndex, entityType);
@@ -66,7 +66,7 @@ public class LevelPlacementStackController
         MoveEntityToDefaultPoint(entity);
     }
 
-    private void MoveEntityToSpawnCell(Cell cell, EnemyCard entity)
+    private void MoveEntityToSpawnCell(Cell cell, EntityCard entity)
     {
         entity.transform.position = new Vector2(_spawnPointX, cell.transform.position.y);
         
@@ -76,16 +76,16 @@ public class LevelPlacementStackController
         entity.StartMove(moveBh);
     }
 
-    private void MoveEntityToDefaultPoint(EnemyCard entity)
+    private void MoveEntityToDefaultPoint(EntityCard entity)
     {
-        _destroyingEnemy = entity;
+        _destroyingEntity = entity;
         entity.StartMove(_moveToSpawnBh);
         _moveToSpawnBh.SetParameters(new Vector2(_spawnPointX, entity.CurrentCell.transform.position.y));
     }
 
     private void DestroyEntity()
     {
-        MonoBehaviour.Destroy(_destroyingEnemy.gameObject); // TODO: добавить ObjectPooling
+        MonoBehaviour.Destroy(_destroyingEntity.gameObject); // TODO: добавить ObjectPooling
     }
 
     private void Subscribe()

@@ -19,7 +19,7 @@ namespace Game.Table.Scripts.Entities
         private bool _isHighlighted;
 
         public CellView CellView => _cellView;
-        private EnemyCard _enemyCard; // TODO: поменять на карты, когда появятся
+        private EntityCard _entityCard;
 
         public event Action<Cell> OnObjDestroyed;
 
@@ -62,24 +62,24 @@ namespace Game.Table.Scripts.Entities
             _cellView = new CellView(transform, Color.yellow);
         }
         
-        public void SetCardOnCell(EnemyCard enemyCard)
+        public void SetCardOnCell(EntityCard entityCard)
         {
             IsBusy = true;
-            _enemyCard = enemyCard;
+            _entityCard = entityCard;
         }
 
-        public void ReleaseCellFrom(EnemyCard enemyCard)
+        public void ReleaseCellFrom(EntityCard entityCard)
         {
-            if (_enemyCard != enemyCard) return;
-            if (!_enemyCard.gameObject.activeInHierarchy) OnObjDestroyed?.Invoke(this);
+            if (_entityCard != entityCard) return;
+            if (!_entityCard.gameObject.activeInHierarchy) OnObjDestroyed?.Invoke(this);
 
             IsBusy = false;
-            _enemyCard = null;
+            _entityCard = null;
         }
 
         public T GetObjectOnCell<T>()
         {
-            var obj = TypeChanger.ChangeObjectTypeWithNull<EnemyCard, T>(_enemyCard);
+            var obj = TypeChanger.ChangeObjectTypeWithNull<EntityCard, T>(_entityCard);
             if (obj == null)
             {
                 Debug.Log($"Cell [{RowId},{ColumnId}] doesn't have object with type  {typeof(T)}! Return null!");

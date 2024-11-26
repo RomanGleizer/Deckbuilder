@@ -29,29 +29,31 @@ public class EntitySpawnSystem
         _factories.Add(EntityType.Sniper, _instantiator.Instantiate<SniperFactory>());
         _factories.Add(EntityType.Spy, _instantiator.Instantiate<SpyFactory>());
         _factories.Add(EntityType.Swordsman, _instantiator.Instantiate<SwordsmanFactory>());
+        _factories.Add(EntityType.Rock, _instantiator.Instantiate<RockFactory>());
+        _factories.Add(EntityType.Chest, _instantiator.Instantiate<ChestFactory>());
     }
 
-    public EnemyCard SpawnEntity(EntityType entityType)
+    public EntityCard SpawnEntity(EntityType entityType)
     {
         if (_factories.ContainsKey(entityType))
         {
-            var enemy = _factories[entityType].Create();
-            enemy.Init();
-            return enemy;
+            var entity = _factories[entityType].Create();
+            entity.Init();
+            return entity;
         }
         else throw new System.ArgumentNullException("Argument with type " + entityType + " doesn't exist!");
     }
 
-    public EnemyCard SpawnEntity(EntityType entityType, Cell spawnCell)
+    public EntityCard SpawnEntity(EntityType entityType, Cell spawnCell)
     {
-        var enemyCard = SpawnEntity(entityType);
+        var entityCard = SpawnEntity(entityType);
 
-        if (enemyCard != null)
+        if (entityCard != null)
         {
-            enemyCard.transform.position = spawnCell.transform.position;
-            enemyCard.SetStartCell(spawnCell);
+            entityCard.transform.position = spawnCell.transform.position;
+            entityCard.SetStartCell(spawnCell);
         }
 
-        return enemyCard;
+        return entityCard;
     }
 }
