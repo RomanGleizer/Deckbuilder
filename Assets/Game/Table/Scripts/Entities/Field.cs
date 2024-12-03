@@ -46,7 +46,6 @@ namespace Game.Table.Scripts.Entities
                 _traversedCells.Add(cell);
             }
         }
-
         
         public Cell[] GetTraversedCells()
         {
@@ -68,7 +67,16 @@ namespace Game.Table.Scripts.Entities
         {
             return GetCellsInLine(cell.ColumnId, isRow: false, includeHidden);
         }
-
+        
+        public Cell[] GetColumnById(int columnId, bool includeHidden)
+        {
+            if (columnId >= 0 && columnId < ColumnsCount) 
+                return GetCellsInLine(columnId, isRow: false, includeHidden);
+            
+            Debug.LogError($"Column ID {columnId} is out of bounds.");
+            return Array.Empty<Cell>();
+        }
+        
         public Cell GetRandomActiveCell(Cell currentCell)
         {
             var activeCells = new List<Cell>();
