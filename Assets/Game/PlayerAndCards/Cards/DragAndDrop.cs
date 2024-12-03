@@ -1,56 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Game.PlayerAndCards.PlayerScripts;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+namespace Game.PlayerAndCards.Cards
 {
-    private Vector2 _startPosition;
-    RectTransform rectTransform;
-    private Transform _parentBeforeDrag;
-    private CanvasGroup _canvasGroup;
-
-    void Start()
+    public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
     {
-        _startPosition = transform.position;
-        rectTransform = GetComponent<RectTransform>();
-        _canvasGroup = GetComponent<CanvasGroup>();
-        _parentBeforeDrag = transform.parent;
-    }
+        [SerializeField] private Player _player;
+    
+        private Vector2 _startPosition;
+        private RectTransform rectTransform;
+        private Transform _parentBeforeDrag;
+        private CanvasGroup _canvasGroup;
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {        
-        transform.SetParent(transform.root);
-        _canvasGroup.blocksRaycasts = false;
-    }
+        void Start()
+        {
+            _startPosition = transform.position;
+            rectTransform = GetComponent<RectTransform>();
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _parentBeforeDrag = transform.parent;
+        }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
+        public void OnBeginDrag(PointerEventData eventData)
+        {        
+            transform.SetParent(transform.root);
+            _canvasGroup.blocksRaycasts = false;
+        }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.position = _startPosition;
-        transform.SetParent(_parentBeforeDrag);
-        _canvasGroup.blocksRaycasts = true;
-    }
+        public void OnDrag(PointerEventData eventData)
+        {
+            transform.position = Input.mousePosition;
+            
+            UpdateCurrentCell();
+        }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {      
-        _parentBeforeDrag = transform.parent;
-        transform.SetParent(transform.root);
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            transform.position = _startPosition;
+            transform.SetParent(_parentBeforeDrag);
+            _canvasGroup.blocksRaycasts = true;
+            
+            _player.UpdateCurrentCell(null);
+        }
 
-        Vector2 startPosition = rectTransform.transform.localPosition;
-        Vector2 newPosition = new Vector2(0, startPosition.y + 100);
+        public void OnPointerDown(PointerEventData eventData)
+        {      
+            _parentBeforeDrag = transform.parent;
+            transform.SetParent(transform.root);
 
-        rectTransform.transform.localPosition = newPosition;
-    }
+            Vector2 startPosition = rectTransform.transform.localPosition;
+            Vector2 newPosition = new Vector2(0, startPosition.y + 100);
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        transform.SetParent(_parentBeforeDrag);
+            rectTransform.transform.localPosition = newPosition;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            transform.SetParent(_parentBeforeDrag);
+        }
+
+        private void UpdateCurrentCell()
+        {
+            if (Camera.main == null) return;
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out var hit)) return;
+            
+            var cell = hit.collider.GetComponent<Cell>();
+            if (cell != null)
+            {
+                _player.UpdateCurrentCell(cell);
+            }
+        }
     }
 }
