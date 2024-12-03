@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeckOpenButton : CustomButton
+public class CloseWindowButton : CustomButton
 {
-    [SerializeField] GameObject deckWindow;
+    [SerializeField] GameObject window;
     protected override void OnClick()
     {
-        deckWindow.SetActive(true);
+        window.SetActive(false);
     }
 }
