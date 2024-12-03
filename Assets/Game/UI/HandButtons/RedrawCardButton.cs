@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RedrawCardButton : CustomButton
 {
-    [SerializeField] HandManager _manager;
+    [SerializeField] private HandManager _manager;
     protected override void OnClick()
     {
         _manager.DrawCardsInHand();

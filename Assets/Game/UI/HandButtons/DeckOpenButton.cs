@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeckOpenButton : CustomButton
 {
-    [SerializeField] GameObject deckWindow;
+    [SerializeField] private GameObject deckWindow;
     protected override void OnClick()
     {
         deckWindow.SetActive(true);

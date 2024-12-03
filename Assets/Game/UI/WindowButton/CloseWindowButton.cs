@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CloseWindowButton : CustomButton
 {
-    [SerializeField] GameObject window;
+    [SerializeField] private GameObject window;
     protected override void OnClick()
     {
         window.SetActive(false);

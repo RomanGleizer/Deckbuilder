@@ -8,14 +8,17 @@ namespace Game.PlayerAndCards.Cards
     public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private Player _player;
+        private Camera mainCamera;
     
         private Vector2 _startPosition;
         private RectTransform rectTransform;
         private Transform _parentBeforeDrag;
         private CanvasGroup _canvasGroup;
 
+        
         void Start()
         {
+            mainCamera = GameObject.FindObjectOfType<Camera>();
             _startPosition = transform.position;
             rectTransform = GetComponent<RectTransform>();
             _canvasGroup = GetComponent<CanvasGroup>();
@@ -30,8 +33,12 @@ namespace Game.PlayerAndCards.Cards
 
         public void OnDrag(PointerEventData eventData)
         {
-            transform.position = Input.mousePosition;
-            
+            Vector3 screenCoords = mainCamera.WorldToScreenPoint(transform.position);
+
+            Vector3 newWorldPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenCoords.z));
+
+            transform.position = newWorldPosition;
+
             UpdateCurrentCell();
         }
 
