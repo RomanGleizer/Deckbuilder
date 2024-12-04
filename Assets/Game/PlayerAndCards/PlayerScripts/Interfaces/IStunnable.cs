@@ -2,7 +2,7 @@
 {
     public interface IStunnable
     {
-        void Stun(float duration);
+        void Stun(int duration);
         bool IsStunned { get; }
     }
 }

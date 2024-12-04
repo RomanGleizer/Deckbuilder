@@ -1,13 +1,16 @@
-﻿using Game.Table.Scripts.Entities;
-using PlayerAndCards.Interfaces;
+﻿using System;
+using Game.General.GeneralBehaviour;
+using Game.PlayerAndCards.PlayerScripts.Interfaces;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
+using Zenject;
 
 namespace Game.PlayerAndCards.PlayerScripts
 {
-    public class Player : MonoBehaviour, ITakeDamagable
+    public class Player : MonoBehaviour, ITakerDamage, IStunnable
     {
         [SerializeField] private PlayerData _playerData;
-        [SerializeField] private HpIndicator _health;
+        [SerializeField] private HpIndicator _healthIndicator;
 
         private PlayerData _playerDataInstance;
         private int _currentEnergy;
@@ -18,10 +21,21 @@ namespace Game.PlayerAndCards.PlayerScripts
         
         public Cell CurrentCell { get; private set; }
 
+
+        private StunBh _stunBh;
+
+        public bool IsStunned => _stunBh.IsStunned;
+
         private void Awake()
         {
             _playerDataInstance = ScriptableObject.Instantiate(_playerData);
-            _health.UpdateIndicator(_playerDataInstance.Health);
+            _healthIndicator.UpdateIndicator(_playerDataInstance.Health);
+        }
+
+        [Inject]
+        private void Construct(IInstantiator instantiator, TurnManager turnManager)
+        {
+            _stunBh = new StunBh(turnManager, instantiator.Instantiate<SubscribeHandler>(), true);
             _currentEnergy = _playerDataInstance.MaxEnergy;
         }
 
@@ -55,10 +69,9 @@ namespace Game.PlayerAndCards.PlayerScripts
             }
 
             _playerDataInstance.Health -= damage;
-            _health.UpdateIndicator(_playerDataInstance.Health);
+            _healthIndicator.UpdateIndicator(_playerDataInstance.Health);
 
-            if (_playerDataInstance.Health > 0) return;
-            Die();
+            if (_playerDataInstance.Health <= 0) Death();
         }
 
         public void AddShield(int duration)
@@ -66,9 +79,15 @@ namespace Game.PlayerAndCards.PlayerScripts
             _shieldDuration += duration;
         }
 
-        private void Die()
+        public void Stun(int duration)
+        {
+            _stunBh.StartStun(duration);
+        }
+
+        public void Death()
         {
             gameObject.SetActive(false);
+            //TODO: Запускает логику поражения и перезагрузки уровня
         }
     }
 }
