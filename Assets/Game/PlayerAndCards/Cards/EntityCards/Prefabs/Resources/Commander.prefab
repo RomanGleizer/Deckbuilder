@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u041A\u043E\u043C\u0430\u043D\u0434\u0438\u0440"
       objectReference: {fileID: 0}
+    - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 874147315, guid: 8b7a706b30681004ba118fcd51bedb72, type: 3}
     - target: {fileID: 4656637272387828382, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
