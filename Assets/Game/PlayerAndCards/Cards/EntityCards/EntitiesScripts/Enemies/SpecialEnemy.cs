@@ -19,7 +19,7 @@
         base.InitBehaviours();
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         if (_currentCell.ColumnId < _attackDistance)
         {

@@ -1,21 +1,30 @@
-﻿using Zenject;
+﻿using Game.PlayerAndCards.PlayerScripts;
+using Zenject;
 
 public class PlayerTurnController
 {
     private TurnManager _turnManager;
 
+    private Player _player;
+
     [Inject]
-    private void Construct(IInstantiator instantiator, TurnManager turnManager)
+    private void Construct(IInstantiator instantiator, TurnManager turnManager, Player player)
     {
         _turnManager = turnManager;
 
         var subscribeHandler = instantiator.Instantiate<SubscribeHandler>();
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
+
+        _player = player;
     }
 
     private void ActivatePlayerTurn()
     {
-        // Player turn logic
+        if (_player.IsStunned) _turnManager.ChangeTurn();
+        else
+        {
+            // Player turn logic
+        }
     }
 
     private void Subscribe()
