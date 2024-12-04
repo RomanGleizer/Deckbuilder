@@ -822,7 +822,7 @@ MonoBehaviour:
   _levelPlacement: {fileID: 11400000, guid: ad8cf3c50a8d83f4f8e26064f8222c31, type: 2}
   _queueVisual: {fileID: 1434847266}
   _field: {fileID: 1747372458}
-  _player: {fileID: 0}
+  _player: {fileID: 576205211}
   _spawnPoint: {fileID: 965622822}
   _switchButton: {fileID: 854641114}
   _turnWarningText: {fileID: 173606396}
@@ -4730,6 +4730,7 @@ GameObject:
   - component: {fileID: 576205210}
   - component: {fileID: 576205209}
   - component: {fileID: 576205208}
+  - component: {fileID: 576205211}
   m_Layer: 5
   m_Name: PlayerCanvas
   m_TagString: Untagged
@@ -4822,6 +4823,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &576205211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576205206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8745603eb64197bb5fb24c52ad0b29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
+  _healthIndicator: {fileID: 302013967}
 --- !u!1 &592408586
 GameObject:
   m_ObjectHideFlags: 0
@@ -9501,7 +9516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db713b84a2863fb4a80ae8b58e5b12d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckWindow: {fileID: 1653323250}
+  deckWindow: {fileID: 0}
 --- !u!222 &1428988541
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -30,13 +30,13 @@ namespace Game.PlayerAndCards.PlayerScripts
         {
             _playerDataInstance = ScriptableObject.Instantiate(_playerData);
             _healthIndicator.UpdateIndicator(_playerDataInstance.Health);
+            _currentEnergy = _playerDataInstance.MaxEnergy;
         }
 
         [Inject]
         private void Construct(IInstantiator instantiator, TurnManager turnManager)
         {
             _stunBh = new StunBh(turnManager, instantiator.Instantiate<SubscribeHandler>(), true);
-            _currentEnergy = _playerDataInstance.MaxEnergy;
         }
 
         public void UpdateCurrentCell(Cell cell)
