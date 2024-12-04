@@ -1,9 +1,19 @@
-﻿public class Sniper : CommonEnemy
+﻿using Zenject;
+
+public class Sniper : CommonEnemy
 {
     private int _attackDelay = 2;
     private int _currentDelay = 2;
 
     private bool _isCanAttack;
+
+    private TurnManager _turnManager;
+
+    [Inject]
+    private void Construct(TurnManager turnManager)
+    {
+        _turnManager = turnManager;
+    }
 
     public override void Attack()
     {
@@ -15,14 +25,16 @@
 
     public void UpdateDelayParameters()
     {
-        _currentDelay = 0;
-
-        if (_currentDelay >= _attackDelay) 
+        if (_currentDelay >= _attackDelay)
         {
             ActivateAttackBh();
-            _currentDelay++;
+            _currentDelay = 0;
         }
-        else DeactivateAttackBh();
+        else
+        {
+            _currentDelay++;
+            DeactivateAttackBh();
+        }
     }
 
     private void ActivateAttackBh()
@@ -38,12 +50,12 @@
     protected override void Subscribe()
     {
         base.Subscribe();
-        //_turnManager.OnTurnFinished += UpdateDelayParameters;
+        _turnManager.OnEnemiesTurn += UpdateDelayParameters;
     }
 
     protected override void Unsubscribe()
     {
         base.Unsubscribe();
-        //_turnManager.OnTurnFinished -= UpdateDelayParameters;
+        _turnManager.OnEnemiesTurn -= UpdateDelayParameters;
     }
 }
