@@ -14,7 +14,6 @@ namespace Game.PlayerAndCards.Cards
         private RectTransform rectTransform;
         private Transform _parentBeforeDrag;
         private CanvasGroup _canvasGroup;
-
         
         void Start()
         {
@@ -47,8 +46,6 @@ namespace Game.PlayerAndCards.Cards
             transform.position = _startPosition;
             transform.SetParent(_parentBeforeDrag);
             _canvasGroup.blocksRaycasts = true;
-            
-            _player.UpdateCurrentCell(null);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -75,10 +72,6 @@ namespace Game.PlayerAndCards.Cards
             if (!Physics.Raycast(ray, out var hit)) return;
             
             var cell = hit.collider.GetComponent<Cell>();
-            if (cell != null)
-            {
-                _player.UpdateCurrentCell(cell);
-            }
         }
     }
 }

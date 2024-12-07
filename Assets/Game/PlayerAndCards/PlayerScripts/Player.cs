@@ -19,9 +19,6 @@ namespace Game.PlayerAndCards.PlayerScripts
         public int CurrentHealth => _playerDataInstance.Health;
         public int CurrentEnergy => _currentEnergy;
         
-        public Cell CurrentCell { get; private set; }
-
-
         private StunBh _stunBh;
 
         public bool IsStunned => _stunBh.IsStunned;
@@ -38,12 +35,7 @@ namespace Game.PlayerAndCards.PlayerScripts
         {
             _stunBh = new StunBh(turnManager, instantiator.Instantiate<SubscribeHandler>(), true);
         }
-
-        public void UpdateCurrentCell(Cell cell)
-        {
-            CurrentCell = cell;
-        }
-
+        
         public void SpendEnergy(int amount)
         {
             if (amount > _currentEnergy)

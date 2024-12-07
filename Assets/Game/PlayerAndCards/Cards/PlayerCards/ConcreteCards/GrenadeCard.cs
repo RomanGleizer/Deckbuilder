@@ -15,30 +15,26 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             if (!IsCanUse) return;
 
             var validCells = GetValidCells();
-            foreach (var enemy in validCells
-                         .Select(c => c.GetObjectOnCell<EnemyCard>()).Where(e => e != null))
+            if (validCells.Count == 0) return;
+
+            foreach (var enemy in validCells.Select(cell => cell
+                         .GetObjectOnCell<EnemyCard>())
+                         .Where(enemy => enemy != null))
             {
                 enemy.TakeDamage(_damage);
             }
 
-            SpendEnergy();
+            SpendEnergy(_energyCost);
         }
-        
+
         protected override List<Cell> GetValidCells()
         {
-            var playerCell = Player.CurrentCell;
-            if (playerCell == null) return new List<Cell>();
+            if (CurrentCell == null) return new List<Cell>();
 
-            var targetCells = new List<Cell>
-            {
-                playerCell,
-                Field.FindCell(playerCell, Vector2.up, 1),
-                Field.FindCell(playerCell, Vector2.down, 1),
-                Field.FindCell(playerCell, Vector2.left, 1),
-                Field.FindCell(playerCell, Vector2.right, 1)
-            };
-
-            return targetCells.FindAll(cell => cell != null && cell.IsBusy);
+            var crossCells = new List<Cell> { CurrentCell };
+            crossCells.AddRange(Field.GetAdjacentCells(CurrentCell, includeDiagonals: false));
+            return crossCells;
         }
     }
+
 }

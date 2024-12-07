@@ -14,6 +14,9 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     protected int _shield;
 
     public bool IsActive { get; protected set; }
+
+    public int Health => _hp;
+    
     private bool _isInvincibility;
 
     protected ITakeDamageBh _takeDamageBh;

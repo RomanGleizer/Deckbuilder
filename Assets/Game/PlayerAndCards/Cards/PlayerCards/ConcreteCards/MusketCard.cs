@@ -9,27 +9,27 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
     {
         [SerializeField] private int _damage = 1;
         [SerializeField] private int _energyCost = 3;
-        
+
         public override void Use()
         {
             if (!IsCanUse) return;
 
             var validCells = GetValidCells();
-            if (validCells.Count == 0) return;
-
-            foreach (var enemy in validCells.Select(c => 
-                             c.GetObjectOnCell<EnemyCard>()).Where(e => e != null))
+            foreach (var enemy in validCells.Select(cell => 
+                         cell.GetObjectOnCell<EnemyCard>())
+                         .Where(enemy => enemy != null))
             {
                 enemy.TakeDamage(_damage);
             }
 
-            SpendEnergy();
+            SpendEnergy(_energyCost);
         }
 
         protected override List<Cell> GetValidCells()
         {
-            var column = Field.GetColumnById(0, includeHidden: false);
-            return column.Where(cell => cell.IsBusy).ToList();
+            return Field.GetColumnById(0, includeHidden: false)
+                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null)
+                .ToList();
         }
     }
 }

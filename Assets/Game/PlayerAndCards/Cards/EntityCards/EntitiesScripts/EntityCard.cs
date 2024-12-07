@@ -85,7 +85,7 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
         _currentCell = null;
     }
 
-    public virtual void OnMouseDown() // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+    public virtual void OnMouseDown() // РўРµСЃС‚РѕРІС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїСЂРѕРІРµСЂРєРё РёРіСЂРѕРІРѕРіРѕ С†РёРєР»Р°. TODO: РїРѕС‚РѕРј СѓРґР°Р»РёС‚СЊ
     {
         if (_turnManager.IsPlayerTurn) Death();
     }

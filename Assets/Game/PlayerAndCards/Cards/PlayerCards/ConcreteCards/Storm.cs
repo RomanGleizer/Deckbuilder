@@ -7,36 +7,35 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class StormCard : PlayerCard
     {
-        [SerializeField] private int _energyCost = 3;
+        [SerializeField] private int _energyCost = 1;
 
         public override void Use()
         {
             if (!IsCanUse) return;
 
             var validCells = GetValidCells();
-            foreach (var enemy in validCells.Select(
-                         c => c.GetObjectOnCell<EnemyCard>()).Where(e => e != null))
-            {
-                // enemy.RemoveArmor();
-                // if (enemy is Shooter shooter)
-                // {
-                //     shooter.Stun(1);
-                // }
-            }
+            if (validCells.Count == 0) return;
 
-            SpendEnergy();
+            var targetCell = validCells[0];
+            var enemy = targetCell.GetObjectOnCell<EnemyCard>();
+
+            if (enemy == null) return;
+
+            // enemy.RemoveArmor();
+            // if (!enemy.HasArmor())
+            // {
+            //     enemy.Stun(1);
+            // }
+
+            SpendEnergy(_energyCost);
         }
-        
+
         protected override List<Cell> GetValidCells()
         {
-            var targetCells = new List<Cell>();
-            Field.TraverseCells(cell =>
-            {
-                if (cell.IsBusy)
-                    targetCells.Add(cell);
-            }, includeHidden: false);
-
-            return targetCells;
+            return Field.GetTraversedCells()
+                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null)
+                .ToList();
         }
     }
+
 }
