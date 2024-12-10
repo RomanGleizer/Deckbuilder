@@ -9516,7 +9516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db713b84a2863fb4a80ae8b58e5b12d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckWindow: {fileID: 0}
+  deckWindow: {fileID: 1653323250}
 --- !u!222 &1428988541
 CanvasRenderer:
   m_ObjectHideFlags: 0

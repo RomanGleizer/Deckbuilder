@@ -13,7 +13,7 @@ public class OpenCardInfo : CustomButton
     {
         cardInfoWindow.SetActive(true);
         //добавить сюда Sctiptable object
-        cardName.text = "Карточка номер" + cardNumber.ToString();
-        cardInfo.text = "Информация о карточке номер" + cardNumber.ToString();
+        cardName.text = "Карточка номер " + cardNumber.ToString();
+        cardInfo.text = "Информация о карточке номер " + cardNumber.ToString();
     }
 }
