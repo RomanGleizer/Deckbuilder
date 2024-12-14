@@ -12,29 +12,39 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
         public override void Use()
         {
-            if (!IsCanUse) return;
-
-            var validCells = GetValidCells();
-            if (validCells.Count == 0) return;
-
-            foreach (var enemy in validCells.Select(cell => cell
-                         .GetObjectOnCell<EnemyCard>())
-                         .Where(enemy => enemy != null))
+            if (!CanSpendEnergy(_energyCost))
+                return;
+            
+            var targetCells = GetValidCells();
+            if (targetCells.Length == 0) 
+                return;
+            
+            foreach (var enemy in targetCells.Select(cell => 
+                         cell.GetObjectOnCell<EnemyCard>()))
             {
                 enemy.TakeDamage(_damage);
             }
-
-            SpendEnergy(_energyCost);
         }
 
-        protected override List<Cell> GetValidCells()
+        protected override Cell[] GetValidCells()
         {
-            if (CurrentCell == null) return new List<Cell>();
+            if (CurrentCell.IsHidden
+                || CurrentCell?.GetObjectOnCell<EnemyCard>() == null)
+                return new Cell[] {};
 
-            var crossCells = new List<Cell> { CurrentCell };
-            crossCells.AddRange(Field.GetAdjacentCells(CurrentCell, includeDiagonals: false));
-            return crossCells;
+            return new List<Vector2>
+                {
+                    Vector2.zero,
+                    Vector2.up,
+                    Vector2.down,
+                    Vector2.left,
+                    Vector2.right
+                }
+                .Select(direction => Field.FindCell(CurrentCell, direction, 1))
+                .Where(targetCell => targetCell != null 
+                                     && !targetCell.IsHidden 
+                                     && targetCell.GetObjectOnCell<EnemyCard>() != null)
+                .ToArray();
         }
     }
-
 }

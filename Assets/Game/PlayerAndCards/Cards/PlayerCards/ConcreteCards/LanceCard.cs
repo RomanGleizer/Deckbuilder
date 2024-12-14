@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Game.Table.Scripts.Entities;
+﻿using Game.Table.Scripts.Entities;
 using UnityEngine;
 
 namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
-    public class SaberCard : PlayerCard
+    public class LanceCard : PlayerCard
     {
         [SerializeField] private int _damage = 1;
         [SerializeField] private int _energyCost = 1;
@@ -29,10 +27,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
         protected override Cell[] GetValidCells()
         {
             return CurrentCell.IsHidden
-                   || CurrentCell?.ColumnId != 0 
-                   || CurrentCell.GetObjectOnCell<EnemyCard>() == null
-                ? new Cell[] {} 
-                : new[] { CurrentCell };
+                   || CurrentCell?.ColumnId != 1 
+                   || CurrentCell?.GetObjectOnCell<EnemyCard>() == null
+                ? new Cell[] { }
+                : new [] { CurrentCell };
         }
     }
 }

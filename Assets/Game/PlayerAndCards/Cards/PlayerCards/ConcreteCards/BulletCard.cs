@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Game.PlayerAndCards.PlayerScripts.Interfaces;
 using Game.Table.Scripts.Entities;
 using UnityEngine;
 
 namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
-    public class SaberCard : PlayerCard
+    public class BulletCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
         [SerializeField] private int _energyCost = 1;
-
+        
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(_energyCost)) 
                 return;
             
             var targetCells = GetValidCells();
@@ -21,18 +19,25 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
             var targetCell = targetCells[0];
             var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-
-            enemy.TakeDamage(_damage);
-            SpendEnergy(_energyCost);
+            // if (enemy.Armor > 0)
+            // {
+            //     enemy.RemoveArmor();
+            // }
+            // else
+            // {
+            //     if (enemy is IStunnable stunnableEnemy)
+            //     {
+            //         stunnableEnemy.Stun(1);
+            //     }
+            // }
         }
 
         protected override Cell[] GetValidCells()
         {
             return CurrentCell.IsHidden
-                   || CurrentCell?.ColumnId != 0 
-                   || CurrentCell.GetObjectOnCell<EnemyCard>() == null
-                ? new Cell[] {} 
-                : new[] { CurrentCell };
+                   || CurrentCell?.GetObjectOnCell<EnemyCard>() == null
+                ? new Cell[] { }
+                : new [] { CurrentCell };
         }
     }
 }

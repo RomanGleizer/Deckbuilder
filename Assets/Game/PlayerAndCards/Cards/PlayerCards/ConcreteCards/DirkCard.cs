@@ -12,25 +12,27 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
         public override void Use()
         {
-            if (!IsCanUse) return;
+            if (!CanSpendEnergy(_energyCost)) 
+                return;
 
-            var validCells = GetValidCells();
-            if (validCells.Count == 0) return;
+            var targetCells = GetValidCells();
+            if (targetCells.Length == 0) 
+                return;
 
-            var targetCell = validCells[0];
+            var targetCell = targetCells[0];
             var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-
-            if (enemy == null) return;
 
             enemy.TakeDamage(_damage);
             SpendEnergy(_energyCost);
         }
 
-        protected override List<Cell> GetValidCells()
+        protected override Cell[] GetValidCells()
         {
-            return Field.GetColumnById(0, includeHidden: false)
-                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null)
-                .ToList();
+            return CurrentCell.IsHidden
+                   || CurrentCell?.ColumnId != 0 
+                   || CurrentCell.GetObjectOnCell<EnemyCard>() == null
+                ? new Cell[] {} 
+                : new[] { CurrentCell };
         }
     }
 }

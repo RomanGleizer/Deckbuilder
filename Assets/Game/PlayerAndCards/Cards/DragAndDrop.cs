@@ -7,7 +7,6 @@ namespace Game.PlayerAndCards.Cards
 {
     public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] private Player _player;
         private Camera mainCamera;
     
         private Vector2 _startPosition;

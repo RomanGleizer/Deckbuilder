@@ -12,22 +12,15 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
         public override void Use()
         {
-            if (!IsCanUse) return;
+            if (!CanSpendEnergy(_energyCost))
+                return;
 
             var validCells = GetValidCells();
-            if (validCells.Count == 0) return;
-
-            var targetEnemy = validCells[0].GetObjectOnCell<EnemyCard>();
-            if (targetEnemy == null) return;
+            if (validCells.Length == 0)
+                return;
             
-            var targetEnemyType = targetEnemy.GetType();
-            
-            var enemies = Field.GetTraversedCells()
-                .Select(cell => cell.GetObjectOnCell<EnemyCard>())
-                .Where(enemy => enemy != null && enemy.GetType() == targetEnemyType)
-                .ToList();
-            
-            foreach (var enemy in enemies)
+            foreach (var enemy in validCells.Select(cell => 
+                         cell.GetObjectOnCell<EnemyCard>()))
             {
                 enemy.TakeDamage(_damage);
             }
@@ -35,11 +28,18 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             SpendEnergy(_energyCost);
         }
 
-        protected override List<Cell> GetValidCells()
+        protected override Cell[] GetValidCells()
         {
+            if (CurrentCell.IsHidden || CurrentCell.GetObjectOnCell<EnemyCard>() == null)
+                return new Cell[] {};
+
+            var enemy = CurrentCell.GetObjectOnCell<EnemyCard>();
+            var targetEnemyType = enemy.GetType();
+            
             return Field.GetTraversedCells()
-                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null)
-                .ToList();
+                .Where(cell=> cell.GetObjectOnCell<EnemyCard>() != null 
+                              && cell.GetObjectOnCell<EnemyCard>().GetType() == targetEnemyType)
+                .ToArray();
         }
     }
 }
