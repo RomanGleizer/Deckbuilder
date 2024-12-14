@@ -4,14 +4,15 @@ using Game.Table.Scripts.Entities;
 using UnityEngine;
 
 namespace Game.PlayerAndCards.Cards.PlayerCards
-{
+{   
+    [RequireComponent(typeof(CardTriggerHandler))]
     public abstract class PlayerCard : MonoBehaviour
     {
         [SerializeField] private string _cardName;
         [SerializeField] private string _description;
-        [SerializeField] private Player _player;
-        [SerializeField] private Field _field;
 
+        private Player _player;
+        private Field _field;
         private CardTriggerHandler _triggerHandler;
 
         protected Player Player => _player;
@@ -22,6 +23,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 
         private void Awake()
         {
+            _player = FindObjectOfType<Player>();
+            _field = FindObjectOfType<Field>();
             _triggerHandler = GetComponent<CardTriggerHandler>();
             if (_triggerHandler == null)
             {
@@ -31,11 +34,28 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 
         public abstract void Use();
 
-        protected abstract List<Cell> GetValidCells();
+        protected abstract Cell[] GetValidCells();
+
+        protected bool CanSpendEnergy(int energyCost)
+        {
+            if (Player.CurrentEnergy >= energyCost) 
+                return true;
+            
+            Debug.LogWarning("Not enough energy to use the card!");
+            return false;
+        }
 
         protected void SpendEnergy(int energyCost)
         {
-            _player.SpendEnergy(energyCost);
+            Player.SpendEnergy(energyCost);
+        }
+
+        private void OnMouseUp()
+        {
+            if (CurrentCell == null)
+                return;
+
+            Use();
         }
     }
 }

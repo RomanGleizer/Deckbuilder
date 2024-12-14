@@ -47,6 +47,11 @@ namespace Game.Table.Scripts.Entities
             }
         }
         
+        public Cell GetCellAt(int row, int column)
+        {
+            return IsWithinBounds(row, column) ? _cells[row, column] : null;
+        }
+        
         public Cell[] GetTraversedCells()
         {
             TraverseCells(null);
@@ -104,7 +109,7 @@ namespace Game.Table.Scripts.Entities
             if (IsWithinBounds(newRow, newColumn))
                 return _cells[newRow, newColumn];
 
-            Debug.LogError("Target cell is out of bounds.");
+            Debug.LogWarning("Target cell is out of bounds.");
             return null;
         }
 
@@ -164,101 +169,9 @@ namespace Game.Table.Scripts.Entities
             foreach (var cell in cellsList)
                 _cells[cell.RowId, cell.ColumnId] = cell;
         }
-        
-        public List<Cell> GetAdjacentCells(Cell centerCell, bool includeDiagonals = true, bool includeHidden = false)
-        {
-            var adjacentCells = new List<Cell>();
-            var directions = includeDiagonals
-                ? new[]
-                {
-                    (-1, -1), (-1, 0), (-1, 1),
-                    (0, -1),          (0, 1),
-                    (1, -1), (1, 0), (1, 1)
-                }
-                : new[]
-                {
-                    (-1, 0),
-                    (0, -1),       (0, 1),
-                    (1, 0)
-                };
 
-            foreach (var (dx, dy) in directions)
-            {
-                var newRow = centerCell.RowId + dx;
-                var newColumn = centerCell.ColumnId + dy;
-
-                if (!IsWithinBounds(newRow, newColumn)) 
-                    continue;
-                
-                var adjacentCell = _cells[newRow, newColumn];
-                if (includeHidden || !adjacentCell.IsHidden)
-                {
-                    adjacentCells.Add(adjacentCell);
-                }
-            }
-
-            return adjacentCells;
-        }
-        
-        public List<Cell> GetColumnsByIds(int[] columnIds, bool includeHidden = false)
-        {
-            var cells = new List<Cell>();
-
-            foreach (var columnId in columnIds)
-            {
-                if (columnId >= 0 && columnId < ColumnsCount)
-                {
-                    cells.AddRange(GetColumnById(columnId, includeHidden));
-                }
-                else
-                {
-                    Debug.LogError($"Column ID {columnId} is out of bounds.");
-                }
-            }
-
-            return cells;
-        }
-        
         public bool MoveEnemyToColumn(EnemyCard enemy, int targetColumn)
         {
-            // if (enemy == null)
-            // {
-            //     Debug.LogError("Enemy reference is null.");
-            //     return false;
-            // }
-            //
-            // if (targetColumn < 0 || targetColumn >= ColumnsCount)
-            // {
-            //     Debug.LogError($"Target column {targetColumn} is out of bounds.");
-            //     return false;
-            // }
-            //
-            // var currentCell = enemy.CurrentCell;
-            // if (currentCell == null)
-            // {
-            //     Debug.LogError("Enemy is not currently assigned to any cell.");
-            //     return false;
-            // }
-            //
-            // var targetRow = currentCell.RowId;
-            // var targetCell = _cells[targetRow, targetColumn];
-            //
-            // if (targetCell == null || targetCell.IsBusy)
-            // {
-            //     Debug.LogError("Target cell is either null or already occupied.");
-            //     return false;
-            // }
-            //
-            // // Освобождаем текущую клетку
-            // currentCell.Release();
-            //
-            // // Перемещаем врага в новую клетку
-            // targetCell.Occupy(enemy);
-            //
-            // // Обновляем текущую клетку у врага
-            // enemy.CurrentCell = targetCell;
-            //
-            // Debug.Log($"Enemy moved to column {targetColumn} at row {targetRow}.");
             return true;
         }
     }

@@ -11,15 +11,16 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
         public override void Use()
         {
-            if (!IsCanUse) return;
+            if (!CanSpendEnergy(_energyCost)) 
+                return;
 
             Player.AddShield(_duration);
             SpendEnergy(_energyCost);
         }
 
-        protected override List<Cell> GetValidCells()
+        protected override Cell[] GetValidCells()
         {
-            return new List<Cell>();
+            return new Cell[] {};
         }
     }
 

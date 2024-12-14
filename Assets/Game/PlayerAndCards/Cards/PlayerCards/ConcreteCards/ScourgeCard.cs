@@ -14,22 +14,45 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             if (!IsCanUse) return;
 
             var validCells = GetValidCells();
-            if (validCells.Count == 0) return;
+            if (validCells.Length == 0) return;
 
             var targetCell = validCells[0];
             var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-            if (enemy == null) 
+            if (enemy == null)
                 return;
 
-            Field.MoveEnemyToColumn(enemy, 0);
+            var targetRow = targetCell.RowId;
+            var targetColumn = targetCell.ColumnId;
+            
+            var firstColumnCell = Field.GetCellAt(targetRow, 0);
+
+            if (firstColumnCell != null)
+            {
+                var firstColumnEnemy = firstColumnCell.GetObjectOnCell<EnemyCard>();
+
+                if (firstColumnEnemy != null)
+                {
+                    targetCell.ReleaseCellFrom(enemy);
+                    targetCell.SetCardOnCell(firstColumnEnemy);
+                    
+                    firstColumnCell.ReleaseCellFrom(firstColumnEnemy);
+                    firstColumnCell.SetCardOnCell(enemy);
+                }
+                else
+                {
+                    targetCell.ReleaseCellFrom(enemy);
+                    firstColumnCell.SetCardOnCell(enemy);
+                }
+            }
+
             SpendEnergy(_energyCost);
         }
 
-        protected override List<Cell> GetValidCells()
+        protected override Cell[] GetValidCells()
         {
             return Field.GetTraversedCells()
-                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null)
-                .ToList();
+                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null && cell.ColumnId > 0)
+                .ToArray();
         }
     }
 }
