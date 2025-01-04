@@ -9018,6 +9018,7 @@ GameObject:
   - component: {fileID: 1323163031}
   - component: {fileID: 1323163030}
   - component: {fileID: 1323163029}
+  - component: {fileID: 1323163032}
   m_Layer: 5
   m_Name: EnemyInfoCanvas
   m_TagString: Untagged
@@ -9109,6 +9110,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1323163032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323163027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15cab1674034e942a2b4d7d16e9e088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1346378955
 GameObject:
   m_ObjectHideFlags: 0

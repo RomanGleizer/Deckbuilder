@@ -2,6 +2,7 @@ using Game.Table.Scripts.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -85,8 +86,21 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
         _currentCell = null;
     }
 
-    public virtual void OnMouseDown() // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+    public virtual void OnMouseDown() 
     {
-        if (_turnManager.IsPlayerTurn) Death();
+        // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+        //if (_turnManager.IsPlayerTurn) Death();
+        GameObject pauseControllerGO = GameObject.Find("PauseController");
+        PauseController pauseCtrl = pauseControllerGO.GetComponent<PauseController>();
+        if (pauseCtrl.isInGame)
+        {
+            GameObject enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true).gameObject;
+            if (enemyInfoCard != null)
+            {
+                enemyInfoCard.SetActive(true);
+                print(_entityData);
+            }
+        }
+        
     }
 }
