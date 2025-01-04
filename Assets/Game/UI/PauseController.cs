@@ -3,9 +3,10 @@ using UnityEngine;
 public class PauseController : MonoBehaviour
 {
     [SerializeField] private GameObject pauseCanvas;
-    private bool isInGame = true;
-    private bool isPaused = false;
-    private bool isSettings = false;
+    [SerializeField] private GameObject settingsCanvas;
+    public bool isInGame = true;
+    public bool isPaused = false;
+    public bool isSettings = false;
     // Update is called once per frame
     void Update()
     {
@@ -16,18 +17,17 @@ public class PauseController : MonoBehaviour
             pauseCanvas.SetActive(false);
             isInGame = true;
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && isSettings)
+        else if (Input.GetKeyDown(KeyCode.Escape) && isSettings)
+        {
+            AllBoolIsFasle();
+            PauseIsActive();
+            settingsCanvas.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && isInGame)
         {
             AllBoolIsFasle();
             PauseIsActive();
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && isInGame)
-        {
-            AllBoolIsFasle();
-            PauseIsActive();
-        }        
     }
 
     private void AllBoolIsFasle()

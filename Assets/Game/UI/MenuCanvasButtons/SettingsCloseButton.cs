@@ -11,5 +11,12 @@ public class SettingsCloseButton : CustomButton
         settingCanvas.SetActive(false);
         mainCanvas.SetActive(true);
         //Time.timeScale = 1;
+        if (GameObject.Find("PauseController"))
+        {
+            GameObject pauseCtrlGO = GameObject.Find("PauseController");
+            PauseController pauseController = pauseCtrlGO.GetComponent<PauseController>();
+            pauseController.isSettings = false;
+            pauseController.isPaused = true;
+        }
     }
 }

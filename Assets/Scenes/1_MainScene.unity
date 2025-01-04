@@ -3828,6 +3828,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseCanvas: {fileID: 8444019307493628382}
+  settingsCanvas: {fileID: 3257916371484145514}
+  isInGame: 1
+  isPaused: 0
+  isSettings: 0
 --- !u!1 &478046086
 GameObject:
   m_ObjectHideFlags: 0
@@ -15850,6 +15854,7 @@ GameObject:
   - component: {fileID: 8955562868995725119}
   - component: {fileID: 8475378665409641844}
   - component: {fileID: 9160544424751151078}
+  - component: {fileID: 9160544424751151079}
   m_Layer: 5
   m_Name: MenuBtn
   m_TagString: Untagged
@@ -17083,6 +17088,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9160544424751151079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429292965133288338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f65300660aa1743a903b08b2475aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9215723169008751077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17122,10 +17139,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8642688468913539006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27a59cc236ceebc459c7c26ef7a42757, type: 3}
+  m_Script: {fileID: 11500000, guid: d838bed5047f9ff4787937b6e882f41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  window: {fileID: 8444019307493628382}
+  pauseCanvas: {fileID: 8444019307493628382}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
