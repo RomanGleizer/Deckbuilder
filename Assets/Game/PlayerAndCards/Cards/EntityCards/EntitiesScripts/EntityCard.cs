@@ -94,11 +94,13 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
         PauseController pauseCtrl = pauseControllerGO.GetComponent<PauseController>();
         if (pauseCtrl.isInGame)
         {
-            GameObject enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true).gameObject;
-            if (enemyInfoCard != null)
+            GameObject enemyInfoCardGO = FindObjectOfType<EnemyInfoCard>(true).gameObject;
+            if (enemyInfoCardGO != null)
             {
-                enemyInfoCard.SetActive(true);
-                print(_entityData);
+                enemyInfoCardGO.SetActive(true);
+                EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
+                enemyInfoCard.Name.text = _entityData.TypeOnRussian;
+                enemyInfoCard.Description.text = _entityData.Description;
             }
         }
         

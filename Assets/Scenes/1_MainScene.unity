@@ -6443,7 +6443,7 @@ GameObject:
   - component: {fileID: 790403594}
   - component: {fileID: 790403593}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9122,6 +9122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15cab1674034e942a2b4d7d16e9e088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: {fileID: 1626059781}
+  _description: {fileID: 790403593}
 --- !u!1 &1346378955
 GameObject:
   m_ObjectHideFlags: 0

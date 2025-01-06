@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EnemyInfoCard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI _name;
+    [SerializeField] private TextMeshProUGUI _description;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public TextMeshProUGUI Name => _name;
+
+    public TextMeshProUGUI Description => _description;
 }
