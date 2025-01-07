@@ -8,8 +8,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
     [RequireComponent(typeof(CardTriggerHandler))]
     public abstract class PlayerCard : MonoBehaviour
     {
-        [SerializeField] private string _cardName;
-        [SerializeField] private string _description;
+        [SerializeField] private PlayerCardData _cardData;
 
         private Player _player;
         private Field _field;
@@ -18,6 +17,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         protected Player Player => _player;
         protected Field Field => _field;
         protected Cell CurrentCell => _triggerHandler?.CurrentCell;
+
+        protected PlayerCardData CardData => _cardData;
 
         public bool IsCanUse { get; set; }
 

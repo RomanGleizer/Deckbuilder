@@ -7,11 +7,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class ScourgeCard : PlayerCard
     {
-        [SerializeField] private int _energyCost = 1;
-
         public override void Use()
         {
-            if (!IsCanUse) return;
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
+                return;
 
             var validCells = GetValidCells();
             if (validCells.Length == 0) return;
@@ -45,7 +44,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 }
             }
 
-            SpendEnergy(_energyCost);
+            SpendEnergy(CardData.EnergyCost);
         }
 
         protected override Cell[] GetValidCells()

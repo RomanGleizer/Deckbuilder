@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.PlayerAndCards.PlayerScripts.Interfaces;
 using Game.Table.Scripts.Entities;
 using UnityEngine;
 
@@ -7,11 +8,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class StormCard : PlayerCard
     {
-        [SerializeField] private int _energyCost = 1;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
                 return;
             
             var validCells = GetValidCells();
@@ -20,12 +19,14 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             
             foreach (var enemy in validCells.Select(cell => cell.GetObjectOnCell<EnemyCard>()))
             {
-                //enemy.RemoveArmor();
-                if (enemy is Shooter shooter)
+                enemy.BreakShield();
+                if (enemy is Shooter shooter and IStunnable stunnable)
                 {
-                    //shooter.Stun(1); 
+                    stunnable.Stun(1); 
                 }
             }
+            
+            SpendEnergy(CardData.EnergyCost);
         }
 
         protected override Cell[] GetValidCells()

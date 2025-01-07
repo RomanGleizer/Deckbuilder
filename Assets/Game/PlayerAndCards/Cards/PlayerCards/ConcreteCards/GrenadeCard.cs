@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class GrenadeCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 4;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
             
             var targetCells = GetValidCells();
@@ -22,8 +19,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             foreach (var enemy in targetCells.Select(cell => 
                          cell.GetObjectOnCell<EnemyCard>()))
             {
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(CardData.Damage);
             }
+            
+            SpendEnergy(CardData.EnergyCost);
         }
 
         protected override Cell[] GetValidCells()

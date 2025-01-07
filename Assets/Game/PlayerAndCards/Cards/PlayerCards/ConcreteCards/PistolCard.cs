@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class PistolCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 2;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
 
             var validCells = GetValidCells();
@@ -24,8 +21,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
             if (enemy == null) return;
 
-            enemy.TakeDamage(_damage);
-            SpendEnergy(_energyCost);
+            enemy.TakeDamage(CardData.Damage);
+            SpendEnergy(CardData.EnergyCost);
         }
 
         protected override Cell[] GetValidCells()

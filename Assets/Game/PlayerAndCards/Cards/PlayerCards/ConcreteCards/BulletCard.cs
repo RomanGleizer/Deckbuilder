@@ -6,11 +6,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class BulletCard : PlayerCard
     {
-        [SerializeField] private int _energyCost = 1;
-        
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
                 return;
             
             var targetCells = GetValidCells();
@@ -19,17 +17,17 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
             var targetCell = targetCells[0];
             var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-            // if (enemy.Armor > 0)
-            // {
-            //     enemy.RemoveArmor();
-            // }
-            // else
-            // {
-            //     if (enemy is IStunnable stunnableEnemy)
-            //     {
-            //         stunnableEnemy.Stun(1);
-            //     }
-            // }
+            if (enemy.HasShield)
+            {
+                enemy.BreakShield();
+            }
+            else
+            {
+                if (enemy is IStunnable stunnableEnemy)
+                {
+                    stunnableEnemy.Stun(1);
+                }
+            }
         }
 
         protected override Cell[] GetValidCells()

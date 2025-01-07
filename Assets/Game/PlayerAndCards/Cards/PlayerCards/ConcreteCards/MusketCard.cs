@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class MusketCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 3;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
                 return;
 
             var validCells = GetValidCells();
@@ -22,10 +19,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             foreach (var enemy in validCells.Select(cell => 
                          cell.GetObjectOnCell<EnemyCard>()))
             {
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(CardData.Damage);
             }
 
-            SpendEnergy(_energyCost);
+            SpendEnergy(CardData.EnergyCost);
         }
 
         protected override Cell[] GetValidCells()
