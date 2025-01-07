@@ -47,6 +47,11 @@ namespace Game.Table.Scripts.Entities
             }
         }
         
+        public Cell GetCellAt(int row, int column)
+        {
+            return IsWithinBounds(row, column) ? _cells[row, column] : null;
+        }
+        
         public Cell[] GetTraversedCells()
         {
             TraverseCells(null);

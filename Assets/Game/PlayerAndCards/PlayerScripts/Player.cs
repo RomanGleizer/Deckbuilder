@@ -20,9 +20,10 @@ namespace Game.PlayerAndCards.PlayerScripts
         public int CurrentEnergy => _currentEnergy;
         
         private StunBh _stunBh;
-
+        private IHaveShield _haveShieldImplementation;
+        
         public bool IsStunned => _stunBh.IsStunned;
-
+        
         private void Awake()
         {
             _playerDataInstance = ScriptableObject.Instantiate(_playerData);
@@ -60,17 +61,18 @@ namespace Game.PlayerAndCards.PlayerScripts
                 return;
             }
 
+            
             _playerDataInstance.Health -= damage;
             _healthIndicator.UpdateIndicator(_playerDataInstance.Health);
 
             if (_playerDataInstance.Health <= 0) Death();
         }
-
-        public void AddShield(int duration)
+        
+        public void AddShieldDuration(int duration)
         {
             _shieldDuration += duration;
         }
-
+        
         public void Stun(int duration)
         {
             _stunBh.StartStun(duration);
