@@ -14,7 +14,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             if (!CanSpendEnergy(_energyCost)) 
                 return;
 
-            Player.AddShield(_duration);
+            Player.AddShieldDuration(_duration);
             SpendEnergy(_energyCost);
         }
 

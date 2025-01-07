@@ -4,7 +4,8 @@ using Game.Table.Scripts.Entities;
 using Zenject;
 using System.Threading.Tasks;
 
-public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand
+public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvincibilable, IHavePriorityCommand, 
+    IHaveShield
 {
     private EnemyData _enemyData;
 
@@ -22,8 +23,9 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     protected ITakeDamageBh _takeDamageBh;
 
     protected CommandFactory _commandFactory;
-
-
+    
+    public bool HasShield => _shield > 0;
+    
     // Тестовые зависимости. TODO: удалить.
     private SpriteRenderer _spriteRenderer;
     private Color _activeColor;
@@ -59,8 +61,20 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     {
         if (!_isInvincibility)
         {
-            _takeDamageBh.TakeDamage(damage, ref _hp);
+            var remainDamage = damage - _shield;
+            _shield = Mathf.Clamp(_shield - damage, 0, _shield);
+            if (remainDamage > 0) _takeDamageBh.TakeDamage(remainDamage, ref _hp);
         }
+    }
+    
+    public void AddShield(int value)
+    {
+        _shield += value;
+    }
+
+    public void BreakShield()
+    {
+        _shield = 0;
     }
 
     public void ActivateInvincibility()
