@@ -1,19 +1,21 @@
+using Game.PlayerAndCards.Cards.PlayerCards;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OpenCardInfo : CustomButton
 {
-    [SerializeField] GameObject cardInfoWindow;
-    [SerializeField] TextMeshProUGUI cardName;
-    [SerializeField] TextMeshProUGUI cardInfo;
-    [SerializeField] int cardNumber;
+    [SerializeField] private GameObject _cardInfoWindow;
+    [SerializeField] private TextMeshProUGUI _cardName;
+    [SerializeField] private TextMeshProUGUI _cardInfo;
     protected override void OnClick()
     {
-        cardInfoWindow.SetActive(true);
-        //добавить сюда Sctiptable object
-        cardName.text = "Карточка номер " + cardNumber.ToString();
-        cardInfo.text = "Информация о карточке номер " + cardNumber.ToString();
+        CardInDesk cardData = GetComponent<CardInDesk>();
+
+        _cardInfoWindow.SetActive(true);
+        _cardName.text = cardData.PlayerCardData.NameInRussian;
+        _cardInfo.text = cardData.PlayerCardData.Description;        
     }
 }

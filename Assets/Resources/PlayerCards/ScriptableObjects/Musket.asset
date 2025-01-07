@@ -15,4 +15,8 @@ MonoBehaviour:
   _name: 8
   _damage: 1
   _energyCost: 3
-  _description: Musket
+  _nameInRussian: "\u041C\u0443\u0448\u043A\u0435\u0442"
+  _description: "\u0410\u0442\u0430\u043A\u0443\u0435\u0442 \u0432\u0441\u0435\u0445
+    \u0432\u0440\u0430\u0433\u043E\u0432 \u0432 \u043F\u0435\u0440\u0432\u043E\u043C
+    \u0441\u0442\u043E\u043B\u0431\u0446\u0435"
+  _sprite: {fileID: 21300000, guid: 81d02ea59ae18b348996b431b7228ee3, type: 3}

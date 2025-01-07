@@ -15,4 +15,7 @@ MonoBehaviour:
   _name: 10
   _damage: 1
   _energyCost: 1
-  _description: Rifle
+  _nameInRussian: "\u0420\u0443\u0436\u044C\u0435"
+  _description: "\u0410\u0442\u0430\u043A\u0443\u0435\u0442 \u0434\u0430\u043B\u044C\u043D\u0435\u0433\u043E
+    \u0432\u0440\u0430\u0433\u0430"
+  _sprite: {fileID: 21300000, guid: 81d02ea59ae18b348996b431b7228ee3, type: 3}
