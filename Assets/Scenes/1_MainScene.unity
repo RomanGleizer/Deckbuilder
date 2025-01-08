@@ -2470,11 +2470,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c34941fd3e20347a8310849f7ae02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 457037021936114677, guid: df10ef01f75409948a555a5f62b2a17d, type: 3}
+  cardPrefabs:
+  - {fileID: 457037021936114677, guid: df10ef01f75409948a555a5f62b2a17d, type: 3}
+  - {fileID: 457037021936114677, guid: 03376deb1ddd77945aed13f1cb772dba, type: 3}
+  - {fileID: 457037021936114677, guid: 19f0e3870a1171d49ac23c8661ee05f5, type: 3}
+  - {fileID: 457037021936114677, guid: 9713bb21ead352b4f99c1c69d9872a20, type: 3}
+  - {fileID: 457037021936114677, guid: 525ecb021d96f4547b6da6ec1b23ea14, type: 3}
+  - {fileID: 457037021936114677, guid: 287492678594baf4e8032db2da2e5b78, type: 3}
+  - {fileID: 457037021936114677, guid: a015d2b2ef19cd44a8cff90299161372, type: 3}
+  - {fileID: 457037021936114677, guid: e069fec3d1db90043ae422a41233a9d2, type: 3}
+  - {fileID: 457037021936114677, guid: a5f5fad8e7e7f824caf23e6c287845e7, type: 3}
+  - {fileID: 457037021936114677, guid: 1dc4892c9172c4f45a4ea391db010418, type: 3}
+  - {fileID: 457037021936114677, guid: 9b945d20137a5ae4980d162149b7456d, type: 3}
+  - {fileID: 457037021936114677, guid: 14c28a2032288ec47823bc98aa46aed9, type: 3}
+  - {fileID: 457037021936114677, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+  - {fileID: 457037021936114677, guid: 6e59b91ef7efb13448b9af12a0541f2d, type: 3}
+  - {fileID: 457037021936114677, guid: 07e957b51a8637743a019648b1e35f54, type: 3}
   handPanel: {fileID: 443116873}
   minCards: 5
   maxCards: 8
-  drawButton: {fileID: 238209555}
   cardWidth: 183
   handWidth: 1003
 --- !u!1 &447979016
@@ -10388,7 +10402,7 @@ GameObject:
   - component: {fileID: 1751185914}
   - component: {fileID: 1751185913}
   m_Layer: 5
-  m_Name: ArtilleryCard
+  m_Name: Artillery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11426,7 +11440,7 @@ GameObject:
   - component: {fileID: 1909347087}
   - component: {fileID: 1909347086}
   m_Layer: 5
-  m_Name: BulletCard
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

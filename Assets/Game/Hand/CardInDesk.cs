@@ -14,7 +14,17 @@ public class CardInDesk : MonoBehaviour
 
 
     public PlayerCardData PlayerCardData => _playerCardData;
-    public int CountOfCard => _countOfCard;
+    public int CountOfCard
+    {
+        get
+        {
+            return _countOfCard;    
+        }
+        set
+        {
+            _countOfCard = value;
+        }
+    }
 
     private void Start()
     {
