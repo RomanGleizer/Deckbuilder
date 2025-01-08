@@ -5,7 +5,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 {
     public class CardTriggerHandler : MonoBehaviour
     {
-        public Cell CurrentCell { get; private set; }
+        public static Cell CurrentCell { get; private set; }
 
         private void OnTriggerEnter2D(Collider2D other)
         {

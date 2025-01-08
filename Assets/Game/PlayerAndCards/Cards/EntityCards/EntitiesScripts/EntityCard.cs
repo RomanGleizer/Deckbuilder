@@ -2,6 +2,7 @@ using Game.Table.Scripts.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -103,6 +104,5 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
                 enemyInfoCard.Description.text = _entityData.Description;
             }
         }
-        
     }
 }

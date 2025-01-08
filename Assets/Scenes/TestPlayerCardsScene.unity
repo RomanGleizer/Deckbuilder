@@ -635,10 +635,106 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 5
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
+--- !u!1001 &57067444
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 651392286}
+    m_Modifications:
+    - target: {fileID: 457037021936114677, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_Name
+      value: ScourgeCard
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 274
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -357
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 117
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
 --- !u!1 &65564820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1773,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184628726}
   m_CullTransparentMesh: 1
+--- !u!224 &195215966 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 582617337152332098, guid: eaba707c34cb3be49b35881f09c5967f, type: 3}
+  m_PrefabInstance: {fileID: 57067444}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &211709779
 GameObject:
   m_ObjectHideFlags: 0
@@ -3124,10 +3225,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 6
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &403748871
 GameObject:
   m_ObjectHideFlags: 0
@@ -3394,10 +3494,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 10
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &423588236
 GameObject:
   m_ObjectHideFlags: 0
@@ -4275,10 +4374,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 14
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &514142318
 GameObject:
   m_ObjectHideFlags: 0
@@ -4374,10 +4472,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 13
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &519493536
 GameObject:
   m_ObjectHideFlags: 0
@@ -5519,6 +5616,7 @@ RectTransform:
   - {fileID: 1517531532}
   - {fileID: 576205207}
   - {fileID: 173606395}
+  - {fileID: 195215966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5733,10 +5831,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 16
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &683692276
 GameObject:
   m_ObjectHideFlags: 0
@@ -7112,10 +7209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 19
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &981227429
 GameObject:
   m_ObjectHideFlags: 0
@@ -10334,10 +10430,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 8
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1456392742
 GameObject:
   m_ObjectHideFlags: 0
@@ -11040,10 +11135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 20
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1548401761
 GameObject:
   m_ObjectHideFlags: 0
@@ -11433,10 +11527,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 3
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1626059779
 GameObject:
   m_ObjectHideFlags: 0
@@ -11919,10 +12012,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 21
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1687437243
 GameObject:
   m_ObjectHideFlags: 0
@@ -12018,10 +12110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 4
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1715952969
 GameObject:
   m_ObjectHideFlags: 0
@@ -12117,10 +12208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 7
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1739123573
 GameObject:
   m_ObjectHideFlags: 0
@@ -12351,10 +12441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 1
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1752521538
 GameObject:
   m_ObjectHideFlags: 0
@@ -12864,10 +12953,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 11
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1843189651
 GameObject:
   m_ObjectHideFlags: 0
@@ -13243,10 +13331,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 18
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1901350471
 GameObject:
   m_ObjectHideFlags: 0
@@ -13513,10 +13600,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 2
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1936119898
 GameObject:
   m_ObjectHideFlags: 0
@@ -13687,10 +13773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 9
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1937930362
 GameObject:
   m_ObjectHideFlags: 0
@@ -13786,10 +13871,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 17
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1966855687
 GameObject:
   m_ObjectHideFlags: 0
@@ -13885,10 +13969,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 12
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1 &1976513208
 GameObject:
   m_ObjectHideFlags: 0
@@ -15282,10 +15365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd141c6feccefcb4eb90532745c46e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardInfoWindow: {fileID: 1423438328}
-  cardName: {fileID: 1006763398}
-  cardInfo: {fileID: 594965557}
-  cardNumber: 15
+  _cardInfoWindow: {fileID: 0}
+  _cardName: {fileID: 0}
+  _cardInfo: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
