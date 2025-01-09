@@ -42,7 +42,7 @@ public class HandManager : MonoBehaviour
             Sprite imageOfCard = cardInDeck[numberOfCard].PlayerCardData.Sprite;
             print(nameOfCard);
 
-            if (cardInDeck[numberOfCard].CountOfCard <= 0)
+            if (cardInDeck[numberOfCard].CountOfCard >= 0)
             {
                 AddCard(nameOfCard, imageOfCard);
                 cardInDeck[numberOfCard].CountOfCard--;
