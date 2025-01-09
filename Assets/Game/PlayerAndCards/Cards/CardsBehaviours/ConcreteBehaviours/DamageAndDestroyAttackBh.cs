@@ -1,7 +1,9 @@
-﻿public class DamageAndDestroyAttackBh : DamagePlayerAttackBh, IAttackBh // Snare's attack
+﻿using Game.PlayerAndCards.PlayerScripts;
+using Zenject;
+
+public class DamageAndDestroyAttackBh : DamagePlayerAttackBh, IAttackBh // Snare's attack
 {
     public ITakerDamage _destroyingAttacker;
-    // private ITakerDamage _player;
 
     public DamageAndDestroyAttackBh(ITakerDamage takerDamage)
     {

@@ -1,56 +1,76 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Game.PlayerAndCards.PlayerScripts;
+using Game.Table.Scripts.Entities;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+namespace Game.PlayerAndCards.Cards
 {
-    private Vector2 _startPosition;
-    RectTransform rectTransform;
-    private Transform _parentBeforeDrag;
-    private CanvasGroup _canvasGroup;
-
-    void Start()
+    public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
     {
-        _startPosition = transform.position;
-        rectTransform = GetComponent<RectTransform>();
-        _canvasGroup = GetComponent<CanvasGroup>();
-        _parentBeforeDrag = transform.parent;
-    }
+        private Camera mainCamera;
+    
+        private Vector2 _startPosition;
+        private RectTransform rectTransform;
+        private Transform _parentBeforeDrag;
+        private CanvasGroup _canvasGroup;
+        
+        void Start()
+        {
+            mainCamera = GameObject.FindObjectOfType<Camera>();
+            _startPosition = transform.position;
+            rectTransform = GetComponent<RectTransform>();
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _parentBeforeDrag = transform.parent;
+        }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {        
-        transform.SetParent(transform.root);
-        _canvasGroup.blocksRaycasts = false;
-    }
+        public void OnBeginDrag(PointerEventData eventData)
+        {        
+            transform.SetParent(transform.root);
+            _canvasGroup.blocksRaycasts = false;
+        }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
+        public void OnDrag(PointerEventData eventData)
+        {
+            Vector3 screenCoords = mainCamera.WorldToScreenPoint(transform.position);
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.position = _startPosition;
-        transform.SetParent(_parentBeforeDrag);
-        _canvasGroup.blocksRaycasts = true;
-    }
+            Vector3 newWorldPosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenCoords.z));
 
-    public void OnPointerDown(PointerEventData eventData)
-    {      
-        _parentBeforeDrag = transform.parent;
-        transform.SetParent(transform.root);
+            transform.position = newWorldPosition;
 
-        Vector2 startPosition = rectTransform.transform.localPosition;
-        Vector2 newPosition = new Vector2(0, startPosition.y + 100);
+            UpdateCurrentCell();
+        }
 
-        rectTransform.transform.localPosition = newPosition;
-    }
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            transform.position = _startPosition;
+            transform.SetParent(_parentBeforeDrag);
+            _canvasGroup.blocksRaycasts = true;
+        }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        transform.SetParent(_parentBeforeDrag);
+        public void OnPointerDown(PointerEventData eventData)
+        {      
+            _parentBeforeDrag = transform.parent;
+            transform.SetParent(transform.root);
+
+            Vector2 startPosition = rectTransform.transform.localPosition;
+            Vector2 newPosition = new Vector2(0, startPosition.y + 100);
+
+            rectTransform.transform.localPosition = newPosition;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            transform.SetParent(_parentBeforeDrag);
+        }
+
+        private void UpdateCurrentCell()
+        {
+            if (Camera.main == null) return;
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out var hit)) return;
+            
+            var cell = hit.collider.GetComponent<Cell>();
+        }
     }
 }

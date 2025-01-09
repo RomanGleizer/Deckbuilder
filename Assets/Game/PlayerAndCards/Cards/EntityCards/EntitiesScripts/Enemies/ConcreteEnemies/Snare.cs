@@ -2,7 +2,7 @@
 {
     protected override void InitBehaviours()
     {
-        _attackBh = new DamageAndDestroyAttackBh(this);
+        _attackBh = _instantiator.Instantiate<DamageAndDestroyAttackBh>(new object[] { this });
         base.InitBehaviours();
     }
 }

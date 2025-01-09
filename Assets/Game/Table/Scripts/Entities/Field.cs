@@ -46,7 +46,11 @@ namespace Game.Table.Scripts.Entities
                 _traversedCells.Add(cell);
             }
         }
-
+        
+        public Cell GetCellAt(int row, int column)
+        {
+            return IsWithinBounds(row, column) ? _cells[row, column] : null;
+        }
         
         public Cell[] GetTraversedCells()
         {
@@ -68,7 +72,16 @@ namespace Game.Table.Scripts.Entities
         {
             return GetCellsInLine(cell.ColumnId, isRow: false, includeHidden);
         }
-
+        
+        public Cell[] GetColumnById(int columnId, bool includeHidden)
+        {
+            if (columnId >= 0 && columnId < ColumnsCount) 
+                return GetCellsInLine(columnId, isRow: false, includeHidden);
+            
+            Debug.LogError($"Column ID {columnId} is out of bounds.");
+            return Array.Empty<Cell>();
+        }
+        
         public Cell GetRandomActiveCell(Cell currentCell)
         {
             var activeCells = new List<Cell>();
@@ -96,7 +109,7 @@ namespace Game.Table.Scripts.Entities
             if (IsWithinBounds(newRow, newColumn))
                 return _cells[newRow, newColumn];
 
-            Debug.LogError("Target cell is out of bounds.");
+            Debug.LogWarning("Target cell is out of bounds.");
             return null;
         }
 
@@ -155,6 +168,11 @@ namespace Game.Table.Scripts.Entities
             _cells = new Cell[rows, columns];
             foreach (var cell in cellsList)
                 _cells[cell.RowId, cell.ColumnId] = cell;
+        }
+
+        public bool MoveEnemyToColumn(EnemyCard enemy, int targetColumn)
+        {
+            return true;
         }
     }
 }

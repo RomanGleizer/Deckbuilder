@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DeckOpenButton : CustomButton
 {
+    [SerializeField] private GameObject deckWindow;
     protected override void OnClick()
     {
-        //здесть бует открытие колоды
-        throw new System.NotImplementedException();
+        deckWindow.SetActive(true);
     }
 }
