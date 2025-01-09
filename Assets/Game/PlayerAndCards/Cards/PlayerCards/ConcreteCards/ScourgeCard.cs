@@ -16,9 +16,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
         private CancellationTokenSource _cancellationTokenSource;
         
         [Inject]
-        private void Construct(CommandFactory commandFactory)
+        private void Construct(CommandFactory commandFactory, CommandInvoker commandInvoker)
         {
             _commandFactory = commandFactory;
+            _commandInvoker = commandInvoker;
         }
 
         public override void Use()
