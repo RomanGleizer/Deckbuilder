@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0449\u0438\u043A"
       objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.y
+      value: 0.97083336
+      objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 967a33ed50b71184fb6d96313596d0d9, type: 3}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_Size.x
       value: 1.2475
@@ -74,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8081932519091562319, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

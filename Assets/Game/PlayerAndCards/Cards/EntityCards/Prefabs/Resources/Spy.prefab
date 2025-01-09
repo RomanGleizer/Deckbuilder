@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u0428\u043F\u0438\u043E\u043D"
       objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Size.y
+      value: 0.97083336
+      objectReference: {fileID: 0}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ce77baaaf763ba142ad384e148f1cf3f, type: 3}
+    - target: {fileID: 2909533475528963906, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4103879458402518328, guid: ec953fb477c0b61438e96202716edcb7, type: 3}
       propertyPath: m_Sprite
       value: 
