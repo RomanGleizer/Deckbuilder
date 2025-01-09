@@ -5,7 +5,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 {
     public class CardTriggerHandler : MonoBehaviour
     {
-        public static Cell CurrentCell { get; private set; }
+        public Cell CurrentCell { get; private set; }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -16,13 +16,13 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
             }
         }
 
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            var cell = other.GetComponent<Cell>();
-            if (cell == CurrentCell)
-            {
-                CurrentCell = null;
-            }
-        }
+        // private void OnTriggerExit2D(Collider2D other)
+        // {
+        //     var cell = other.GetComponent<Cell>();
+        //     if (cell == CurrentCell)
+        //     {
+        //         CurrentCell = null;
+        //     }
+        // }
     }
 }
