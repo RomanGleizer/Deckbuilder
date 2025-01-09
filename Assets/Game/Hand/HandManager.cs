@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class HandManager : MonoBehaviour
 {
@@ -16,6 +17,14 @@ public class HandManager : MonoBehaviour
     private List<GameObject> cardsInHand = new List<GameObject>();
     private List<CardInDesk> cardInDeck;
 
+    private IInstantiator _instatiator;
+
+    [Inject]
+    private void Construct(IInstantiator instatiator)
+    {
+        _instatiator = instatiator;
+    }
+    
     void Start()
     {
         cardInDeck = FindObjectsOfType<CardInDesk>(true).ToList();
@@ -54,13 +63,14 @@ public class HandManager : MonoBehaviour
     {
         string cardName = nameOfCard+"Card";
         string prefabPath = "PlayerCards/Prefabs/" + cardName;
-        GameObject card = Resources.Load<GameObject>(prefabPath);
+        PlayerCard card = Resources.Load<PlayerCard>(prefabPath);
 
-        GameObject newCard = Instantiate(card, handPanel);
+        PlayerCard newCard = _instatiator.InstantiatePrefabForComponent<PlayerCard>(card, handPanel);
+        
         Image cardImage = newCard.GetComponent<Image>();
         cardImage.sprite = imageOfCard;
 
-        cardsInHand.Add(newCard);
+        cardsInHand.Add(newCard.gameObject);
     }
 
     public void DeleteCard(GameObject card)

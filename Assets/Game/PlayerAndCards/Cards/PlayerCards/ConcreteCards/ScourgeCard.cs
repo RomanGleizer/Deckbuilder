@@ -13,7 +13,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
         private CommandFactory _commandFactory;
         private CommandInvoker _commandInvoker; 
         
-        private CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         
         [Inject]
         private void Construct(CommandFactory commandFactory, CommandInvoker commandInvoker)
