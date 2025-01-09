@@ -16,7 +16,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 
         protected Player Player => _player;
         protected Field Field => _field;
-        protected Cell CurrentCell => _triggerHandler?.CurrentCell;
+        protected Cell CurrentCell => CardTriggerHandler.CurrentCell;
 
         protected PlayerCardData CardData => _cardData;
 
