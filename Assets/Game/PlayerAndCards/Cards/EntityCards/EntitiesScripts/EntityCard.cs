@@ -2,6 +2,7 @@ using Game.Table.Scripts.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,11 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
     [SerializeField] protected Cell _currentCell;
     [SerializeField] protected EntityData _entityData;
 
+    [SerializeField] private TextMeshPro _hpIndicator;
+    [SerializeField] private TextMeshPro _shieldIndicator;
+
+    protected EntityCardsIndicators _indicators;
+    
     public EntityType EntityType => _entityData.Type;
 
     public Cell CurrentCell => _currentCell;
@@ -33,6 +39,8 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
     {
         var subscribeHandler = _instantiator.Instantiate<SubscribeHandler>();
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
+        
+        _indicators = new EntityCardsIndicators(_hpIndicator, _shieldIndicator, 0, 0);
     }
 
     public void SetStartCell(Cell cell)
@@ -85,7 +93,7 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
         _currentCell = null;
     }
 
-    public virtual void OnMouseDown() // Тестовый метод для проверки игрового цикла. TODO: потом удалить
+    public virtual void OnMouseDown() // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. TODO: пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     {
         if (_turnManager.IsPlayerTurn) Death();
     }

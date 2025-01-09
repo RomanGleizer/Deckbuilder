@@ -43,6 +43,8 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
 
         base.Init();
 
+        _indicators.UpdateIndicators(_hp, _shield);
+        
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>(); // TODO: удалить
         _activeColor = Color.green; // TODO: удалить
     }
@@ -57,6 +59,7 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
         if (!_isInvincibility)
         {
             _takeDamageBh.TakeDamage(damage, ref _hp);
+            _indicators.UpdateIndicators(_hp, 0);
         }
     }
 
