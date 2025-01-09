@@ -222,6 +222,29 @@ public class RowMoveCommand : Command
     }
 }
 
+public class ScourgeCommand : Command
+{
+    private Queue<Command> _commands;
+
+    public ScourgeCommand(MoveCommand targetMoveCommand, Command rowMoveCommand)
+    {
+        _commands = new Queue<Command>();
+        _commands.Enqueue(targetMoveCommand);
+        _commands.Enqueue(rowMoveCommand);
+    }
+    
+    public async override Task Execute(CancellationToken token)
+    {
+        await base.Execute(token);
+        if (token.IsCancellationRequested) return;
+        while (_commands.Count > 0)
+        {
+            await _commands.Dequeue().Execute(token);
+            if (token.IsCancellationRequested) return;
+        }
+    }
+}
+
 public class SpawnFromQueueCommand : Command
 {
     private LevelPlacementStackController _stackController;
