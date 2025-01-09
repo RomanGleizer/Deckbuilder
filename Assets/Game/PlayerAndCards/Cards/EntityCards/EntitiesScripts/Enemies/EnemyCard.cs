@@ -66,6 +66,8 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
             var remainDamage = damage - _shield;
             _shield = Mathf.Clamp(_shield - damage, 0, _shield);
             if (remainDamage > 0) _takeDamageBh.TakeDamage(remainDamage, ref _hp);
+            
+            _indicators.UpdateIndicators(_hp, _shield);
         }
     }
     
