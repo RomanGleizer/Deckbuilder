@@ -28,6 +28,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                     stunnableEnemy.Stun(1);
                 }
             }
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()

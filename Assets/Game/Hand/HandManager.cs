@@ -69,7 +69,7 @@ public class HandManager : MonoBehaviour
             string nameOfCard = cardInDeck[numberOfCard].PlayerCardData.name;
             Sprite imageOfCard = cardInDeck[numberOfCard].PlayerCardData.Sprite;
 
-            if (cardInDeck[numberOfCard].CountOfCard >= 0)
+            if (cardInDeck[numberOfCard].CountOfCard > 0)
             {
                 AddCard(nameOfCard, imageOfCard);
                 cardInDeck[numberOfCard].CountOfCard--;

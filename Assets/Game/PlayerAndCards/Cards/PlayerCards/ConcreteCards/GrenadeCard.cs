@@ -23,6 +23,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             }
             
             SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()

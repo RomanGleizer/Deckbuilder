@@ -13,6 +13,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
             Player.AddShieldDuration(2);
             SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()

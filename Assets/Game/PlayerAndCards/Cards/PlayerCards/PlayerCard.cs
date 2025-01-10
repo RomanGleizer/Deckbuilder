@@ -21,6 +21,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
 
         protected PlayerCardData CardData => _cardData;
 
+        protected HandManager HandManager => _handManager;
+
         public bool IsCanUse { get; set; }
 
         private void Awake()
@@ -58,8 +60,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
             if (CurrentCell == null)
                 return;
 
-            Use();
-            _handManager.DeleteCardFromHand(this);
+            if (CurrentCell.IsBusy && !CurrentCell.IsHidden)
+            {
+                Use();
+            }            
         }
     }
 }

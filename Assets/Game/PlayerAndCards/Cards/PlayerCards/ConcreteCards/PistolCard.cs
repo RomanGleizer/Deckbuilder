@@ -23,6 +23,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
             enemy.TakeDamage(CardData.Damage);
             SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()
