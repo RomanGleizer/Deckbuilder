@@ -3515,6 +3515,7 @@ MonoBehaviour:
   _playerData: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
   _healthIndicator: {fileID: 302013967}
   _energyIndicator: {fileID: 520391513}
+  _shieldIndicator: {fileID: 1231589507}
 --- !u!1 &592408586
 GameObject:
   m_ObjectHideFlags: 0
@@ -7068,7 +7069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1231589503}
   - component: {fileID: 1231589506}
-  - component: {fileID: 1231589505}
+  - component: {fileID: 1231589507}
   - component: {fileID: 1231589504}
   m_Layer: 5
   m_Name: PlayerShield
@@ -7127,19 +7128,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1231589505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1231589502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afb07959385adc9429edf3b821c92400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _text: {fileID: 935585658}
 --- !u!222 &1231589506
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7148,6 +7136,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231589502}
   m_CullTransparentMesh: 1
+--- !u!114 &1231589507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231589502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d69c8011d205004aa335baf0c575e49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 935585658}
 --- !u!1 &1248859488
 GameObject:
   m_ObjectHideFlags: 0
