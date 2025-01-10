@@ -13,8 +13,9 @@ public class HpIndicator : MonoBehaviour
         _text.text = value.ToString() + '/' + _maxHp.ToString() + " жизней";
     }
 
-    //public void UpdateIndicator(int value, int maxValue = 0)
-    //{
-
-    //}
+    public void UpdateIndicator(int value, int maxValue)
+    {
+        _maxHp = maxValue;
+        _text.text = value.ToString() + '/' + _maxHp.ToString() + " жизней";
+    }
 }

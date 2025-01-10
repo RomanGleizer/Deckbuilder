@@ -12,8 +12,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] private int maxCards = 8;
     [SerializeField] private int countChangeCards = 4;
     
-    private List<PlayerCard> cardsInHand;
-    private List<CardInDesk> cardInDeck;
+    private List<PlayerCard> cardsInHand = new List<PlayerCard>();
+    private List<CardInDesk> cardInDeck = new List<CardInDesk>();
     private int cardInDeskCount;
 
     private IInstantiator _instatiator;
@@ -60,13 +60,10 @@ public class HandManager : MonoBehaviour
 
     public void FillHandAfter()
     {
-        int cardCount = Random.Range(1, maxCards - cardsInHand.Count);
+        int cardCount = maxCards - cardsInHand.Count;
 
         for (int i = 0; i < cardCount; i++)
-        {
-            int numberCardInHand = Random.Range(0, cardsInHand.Count);
-            ReturnCardInDeck(numberCardInHand);
-
+        {            
             int numberOfCard = Random.Range(0, cardInDeck.Count);
             string nameOfCard = cardInDeck[numberOfCard].PlayerCardData.name;
             Sprite imageOfCard = cardInDeck[numberOfCard].PlayerCardData.Sprite;
@@ -144,8 +141,8 @@ public class HandManager : MonoBehaviour
     public void ReturnCardInDeck(int number)
     {
         PlayerCard card = cardsInHand[number];
-        string cardName = card.name.Replace("Card", "");
-        CardInDesk cardData = cardInDeck.FirstOrDefault(c => c.PlayerCardData.name == cardName);
+        string cardName = card.name.Replace("Card", "").Replace("(Clone)", "").Trim();
+        CardInDesk cardData = cardInDeck.Find(c => c.PlayerCardData.name == cardName);
         cardData.CountOfCard++;
         DeleteCardFromHand(card);
     }

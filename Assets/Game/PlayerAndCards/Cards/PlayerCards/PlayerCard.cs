@@ -13,6 +13,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         private Player _player;
         private Field _field;
         private CardTriggerHandler _triggerHandler;
+        private HandManager _handManager;
 
         protected Player Player => _player;
         protected Field Field => _field;
@@ -26,6 +27,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         {
             _player = FindObjectOfType<Player>();
             _field = FindObjectOfType<Field>();
+            _handManager = FindObjectOfType<HandManager>();
             _triggerHandler = GetComponent<CardTriggerHandler>();
             if (_triggerHandler == null)
             {
@@ -57,6 +59,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
                 return;
 
             Use();
+            _handManager.DeleteCardFromHand(this);
         }
     }
 }

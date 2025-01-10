@@ -11,6 +11,8 @@ namespace Game.PlayerAndCards.PlayerScripts
     {
         [SerializeField] private PlayerData _playerData;
         [SerializeField] private HpIndicator _healthIndicator;
+        [SerializeField] private EnergyIndicator _energyIndicator;
+        [SerializeField] private ShieldIndicator _shieldIndicator;
 
         private PlayerData _playerDataInstance;
         private int _currentEnergy;
@@ -27,7 +29,10 @@ namespace Game.PlayerAndCards.PlayerScripts
         private void Awake()
         {
             _playerDataInstance = ScriptableObject.Instantiate(_playerData);
-            _healthIndicator.UpdateIndicator(_playerDataInstance.Health);
+            _healthIndicator.UpdateIndicator(_playerDataInstance.Health, _playerDataInstance.Health);
+            _energyIndicator.UpdateIndicator(_playerDataInstance.MaxEnergy, _playerDataInstance.MaxEnergy);
+            _shieldIndicator.UpdateIndicator(_playerDataInstance.Shield);
+            _shieldDuration = _playerDataInstance.Shield;
             _currentEnergy = _playerDataInstance.MaxEnergy;
         }
 
@@ -46,11 +51,13 @@ namespace Game.PlayerAndCards.PlayerScripts
             }
 
             _currentEnergy -= amount;
+            _energyIndicator.UpdateIndicator(_currentEnergy);
         }
 
         public void RegenerateEnergy()
         {
             _currentEnergy = _playerDataInstance.MaxEnergy;
+            _energyIndicator.UpdateIndicator(_currentEnergy);
         }
 
         public void TakeDamage(int damage)
@@ -58,6 +65,7 @@ namespace Game.PlayerAndCards.PlayerScripts
             if (_shieldDuration > 0)
             {
                 _shieldDuration--;
+                _shieldIndicator.UpdateIndicator(_shieldDuration);
                 return;
             }
 
@@ -71,6 +79,7 @@ namespace Game.PlayerAndCards.PlayerScripts
         public void AddShieldDuration(int duration)
         {
             _shieldDuration += duration;
+            _shieldIndicator.UpdateIndicator(_shieldDuration);
         }
         
         public void Stun(int duration)

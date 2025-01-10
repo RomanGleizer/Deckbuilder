@@ -16,5 +16,7 @@ namespace Game.PlayerAndCards.PlayerScripts
         }
         
         public int MaxEnergy => _maxEnergy;
+
+        public int Shield => _shield;
     }
 }

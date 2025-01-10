@@ -31,4 +31,9 @@ public class CardInDesk : MonoBehaviour
         _cardImage.sprite = _playerCardData.Sprite;
         _cardCountText.text = "x" + _countOfCard;
     }
+
+    private void OnEnable()
+    {
+        _cardCountText.text = "x" + _countOfCard;
+    }
 }
