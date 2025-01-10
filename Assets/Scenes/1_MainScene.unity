@@ -483,6 +483,7 @@ MonoBehaviour:
   _spawnPoint: {fileID: 965622822}
   _switchButton: {fileID: 854641114}
   _turnWarningText: {fileID: 173606396}
+  _handManager: {fileID: 443116877}
 --- !u!114 &97781436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3514,8 +3515,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
   _healthIndicator: {fileID: 302013967}
-  _energyIndicator: {fileID: 520391513}
-  _shieldIndicator: {fileID: 1231589507}
+  _energyIndicator: {fileID: 0}
+  _shieldIndicator: {fileID: 0}
 --- !u!1 &592408586
 GameObject:
   m_ObjectHideFlags: 0

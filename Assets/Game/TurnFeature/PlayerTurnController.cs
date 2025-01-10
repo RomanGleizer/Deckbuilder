@@ -4,11 +4,12 @@ using Zenject;
 public class PlayerTurnController
 {
     private TurnManager _turnManager;
+    private HandManager _handManager;
 
     private Player _player;
 
     [Inject]
-    private void Construct(IInstantiator instantiator, TurnManager turnManager, Player player)
+    private void Construct(IInstantiator instantiator, TurnManager turnManager, Player player, HandManager handManager)
     {
         _turnManager = turnManager;
 
@@ -16,6 +17,8 @@ public class PlayerTurnController
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
 
         _player = player;
+        
+        _handManager = handManager;
     }
 
     private void ActivatePlayerTurn()
@@ -23,7 +26,8 @@ public class PlayerTurnController
         if (_player.IsStunned) _turnManager.ChangeTurn();
         else
         {
-            // Player turn logic
+            _player.RegenerateEnergy();
+            _handManager.FillHandAfter();
         }
     }
 

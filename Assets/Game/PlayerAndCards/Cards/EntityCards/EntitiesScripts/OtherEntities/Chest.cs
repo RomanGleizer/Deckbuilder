@@ -1,7 +1,16 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class Chest : EntityCard
 {
+    private HandManager _handManager;
+
+    [Inject]
+    private void Construct(HandManager handManager)
+    {
+        _handManager = handManager; 
+    }
+    
     public override void Init()
     {
         base.Init();
@@ -10,8 +19,7 @@ public class Chest : EntityCard
     
     public override void Death()
     {
-        //TODO: Логика добавления карт
-        Debug.Log("Add cards");
+        //TODO: Добавить логику добавления карт
         base.Death();
     }
 }

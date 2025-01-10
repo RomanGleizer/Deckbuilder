@@ -21,7 +21,9 @@ public class SceneContextInstaller : MonoInstaller
 
     [SerializeField] private Button _switchButton;
     [SerializeField] private TextMeshProUGUI _turnWarningText;
- 
+
+    [SerializeField] private HandManager _handManager;
+    
     public override void InstallBindings()
     {
         Bind();
@@ -39,12 +41,13 @@ public class SceneContextInstaller : MonoInstaller
         BindPlayer();
         BindEntitySpawnSystem();
 
+        BindHandManager();
         BindTurnSystems();
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
     }
-
+    
     private void BindLevelPlacementStackController()
     {
 #if UNITY_EDITOR
@@ -84,6 +87,11 @@ public class SceneContextInstaller : MonoInstaller
         Container.Bind<LevelInitializator>().FromNew().AsSingle();
     }
 
+    private void BindHandManager()
+    {
+        BindService(_handManager);
+    }
+    
     private void BindService<T>(T service)
     {
         Container.Bind<T>().FromInstance(service).AsSingle();
