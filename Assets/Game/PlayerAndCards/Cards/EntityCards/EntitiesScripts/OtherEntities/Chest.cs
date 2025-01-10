@@ -16,6 +16,11 @@ public class Chest : EntityCard
         base.Init();
         _indicators.UpdateIndicators(0, 0);
     }
+
+    public override void OnMouseDown()
+    {
+        Death();
+    }
     
     public override void Death()
     {

@@ -97,8 +97,6 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
 
     public virtual void OnMouseDown() 
     {
-        // Тестовый метод для проверки игрового цикла. TODO: потом удалить
-        //if (_turnManager.IsPlayerTurn) Death();
         GameObject pauseControllerGO = GameObject.Find("PauseController");
         PauseController pauseCtrl = pauseControllerGO.GetComponent<PauseController>();
         if (pauseCtrl.isInGame)
