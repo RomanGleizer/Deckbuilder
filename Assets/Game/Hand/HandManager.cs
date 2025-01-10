@@ -11,6 +11,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] private int minCards = 5;
     [SerializeField] private int maxCards = 8;
     [SerializeField] private int countChangeCards = 4;
+    [SerializeField] private int cardFromChest = 5;
     
     private List<PlayerCard> cardsInHand = new List<PlayerCard>();
     private List<CardInDesk> cardInDeck = new List<CardInDesk>();
@@ -152,6 +153,16 @@ public class HandManager : MonoBehaviour
         cardsInHand.Remove(card);
         Destroy(card.gameObject);
     }    
+
+    public void AddCardsInDeck()
+    {
+        for (int i = 0; i < cardFromChest; i++)
+        {
+            int numberOfCard = Random.Range(0, cardInDeck.Count);
+            CardInDesk cardData = cardInDeck[numberOfCard];
+            cardData.CountOfCard++;
+        }
+    }
 
     public void UpdateSpacing()
     {

@@ -104,10 +104,13 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
             GameObject enemyInfoCardGO = FindObjectOfType<EnemyInfoCard>(true).gameObject;
             if (enemyInfoCardGO != null)
             {
-                enemyInfoCardGO.SetActive(true);
-                EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
-                enemyInfoCard.Name.text = _entityData.TypeOnRussian;
-                enemyInfoCard.Description.text = _entityData.Description;
+                if (_entityData.name != "ChestData")
+                {
+                    enemyInfoCardGO.SetActive(true);
+                    EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
+                    enemyInfoCard.Name.text = _entityData.TypeOnRussian;
+                    enemyInfoCard.Description.text = _entityData.Description;
+                }                
             }
         }
     }

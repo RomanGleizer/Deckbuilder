@@ -24,7 +24,7 @@ public class Chest : EntityCard
     
     public override void Death()
     {
-        //TODO: Добавить логику добавления карт
+        _handManager.AddCardsInDeck();
         base.Death();
     }
 }
