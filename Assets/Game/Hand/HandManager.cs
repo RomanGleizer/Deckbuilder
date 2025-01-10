@@ -9,11 +9,12 @@ public class HandManager : MonoBehaviour
 {
     [SerializeField] private Transform handPanel;
     [SerializeField] private int minCards = 5;
-    [SerializeField] private int maxCards = 15;
+    [SerializeField] private int maxCards = 8;
+    [SerializeField] private int countChangeCards = 4;
     
     private List<PlayerCard> cardsInHand;
     private List<CardInDesk> cardInDeck;
-    private List<int> numberOfCardsInHand;
+    private int cardInDeskCount;
 
     private IInstantiator _instatiator;
 
@@ -26,14 +27,17 @@ public class HandManager : MonoBehaviour
     void Start()
     {
         cardInDeck = FindObjectsOfType<CardInDesk>(true).ToList();
+        cardInDeskCount = 0;
+        foreach (CardInDesk card in cardInDeck)
+        {
+            cardInDeskCount += card.CountOfCard;
+        }
+        FillHandFirst();
     }
 
-    public void RedrawCardsInHand()
+    public void FillHandFirst()
     {
-        ClearHand();        
-
-        int cardCount = Random.Range(minCards, maxCards + 1);   
-
+        int cardCount = Random.Range(minCards, maxCards + 1);
         for (int i = 0; i < cardCount; i++)
         {
             int numberOfCard = Random.Range(0, cardInDeck.Count);
@@ -43,7 +47,6 @@ public class HandManager : MonoBehaviour
             if (cardInDeck[numberOfCard].CountOfCard >= 0)
             {
                 AddCard(nameOfCard, imageOfCard);
-                numberOfCardsInHand.Add(numberOfCard);
                 cardInDeck[numberOfCard].CountOfCard--;
             }
             else
@@ -51,6 +54,77 @@ public class HandManager : MonoBehaviour
                 cardCount++;
             }
         }
+        UpdateSpacing();
+
+    }
+
+    public void FillHandAfter()
+    {
+        int cardCount = Random.Range(1, maxCards - cardsInHand.Count);
+
+        for (int i = 0; i < cardCount; i++)
+        {
+            int numberCardInHand = Random.Range(0, cardsInHand.Count);
+            ReturnCardInDeck(numberCardInHand);
+
+            int numberOfCard = Random.Range(0, cardInDeck.Count);
+            string nameOfCard = cardInDeck[numberOfCard].PlayerCardData.name;
+            Sprite imageOfCard = cardInDeck[numberOfCard].PlayerCardData.Sprite;
+
+            if (cardInDeck[numberOfCard].CountOfCard >= 0)
+            {
+                AddCard(nameOfCard, imageOfCard);
+                cardInDeck[numberOfCard].CountOfCard--;
+            }
+            else
+            {
+                cardCount++;
+            }
+        }
+        UpdateSpacing();
+    }
+
+    public void RedrawCardsInHand()
+    {
+        int cardCount = 0;
+
+        if (cardInDeskCount >= countChangeCards && cardsInHand.Count >= countChangeCards)
+        {
+            cardCount = countChangeCards;
+        }
+        else if (cardInDeskCount < countChangeCards && cardsInHand.Count >= countChangeCards)
+        {
+            cardCount = cardInDeskCount;
+        }
+        else if (cardInDeskCount >= countChangeCards && cardsInHand.Count < countChangeCards)
+        {
+            cardCount = cardsInHand.Count;
+        }
+        else if (cardInDeskCount < countChangeCards && cardsInHand.Count < countChangeCards)
+        {
+            cardCount = Mathf.Min(cardInDeskCount, cardsInHand.Count);
+        }
+
+        for (int i = 0; i < cardCount; i++)
+        {
+            int numberCardInHand = Random.Range(0, cardsInHand.Count);
+            ReturnCardInDeck(numberCardInHand);
+
+            int numberOfCard = Random.Range(0, cardInDeck.Count);
+            string nameOfCard = cardInDeck[numberOfCard].PlayerCardData.name;
+            Sprite imageOfCard = cardInDeck[numberOfCard].PlayerCardData.Sprite;
+
+            if (cardInDeck[numberOfCard].CountOfCard >= 0)
+            {
+                AddCard(nameOfCard, imageOfCard);
+                cardInDeck[numberOfCard].CountOfCard--;
+            }
+            else
+            {
+                cardCount++;
+            }
+        }
+        UpdateSpacing();
     }
 
     public void AddCard(string nameOfCard, Sprite imageOfCard)
@@ -67,29 +141,20 @@ public class HandManager : MonoBehaviour
         cardsInHand.Add(newCard);        
     }
 
-    public void ReturnCardsInDeck()
+    public void ReturnCardInDeck(int number)
     {
-        foreach (int number in numberOfCardsInHand)
-        {
-            cardInDeck[number].CountOfCard++;
-        }
-        ClearHand();
+        PlayerCard card = cardsInHand[number];
+        string cardName = card.name.Replace("Card", "");
+        CardInDesk cardData = cardInDeck.FirstOrDefault(c => c.PlayerCardData.name == cardName);
+        cardData.CountOfCard++;
+        DeleteCardFromHand(card);
     }
 
-    public void DeleteCard(PlayerCard card)
+    public void DeleteCardFromHand(PlayerCard card)
     {
+        cardsInHand.Remove(card);
         Destroy(card.gameObject);
-    }
-
-    public void ClearHand()
-    {
-        foreach (PlayerCard card in cardsInHand)
-        {
-            DeleteCard(card);
-        }
-        cardsInHand.Clear();
-        numberOfCardsInHand.Clear();
-    }
+    }    
 
     public void UpdateSpacing()
     {
@@ -100,12 +165,12 @@ public class HandManager : MonoBehaviour
         if (cardCount == 6) horizontalPanel.spacing = -20f;
         if (cardCount == 7) horizontalPanel.spacing = -46f;
         if (cardCount == 8) horizontalPanel.spacing = -66f;
-        if (cardCount == 9) horizontalPanel.spacing = -78f;
-        if (cardCount == 10) horizontalPanel.spacing = -89f;
-        if (cardCount == 11) horizontalPanel.spacing = -99f;
-        if (cardCount == 12) horizontalPanel.spacing = -106f;
-        if (cardCount == 13) horizontalPanel.spacing = -112f;
-        if (cardCount == 14) horizontalPanel.spacing = -117f;
-        if (cardCount == 15) horizontalPanel.spacing = -122f;
+        //if (cardCount == 9) horizontalPanel.spacing = -78f;
+        //if (cardCount == 10) horizontalPanel.spacing = -89f;
+        //if (cardCount == 11) horizontalPanel.spacing = -99f;
+        //if (cardCount == 12) horizontalPanel.spacing = -106f;
+        //if (cardCount == 13) horizontalPanel.spacing = -112f;
+        //if (cardCount == 14) horizontalPanel.spacing = -117f;
+        //if (cardCount == 15) horizontalPanel.spacing = -122f;
     }
 }

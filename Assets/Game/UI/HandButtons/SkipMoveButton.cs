@@ -7,6 +7,6 @@ public class SkipMoveButton : CustomButton
     [SerializeField] HandManager _manager;
     protected override void OnClick()
     {
-        _manager.ClearHand();
+        //_manager.ClearHand();
     }
 }
