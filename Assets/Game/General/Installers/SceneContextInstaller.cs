@@ -10,7 +10,10 @@ using Zenject;
 public class SceneContextInstaller : MonoInstaller
 {
     [SerializeField] private LevelPlacement _levelPlacement;
+#if UNITY_EDITOR
     [SerializeField] private QueuesEditorVisual _queueVisual;
+#endif
+
 
     [SerializeField] private Field _field;
     [SerializeField] private Player _player;

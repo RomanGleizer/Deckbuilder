@@ -62,7 +62,9 @@ namespace Game.Table.Scripts.Generation
                     var isHidden = column is 3 or 4;
                     cell.Initialize(row, column, isHidden);
 
+#if UNITY_EDITOR
                     Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
+#endif
                 }
         }
     }
