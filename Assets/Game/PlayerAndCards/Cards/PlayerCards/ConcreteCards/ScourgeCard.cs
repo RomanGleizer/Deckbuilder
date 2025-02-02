@@ -51,7 +51,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
         {
             return CurrentCell != null && (CurrentCell.IsHidden
                                            || CurrentCell?.ColumnId == 0 
-                                           || CurrentCell?.GetObjectOnCell<EnemyCard>() == null)
+                                           || CurrentCell?.GetObjectOnCell<IMoverToCell>() == null)
                 ? new Cell[] {} 
                 : new[] { CurrentCell };
         }

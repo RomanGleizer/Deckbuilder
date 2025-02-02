@@ -8,35 +8,32 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
     {
         public override void Use()
         {
-            if (!CanSpendEnergy(CardData.EnergyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
-            
+
             var targetCells = GetValidCells();
-            if (targetCells.Length == 0) 
+            if (targetCells.Length == 0)
                 return;
 
             var targetCell = targetCells[0];
-            var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-            if (enemy.HasShield)
-            {
-                enemy.BreakShield();
-            }
-            else
-            {
-                if (enemy is IStunnable stunnableEnemy)
-                {
-                    stunnableEnemy.Stun(1);
-                }
-            }
+            
+            var haveShieldEnemy = targetCell.GetObjectOnCell<IHaveShield>();
+            haveShieldEnemy.BreakShield();
+            
+            var stunnableEnemy = targetCell.GetObjectOnCell<IStunnable>();
+            stunnableEnemy.Stun(1);
+            
+            SpendEnergy(CardData.EnergyCost);
             HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()
         {
             return CurrentCell.IsHidden
-                   || CurrentCell?.GetObjectOnCell<EnemyCard>() == null
+                   || (CurrentCell.GetObjectOnCell<IHaveShield>() == null &&
+                   CurrentCell.GetObjectOnCell<IStunnable>() == null)
                 ? new Cell[] { }
-                : new [] { CurrentCell };
+                : new[] { CurrentCell };
         }
     }
 }

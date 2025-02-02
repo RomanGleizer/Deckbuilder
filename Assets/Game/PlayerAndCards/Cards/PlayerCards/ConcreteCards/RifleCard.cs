@@ -17,7 +17,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 return;
 
             var targetCell = targetCells[0];
-            var enemy = targetCell.GetObjectOnCell<EnemyCard>();
+            var enemy = targetCell.GetObjectOnCell<ITakerDamage>();
 
             enemy.TakeDamage(CardData.Damage);
             SpendEnergy(CardData.EnergyCost);
@@ -28,7 +28,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
         {
             return CurrentCell.IsHidden
                    || CurrentCell?.ColumnId == 0 
-                   || CurrentCell?.GetObjectOnCell<EnemyCard>() == null
+                   || CurrentCell?.GetObjectOnCell<ITakerDamage>() == null
                 ? new Cell[] { }
                 : new [] { CurrentCell };
         }

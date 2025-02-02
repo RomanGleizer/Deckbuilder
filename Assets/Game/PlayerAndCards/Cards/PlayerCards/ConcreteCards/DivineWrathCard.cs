@@ -17,7 +17,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 return;
             
             foreach (var enemy in validCells.Select(cell => 
-                         cell.GetObjectOnCell<EnemyCard>()))
+                         cell.GetObjectOnCell<ITakerDamage>()))
             {
                 enemy.TakeDamage(CardData.Damage);
             }
@@ -28,15 +28,15 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 
         protected override Cell[] GetValidCells()
         {
-            if (CurrentCell.IsHidden || CurrentCell.GetObjectOnCell<EnemyCard>() == null)
+            if (CurrentCell.IsHidden || CurrentCell.GetObjectOnCell<ITakerDamage>() == null)
                 return new Cell[] {};
 
-            var enemy = CurrentCell.GetObjectOnCell<EnemyCard>();
+            var enemy = CurrentCell.GetObjectOnCell<ITakerDamage>();
             var targetEnemyType = enemy.GetType();
             
             return Field.GetTraversedCells()
-                .Where(cell=> cell.GetObjectOnCell<EnemyCard>() != null 
-                              && cell.GetObjectOnCell<EnemyCard>().GetType() == targetEnemyType)
+                .Where(cell=> cell.GetObjectOnCell<ITakerDamage>() != null 
+                              && cell.GetObjectOnCell<ITakerDamage>().GetType() == targetEnemyType)
                 .ToArray();
         }
     }

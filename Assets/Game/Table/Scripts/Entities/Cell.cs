@@ -86,5 +86,6 @@ namespace Game.Table.Scripts.Entities
             }
             return obj;
         }
+        
     }
 }
