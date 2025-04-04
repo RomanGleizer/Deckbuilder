@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class DeckOpenButton : CustomButton
 {
-    [SerializeField] private GameObject deckWindow;
+    private WindowActivator _windowActivator;
+
+    [Inject]
+    private void Construct(WindowActivator windowActivator)
+    {
+        _windowActivator = windowActivator;
+    }
+    
     protected override void OnClick()
     {
-        deckWindow.SetActive(true);
+        _windowActivator.ActivateWindow(WindowType.Deck);
     }
 }

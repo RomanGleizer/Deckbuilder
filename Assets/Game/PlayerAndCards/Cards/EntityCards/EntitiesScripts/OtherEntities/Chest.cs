@@ -3,14 +3,6 @@ using Zenject;
 
 public class Chest : EntityCard
 {
-    private HandManager _handManager;
-
-    [Inject]
-    private void Construct(HandManager handManager)
-    {
-        _handManager = handManager; 
-    }
-    
     public override void Init()
     {
         base.Init();
@@ -19,12 +11,13 @@ public class Chest : EntityCard
 
     public override void OnMouseDown()
     {
+        if (CurrentCell.ColumnId != 0) return;  
         Death();
     }
     
     public override void Death()
     {
-        _handManager.AddCardsInDeck();
+        _windowActivator.ActivateWindow(WindowType.Chest);
         base.Death();
     }
 }

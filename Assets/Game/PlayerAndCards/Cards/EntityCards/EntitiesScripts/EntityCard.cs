@@ -29,12 +29,14 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
 
     protected IInstantiator _instantiator; // for instantiate non-MonoBehaviour objs by Zenject
     private TurnManager _turnManager;
+    protected WindowActivator _windowActivator;
 
     [Inject]
-    private void Construct(IInstantiator instantiator, TurnManager turnManager)
+    private void Construct(IInstantiator instantiator, TurnManager turnManager, WindowActivator windowActivator)
     {
         _instantiator = instantiator;
         _turnManager = turnManager;
+        _windowActivator = windowActivator;
     }
 
     public virtual void Init()
@@ -101,17 +103,13 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
         PauseController pauseCtrl = pauseControllerGO.GetComponent<PauseController>();
         if (pauseCtrl.isInGame)
         {
-            GameObject enemyInfoCardGO = FindObjectOfType<EnemyInfoCard>(true).gameObject;
-            if (enemyInfoCardGO != null)
+            if (_entityData.name != "ChestData")
             {
-                if (_entityData.name != "ChestData")
-                {
-                    enemyInfoCardGO.SetActive(true);
-                    EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
-                    enemyInfoCard.Name.text = _entityData.TypeOnRussian;
-                    enemyInfoCard.Description.text = _entityData.Description;
-                }                
-            }
+                _windowActivator.ActivateWindow(WindowType.EnemyInfo);
+                EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
+                enemyInfoCard.Name.text = _entityData.TypeOnRussian;
+                enemyInfoCard.Description.text = _entityData.Description;
+            }                
         }
     }
 }

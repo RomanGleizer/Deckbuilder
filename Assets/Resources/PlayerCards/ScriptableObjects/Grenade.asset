@@ -20,3 +20,4 @@ MonoBehaviour:
     \u043A\u0440\u0435\u0441\u0442\u0430, \u043F\u043E\u0440\u0430\u0436\u0430\u0435\u0442
     5 \u0432\u0440\u0430\u0433\u043E\u0432"
   _sprite: {fileID: 21300000, guid: 81d02ea59ae18b348996b431b7228ee3, type: 3}
+  _countInChest: 2

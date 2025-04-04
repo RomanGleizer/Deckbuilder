@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardInDesk : MonoBehaviour
+public class CardInDeck : MonoBehaviour
 {
     [SerializeField] private PlayerCardData _playerCardData;
     [SerializeField] private int _countOfCard;

@@ -4,17 +4,25 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class OpenCardInfo : CustomButton
 {
-    [SerializeField] private GameObject _cardInfoWindow;
+    private WindowActivator _windowActivator;
     [SerializeField] private TextMeshProUGUI _cardName;
     [SerializeField] private TextMeshProUGUI _cardInfo;
+
+    [Inject]
+    private void Construct(WindowActivator windowActivator)
+    {
+        _windowActivator = windowActivator;
+    }
+    
     protected override void OnClick()
     {
-        CardInDesk cardData = GetComponent<CardInDesk>();
+        CardInDeck cardData = GetComponent<CardInDeck>();
 
-        _cardInfoWindow.SetActive(true);
+        _windowActivator.ActivateWindow(WindowType.CardInfo);
         _cardName.text = cardData.PlayerCardData.NameInRussian;
         _cardInfo.text = cardData.PlayerCardData.Description;        
     }

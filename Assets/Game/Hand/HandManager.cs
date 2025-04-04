@@ -14,7 +14,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] private int cardFromChest = 5;
     
     private List<PlayerCard> cardsInHand = new List<PlayerCard>();
-    private List<CardInDesk> cardInDeck = new List<CardInDesk>();
+    private List<CardInDeck> cardInDeck = new List<CardInDeck>();
     private int cardInDeskCount;
 
     private IInstantiator _instatiator;
@@ -27,9 +27,9 @@ public class HandManager : MonoBehaviour
     
     void Start()
     {
-        cardInDeck = FindObjectsOfType<CardInDesk>(true).ToList();
+        cardInDeck = FindObjectsOfType<CardInDeck>(true).ToList();
         cardInDeskCount = 0;
-        foreach (CardInDesk card in cardInDeck)
+        foreach (CardInDeck card in cardInDeck)
         {
             cardInDeskCount += card.CountOfCard;
         }
@@ -143,7 +143,7 @@ public class HandManager : MonoBehaviour
     {
         PlayerCard card = cardsInHand[number];
         string cardName = card.name.Replace("Card", "").Replace("(Clone)", "").Trim();
-        CardInDesk cardData = cardInDeck.Find(c => c.PlayerCardData.name == cardName);
+        CardInDeck cardData = cardInDeck.Find(c => c.PlayerCardData.name == cardName);
         cardData.CountOfCard++;
         DeleteCardFromHand(card);
     }
@@ -153,15 +153,24 @@ public class HandManager : MonoBehaviour
         cardsInHand.Remove(card);
         Destroy(card.gameObject);
     }    
-
-    public void AddCardsInDeck()
+    
+    public void AddCardsInDeck(PlayerCardNames cardNames, int addCount)
     {
-        for (int i = 0; i < cardFromChest; i++)
+        var card = FindCardInDeck(cardNames);
+        
+        if (card == null) return;
+        card.CountOfCard += addCount;
+    }
+
+    private CardInDeck FindCardInDeck(PlayerCardNames cardName)
+    {
+        foreach (var card in cardInDeck)
         {
-            int numberOfCard = Random.Range(0, cardInDeck.Count);
-            CardInDesk cardData = cardInDeck[numberOfCard];
-            cardData.CountOfCard++;
+            if (card.PlayerCardData.Name == cardName) return card; 
         }
+        
+        Debug.LogError($"Card with name {cardName} was not found in deck!");
+        return null;
     }
 
     public void UpdateSpacing()

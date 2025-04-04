@@ -26,6 +26,8 @@ public class SceneContextInstaller : MonoInstaller
     [SerializeField] private TextMeshProUGUI _turnWarningText;
 
     [SerializeField] private HandManager _handManager;
+    [SerializeField] private WindowActivator _windowActivator;
+    [SerializeField] private PlayerCardsContainer _cardsContainer;
     
     public override void InstallBindings()
     {
@@ -42,15 +44,29 @@ public class SceneContextInstaller : MonoInstaller
     {
         BindField();
         BindPlayer();
+        BindPlayerCardsContainer();
         BindEntitySpawnSystem();
 
         BindHandManager();
         BindTurnSystems();
+        BindWindowActivator();
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
     }
-    
+
+    private void BindPlayerCardsContainer()
+    {
+        BindService(_cardsContainer);
+        _cardsContainer.Init();
+    }
+
+    private void BindWindowActivator()
+    {
+        BindService(_windowActivator);
+        _windowActivator.Init();
+    }
+
     private void BindLevelPlacementStackController()
     {
 #if UNITY_EDITOR
