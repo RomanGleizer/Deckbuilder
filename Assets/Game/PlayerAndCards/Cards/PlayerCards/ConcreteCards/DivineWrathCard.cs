@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class DivineWrathCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 3;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
 
             var validCells = GetValidCells();
@@ -20,25 +17,26 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 return;
             
             foreach (var enemy in validCells.Select(cell => 
-                         cell.GetObjectOnCell<EnemyCard>()))
+                         cell.GetObjectOnCell<ITakerDamage>()))
             {
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(CardData.Damage);
             }
             
-            SpendEnergy(_energyCost);
+            SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()
         {
-            if (CurrentCell.IsHidden || CurrentCell.GetObjectOnCell<EnemyCard>() == null)
+            if (CurrentCell.IsHidden || CurrentCell.GetObjectOnCell<ITakerDamage>() == null)
                 return new Cell[] {};
 
-            var enemy = CurrentCell.GetObjectOnCell<EnemyCard>();
+            var enemy = CurrentCell.GetObjectOnCell<ITakerDamage>();
             var targetEnemyType = enemy.GetType();
             
             return Field.GetTraversedCells()
-                .Where(cell=> cell.GetObjectOnCell<EnemyCard>() != null 
-                              && cell.GetObjectOnCell<EnemyCard>().GetType() == targetEnemyType)
+                .Where(cell=> cell.GetObjectOnCell<ITakerDamage>() != null 
+                              && cell.GetObjectOnCell<ITakerDamage>().GetType() == targetEnemyType)
                 .ToArray();
         }
     }

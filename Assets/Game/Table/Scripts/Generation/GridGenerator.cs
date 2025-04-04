@@ -39,31 +39,33 @@ namespace Game.Table.Scripts.Generation
             );
 
             for (var row = 0; row < rows; row++)
-            for (var column = columns - 1; column >= 0; column--)
-            {
-                var position = new Vector2(
-                    startPosition.x - (columns - 1 - column) * (cellSize.x + horizontalSpacing),
-                    startPosition.y - row * (cellSize.y + verticalSpacing)
-                );
-
-                var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
-                if (!cellObject.TryGetComponent(out Cell cell))
+                for (var column = columns - 1; column >= 0; column--)
                 {
-                    Debug.LogError("Cell prefab does not have a Cell component.");
-                    continue;
-                }
-                
-                if (cellObject.GetComponent<Renderer>() == null)
-                {
-                    Debug.LogError("Cell prefab does not have a Renderer component.");
-                    continue;
-                }
+                    var position = new Vector2(
+                        startPosition.x - (columns - 1 - column) * (cellSize.x + horizontalSpacing),
+                        startPosition.y - row * (cellSize.y + verticalSpacing)
+                    );
 
-                var isHidden = column is 3 or 4;
-                cell.Initialize(row, column, isHidden);
+                    var cellObject = Instantiate(cellPrefab, position, Quaternion.identity, field.transform);
+                    if (!cellObject.TryGetComponent(out Cell cell))
+                    {
+                        Debug.LogError("Cell prefab does not have a Cell component.");
+                        continue;
+                    }
 
-                Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
-            }
+                    if (cellObject.GetComponent<Renderer>() == null)
+                    {
+                        Debug.LogError("Cell prefab does not have a Renderer component.");
+                        continue;
+                    }
+
+                    var isHidden = column is 3 or 4;
+                    cell.Initialize(row, column, isHidden);
+
+#if UNITY_EDITOR
+                    Undo.RegisterCreatedObjectUndo(cellObject, "GenerateCell");
+#endif
+                }
         }
     }
 }

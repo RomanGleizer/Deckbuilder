@@ -7,6 +7,6 @@ public class RedrawCardButton : CustomButton
     [SerializeField] private HandManager _manager;
     protected override void OnClick()
     {
-        _manager.DrawCardsInHand();
+        _manager.RedrawCardsInHand();
     }
 }

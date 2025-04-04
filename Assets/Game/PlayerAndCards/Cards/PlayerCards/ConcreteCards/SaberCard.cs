@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class SaberCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 1;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
             
             var targetCells = GetValidCells();
@@ -20,17 +17,18 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 return;
 
             var targetCell = targetCells[0];
-            var enemy = targetCell.GetObjectOnCell<EnemyCard>();
+            var enemy = targetCell.GetObjectOnCell<ITakerDamage>();
 
-            enemy.TakeDamage(_damage);
-            SpendEnergy(_energyCost);
+            enemy.TakeDamage(CardData.Damage);
+            SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()
         {
             return CurrentCell.IsHidden
                    || CurrentCell?.ColumnId != 0 
-                   || CurrentCell.GetObjectOnCell<EnemyCard>() == null
+                   || CurrentCell.GetObjectOnCell<ITakerDamage>() == null
                 ? new Cell[] {} 
                 : new[] { CurrentCell };
         }

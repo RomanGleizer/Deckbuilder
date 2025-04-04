@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.PlayerAndCards.PlayerScripts.Interfaces;
 using Game.Table.Scripts.Entities;
 using UnityEngine;
 
@@ -7,12 +8,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class CleaverCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 2;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
                 return;
 
             var validCells = GetValidCells();
@@ -22,14 +20,15 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
             foreach (var enemy in validCells.Select(cell => 
                          cell.GetObjectOnCell<EnemyCard>()))
             {
-                enemy.TakeDamage(_damage);
-                if (enemy.Health > 0)
+                enemy.TakeDamage(CardData.Damage);
+                if (enemy.Health > 0 && enemy is IStunnable stunnable)
                 {
-                    //enemy.Stun(2);
+                    stunnable.Stun(1); 
                 }
             }
 
-            SpendEnergy(_energyCost);
+            SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()

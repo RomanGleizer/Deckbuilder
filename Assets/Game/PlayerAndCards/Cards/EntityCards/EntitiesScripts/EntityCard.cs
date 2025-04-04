@@ -2,6 +2,8 @@ using Game.Table.Scripts.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -11,6 +13,11 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
     [SerializeField] protected Cell _currentCell;
     [SerializeField] protected EntityData _entityData;
 
+    [SerializeField] private TextMeshPro _hpIndicator;
+    [SerializeField] private TextMeshPro _shieldIndicator;
+
+    protected EntityCardsIndicators _indicators;
+    
     public EntityType EntityType => _entityData.Type;
 
     public Cell CurrentCell => _currentCell;
@@ -34,6 +41,8 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
     {
         var subscribeHandler = _instantiator.Instantiate<SubscribeHandler>();
         subscribeHandler.SetSubscribeActions(Subscribe, Unsubscribe);
+        
+        _indicators = new EntityCardsIndicators(_hpIndicator, _shieldIndicator, 0, 0);
     }
 
     public void SetStartCell(Cell cell)
@@ -88,8 +97,6 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
 
     public virtual void OnMouseDown() 
     {
-        // Тестовый метод для проверки игрового цикла. TODO: потом удалить
-        //if (_turnManager.IsPlayerTurn) Death();
         GameObject pauseControllerGO = GameObject.Find("PauseController");
         PauseController pauseCtrl = pauseControllerGO.GetComponent<PauseController>();
         if (pauseCtrl.isInGame)
@@ -97,12 +104,14 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
             GameObject enemyInfoCardGO = FindObjectOfType<EnemyInfoCard>(true).gameObject;
             if (enemyInfoCardGO != null)
             {
-                enemyInfoCardGO.SetActive(true);
-                EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
-                enemyInfoCard.Name.text = _entityData.TypeOnRussian;
-                enemyInfoCard.Description.text = _entityData.Description;
+                if (_entityData.name != "ChestData")
+                {
+                    enemyInfoCardGO.SetActive(true);
+                    EnemyInfoCard enemyInfoCard = FindObjectOfType<EnemyInfoCard>(true);
+                    enemyInfoCard.Name.text = _entityData.TypeOnRussian;
+                    enemyInfoCard.Description.text = _entityData.Description;
+                }                
             }
         }
-        
     }
 }

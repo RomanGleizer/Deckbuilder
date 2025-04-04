@@ -6,16 +6,14 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class ShieldCard : PlayerCard
     {
-        [SerializeField] private int _duration = 2;
-        [SerializeField] private int _energyCost = 2;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost)) 
+            if (!CanSpendEnergy(CardData.EnergyCost)) 
                 return;
 
-            Player.AddShieldDuration(_duration);
-            SpendEnergy(_energyCost);
+            Player.AddShieldDuration(2);
+            SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()

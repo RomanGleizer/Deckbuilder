@@ -7,12 +7,9 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class GrenadeCard : PlayerCard
     {
-        [SerializeField] private int _damage = 1;
-        [SerializeField] private int _energyCost = 4;
-
         public override void Use()
         {
-            if (!CanSpendEnergy(_energyCost))
+            if (!CanSpendEnergy(CardData.EnergyCost))
                 return;
             
             var targetCells = GetValidCells();
@@ -20,16 +17,19 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 return;
             
             foreach (var enemy in targetCells.Select(cell => 
-                         cell.GetObjectOnCell<EnemyCard>()))
+                         cell.GetObjectOnCell<ITakerDamage>()))
             {
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(CardData.Damage);
             }
+            
+            SpendEnergy(CardData.EnergyCost);
+            HandManager.DeleteCardFromHand(this);
         }
 
         protected override Cell[] GetValidCells()
         {
             if (CurrentCell.IsHidden
-                || CurrentCell?.GetObjectOnCell<EnemyCard>() == null)
+                || CurrentCell?.GetObjectOnCell<ITakerDamage>() == null)
                 return new Cell[] {};
 
             return new List<Vector2>
@@ -43,7 +43,7 @@ namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
                 .Select(direction => Field.FindCell(CurrentCell, direction, 1))
                 .Where(targetCell => targetCell != null 
                                      && !targetCell.IsHidden 
-                                     && targetCell.GetObjectOnCell<EnemyCard>() != null)
+                                     && targetCell.GetObjectOnCell<ITakerDamage>() != null)
                 .ToArray();
         }
     }

@@ -9,8 +9,6 @@ public abstract class EntityData : ScriptableObject
 
     public EntityType Type => _type;
     public int Speed => _speed;
-
     public string TypeOnRussian => _typeOnRussian;
-
     public string Description => _description;
 }

@@ -12,8 +12,9 @@ public class EnergyIndicator : MonoBehaviour
         _text.text = value.ToString() + '/' + _maxEnergy.ToString();
     }
 
-    //public void UpdateIndicator(int value, int maxValue)
-    //{
-
-    //}
+    public void UpdateIndicator(int value, int maxValue)
+    {
+        _maxEnergy = maxValue;
+        _text.text = value.ToString() + '/' + _maxEnergy.ToString();
+    }
 }

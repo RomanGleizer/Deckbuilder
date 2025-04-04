@@ -1,58 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Game.Table.Scripts.Entities;
 using UnityEngine;
+using Zenject;
 
 namespace Game.PlayerAndCards.Cards.PlayerCards.ConcreteCards
 {
     public class ScourgeCard : PlayerCard
     {
-        [SerializeField] private int _energyCost = 1;
+        private CommandFactory _commandFactory;
+        private CommandInvoker _commandInvoker; 
+        
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        
+        [Inject]
+        private void Construct(CommandFactory commandFactory, CommandInvoker commandInvoker)
+        {
+            _commandFactory = commandFactory;
+            _commandInvoker = commandInvoker;
+        }
 
         public override void Use()
         {
-            if (!IsCanUse) return;
+            if (!CanSpendEnergy(CardData.EnergyCost)) return;
 
             var validCells = GetValidCells();
             if (validCells.Length == 0) return;
 
             var targetCell = validCells[0];
-            var enemy = targetCell.GetObjectOnCell<EnemyCard>();
-            if (enemy == null)
-                return;
+            
+            var mover = targetCell.GetObjectOnCell<IMoverToCell>();
+            if (mover == null) return;
 
             var targetRow = targetCell.RowId;
-            var targetColumn = targetCell.ColumnId;
-            
             var firstColumnCell = Field.GetCellAt(targetRow, 0);
-
+            
             if (firstColumnCell != null)
-            {
-                var firstColumnEnemy = firstColumnCell.GetObjectOnCell<EnemyCard>();
-
-                if (firstColumnEnemy != null)
-                {
-                    targetCell.ReleaseCellFrom(enemy);
-                    targetCell.SetCardOnCell(firstColumnEnemy);
-                    
-                    firstColumnCell.ReleaseCellFrom(firstColumnEnemy);
-                    firstColumnCell.SetCardOnCell(enemy);
-                }
-                else
-                {
-                    targetCell.ReleaseCellFrom(enemy);
-                    firstColumnCell.SetCardOnCell(enemy);
-                }
+            { 
+                var scourgeCommand = _commandFactory.CreateScourgeCommand(targetCell, firstColumnCell, mover);
+                _commandInvoker.SetCommandAndExecute(scourgeCommand, _cancellationTokenSource.Token);
+                
+                SpendEnergy(CardData.EnergyCost);
             }
-
-            SpendEnergy(_energyCost);
+            HandManager.DeleteCardFromHand(this);
         }
-
+        
         protected override Cell[] GetValidCells()
         {
-            return Field.GetTraversedCells()
-                .Where(cell => cell.GetObjectOnCell<EnemyCard>() != null && cell.ColumnId > 0)
-                .ToArray();
+            return CurrentCell != null && (CurrentCell.IsHidden
+                                           || CurrentCell?.ColumnId == 0 
+                                           || CurrentCell?.GetObjectOnCell<IMoverToCell>() == null)
+                ? new Cell[] {} 
+                : new[] { CurrentCell };
+        }
+
+        private void OnDestroy()
+        {
+            _cancellationTokenSource.Cancel();
         }
     }
 }

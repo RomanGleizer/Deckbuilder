@@ -13,10 +13,12 @@
         _takeDamageBh = new TakeDamageBh(this);
 
         base.Init();
+        _indicators.UpdateIndicators(_hp, 0);
     }
 
     public void TakeDamage(int damage)
     {
         _takeDamageBh.TakeDamage(damage, ref _hp);
+        _indicators.UpdateIndicators(_hp, 0);
     }
 }

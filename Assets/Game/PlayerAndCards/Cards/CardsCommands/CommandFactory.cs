@@ -109,13 +109,26 @@ public class CommandFactory
         return queue;
     }
 
+    public Command CreateScourgeCommand(Cell targetCell, Cell firstColumnCell, IMoverToCell mover)
+    {
+        if (mover == null) return null;
+
+        var moveCommand = CreateMoveCommand(mover, firstColumnCell, false) as MoveCommand;
+        
+        var row = _field.GetRowByCell(firstColumnCell, true);
+        var queue = CreateMoveRowCommandsQueue(firstColumnCell, targetCell, row, false);
+        var rowMoveCommand = CreateRowMoveCommand(queue, false);
+
+        return new ScourgeCommand(moveCommand, rowMoveCommand);
+    }
+
     public Command CreateRowMoveBackwardCommand(Cell mainCell, bool isAddToOrder = true)
     {
         var row = _field.GetRowByCell(mainCell, true);
 
         var queue = CreateMoveRowCommandsQueue(mainCell, row[row.Length - 1], row, isAddToOrder);
 
-        var entity = row[row.Length - 1].GetObjectOnCell<EnemyCard>();
+        var entity = row[row.Length - 1].GetObjectOnCell<EntityCard>();
         Debug.Log(entity);
         if (entity != null)
         {
