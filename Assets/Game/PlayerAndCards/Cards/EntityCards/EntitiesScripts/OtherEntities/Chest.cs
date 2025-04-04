@@ -3,12 +3,12 @@ using Zenject;
 
 public class Chest : EntityCard
 {
-    private HandManager _handManager;
+    private WindowActivator _windowActivator;
 
     [Inject]
-    private void Construct(HandManager handManager)
+    private void Construct(WindowActivator windowActivator)
     {
-        _handManager = handManager; 
+        _windowActivator = windowActivator;
     }
     
     public override void Init()
@@ -19,12 +19,13 @@ public class Chest : EntityCard
 
     public override void OnMouseDown()
     {
+        if (CurrentCell.ColumnId != 0) return;  
         Death();
     }
     
     public override void Death()
     {
-        _handManager.AddCardsInDeck();
+        _windowActivator.ActivateWindow(WindowType.Chest);
         base.Death();
     }
 }

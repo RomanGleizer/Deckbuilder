@@ -26,6 +26,7 @@ public class SceneContextInstaller : MonoInstaller
     [SerializeField] private TextMeshProUGUI _turnWarningText;
 
     [SerializeField] private HandManager _handManager;
+    [SerializeField] private WindowActivator _windowActivator;
     
     public override void InstallBindings()
     {
@@ -46,11 +47,18 @@ public class SceneContextInstaller : MonoInstaller
 
         BindHandManager();
         BindTurnSystems();
+        BindWindowActivator();
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
     }
-    
+
+    private void BindWindowActivator()
+    {
+        BindService(_windowActivator);
+        _windowActivator.Init();
+    }
+
     private void BindLevelPlacementStackController()
     {
 #if UNITY_EDITOR
