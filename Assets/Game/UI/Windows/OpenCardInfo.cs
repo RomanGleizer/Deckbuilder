@@ -20,7 +20,7 @@ public class OpenCardInfo : CustomButton
     
     protected override void OnClick()
     {
-        CardInDesk cardData = GetComponent<CardInDesk>();
+        CardInDeck cardData = GetComponent<CardInDeck>();
 
         _windowActivator.ActivateWindow(WindowType.CardInfo);
         _cardName.text = cardData.PlayerCardData.NameInRussian;

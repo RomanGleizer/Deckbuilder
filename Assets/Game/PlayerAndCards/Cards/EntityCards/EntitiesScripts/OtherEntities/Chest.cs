@@ -3,14 +3,6 @@ using Zenject;
 
 public class Chest : EntityCard
 {
-    private WindowActivator _windowActivator;
-
-    [Inject]
-    private void Construct(WindowActivator windowActivator)
-    {
-        _windowActivator = windowActivator;
-    }
-    
     public override void Init()
     {
         base.Init();

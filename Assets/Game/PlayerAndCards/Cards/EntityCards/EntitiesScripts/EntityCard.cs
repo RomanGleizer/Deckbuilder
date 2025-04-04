@@ -29,7 +29,7 @@ public abstract class EntityCard : MonoBehaviour, IMoverToCell
 
     protected IInstantiator _instantiator; // for instantiate non-MonoBehaviour objs by Zenject
     private TurnManager _turnManager;
-    private WindowActivator _windowActivator;
+    protected WindowActivator _windowActivator;
 
     [Inject]
     private void Construct(IInstantiator instantiator, TurnManager turnManager, WindowActivator windowActivator)

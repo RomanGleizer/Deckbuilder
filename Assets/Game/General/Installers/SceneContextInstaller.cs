@@ -27,6 +27,7 @@ public class SceneContextInstaller : MonoInstaller
 
     [SerializeField] private HandManager _handManager;
     [SerializeField] private WindowActivator _windowActivator;
+    [SerializeField] private PlayerCardsContainer _cardsContainer;
     
     public override void InstallBindings()
     {
@@ -43,6 +44,7 @@ public class SceneContextInstaller : MonoInstaller
     {
         BindField();
         BindPlayer();
+        BindPlayerCardsContainer();
         BindEntitySpawnSystem();
 
         BindHandManager();
@@ -51,6 +53,12 @@ public class SceneContextInstaller : MonoInstaller
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
+    }
+
+    private void BindPlayerCardsContainer()
+    {
+        BindService(_cardsContainer);
+        _cardsContainer.Init();
     }
 
     private void BindWindowActivator()

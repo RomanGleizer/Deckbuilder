@@ -13,6 +13,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         [SerializeField] private string _description;
         [SerializeField] private Sprite _sprite;
 
+        [SerializeField] private int _countInChest;
+
         public PlayerCardNames Name => _name;
 
         public int Damage => _damage;
@@ -24,6 +26,8 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         public string Description => _description;
 
         public Sprite Sprite => _sprite;
+        
+        public int CountInChest => _countInChest;
 
     }
 }
