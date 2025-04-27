@@ -5,9 +5,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public abstract class MapPoint : CustomButton
 {
+    public int Index {get; private set;}
+    
     [SerializeField] private bool _isUnlocked;
     [SerializeField] private List<MapPoint> _neighboursPoints;
     
@@ -20,8 +23,10 @@ public abstract class MapPoint : CustomButton
     public Vector3 Position => transform.position;
     public Action<MapPoint> OnChoosePoint;
 
-    private void Start()
+    public void Init(int index)
     {
+        Index = index;
+        
         _view = new MapPointView(_viewImage, _unlockedColor, _lockedColor);
         if (_isUnlocked) _view.SetUnlockedView();
         else _view.SetLockedView();
@@ -34,7 +39,9 @@ public abstract class MapPoint : CustomButton
         foreach (MapPoint point in _neighboursPoints)
         {
             point.UnlockPoint();
+            SaveService.SaveData.UnlockedPoints.Points.Add(point.Index);
         }
+        SaveService.Save();
     }
     
     public void UnlockPoint()

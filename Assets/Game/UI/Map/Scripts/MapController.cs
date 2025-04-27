@@ -13,6 +13,24 @@ public class MapController : MonoBehaviour
     private void Start()
     {
         Subscribe();
+        InitMapPoints();
+
+        var currentPointIndex = SaveService.SaveData.MapPointIndex;
+        _currentMapPoint = _mapPoints[currentPointIndex];
+
+        _mapPlayer.transform.position = _currentMapPoint.Position;
+    }
+
+    private void InitMapPoints()
+    {
+        var counts = 0;
+        foreach (var point in _mapPoints)
+        {
+            point.Init(counts);
+            if (SaveService.SaveData.UnlockedPoints.Points.Contains(counts)) point.UnlockPoint();
+            
+            counts++;
+        }
     }
     
     private void MovePlayerToPoint(MapPoint mapPoint)
@@ -22,6 +40,10 @@ public class MapController : MonoBehaviour
         
         _mapPlayer.StartMoving(mapPoint.Position);
         _currentMapPoint = mapPoint;
+        
+        SaveService.SaveData.MapPointIndex = _currentMapPoint.Index;
+        SaveService.Save();
+        
         _mapPlayer.OnRiched += ActivatePointEvent; 
         CompletePointEvent(); // временное решение TODO: заменить при появлении механики прохождения ивента
     }
