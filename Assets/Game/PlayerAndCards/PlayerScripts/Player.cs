@@ -28,7 +28,15 @@ namespace Game.PlayerAndCards.PlayerScripts
         
         private void Awake()
         {
-            _playerDataInstance = ScriptableObject.Instantiate(_playerData);
+            if (LoadPlayerDataSingleton.I != null && LoadPlayerDataSingleton.I.DataInstance != null)
+            {
+                _playerDataInstance = LoadPlayerDataSingleton.I.DataInstance;
+            }
+            else
+            {
+                _playerDataInstance = ScriptableObject.Instantiate(_playerData);
+            }
+
             _healthIndicator.UpdateIndicator(_playerDataInstance.Health, _playerDataInstance.Health);
             _energyIndicator.UpdateIndicator(_playerDataInstance.MaxEnergy, _playerDataInstance.MaxEnergy);
             _shieldIndicator.UpdateIndicator(_playerDataInstance.Shield);
@@ -91,6 +99,25 @@ namespace Game.PlayerAndCards.PlayerScripts
         {
             gameObject.SetActive(false);
             //TODO: Запускает логику поражения и перезагрузки уровня
+        }
+
+        public void IncreaseMaxHealth(int amount)
+        {
+            _playerDataInstance.Health += amount;
+            _healthIndicator.UpdateIndicator(_playerDataInstance.Health, _playerDataInstance.Health);
+        }
+
+        public void IncreaseMaxShield(int amount)
+        {
+            _playerDataInstance.SetShield(_playerDataInstance.Shield + amount);
+            _shieldDuration = _playerDataInstance.Shield;
+            _shieldIndicator.UpdateIndicator(_shieldDuration);
+        }
+
+        public void RestoreHealth()
+        {
+            var hp = _playerDataInstance.Health;
+            _healthIndicator.UpdateIndicator(hp, hp);
         }
     }
 }
