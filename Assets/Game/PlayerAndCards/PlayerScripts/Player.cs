@@ -28,14 +28,11 @@ namespace Game.PlayerAndCards.PlayerScripts
         
         private void Awake()
         {
-            if (LoadPlayerDataSingleton.I != null && LoadPlayerDataSingleton.I.DataInstance != null)
-            {
-                _playerDataInstance = LoadPlayerDataSingleton.I.DataInstance;
-            }
+            var manager = PlayerProgressionManager.I;
+            if (manager != null && manager.DataInstance != null)
+                _playerDataInstance = manager.DataInstance;
             else
-            {
                 _playerDataInstance = ScriptableObject.Instantiate(_playerData);
-            }
 
             _healthIndicator.UpdateIndicator(_playerDataInstance.Health, _playerDataInstance.Health);
             _energyIndicator.UpdateIndicator(_playerDataInstance.MaxEnergy, _playerDataInstance.MaxEnergy);

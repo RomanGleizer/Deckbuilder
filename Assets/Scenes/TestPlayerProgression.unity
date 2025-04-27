@@ -14320,6 +14320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081dfc5df87cc5442bbaa23314567895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventType: 0
   optionsContainer: {fileID: 300016249}
   optionPrefab: {fileID: 5337245996641908484, guid: 54824489197d5354c86230807d90777f, type: 3}
 --- !u!114 &2034493337
@@ -14334,8 +14335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227a6824c8b87e147a3e7cea0306f241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
-  campfireUI: {fileID: 2034493336}
+  eventUI: {fileID: 2034493336}
 --- !u!1 &2039803785
 GameObject:
   m_ObjectHideFlags: 0

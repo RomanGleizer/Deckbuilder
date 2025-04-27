@@ -179,9 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Updates
-
-'
+  m_text: "\u041A\u043E\u0441\u0442\u0435\u0440\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -360,10 +358,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 309739263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81e506ff5a95d7d4aa3a26ba8285263a, type: 3}
+  m_Script: {fileID: 11500000, guid: d6df81aef1d7d3d449e09f5ee0cfb529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DataInstance: {fileID: 0}
+  playerDataSO: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
 --- !u!1 &736792314
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +596,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 309739267}
+        m_TargetAssemblyTypeName: PlayerProgressionManager, Assembly-CSharp
+        m_MethodName: ContinueGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1633,7 +1643,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4642588394140251483}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 309739267}
+        m_TargetAssemblyTypeName: PlayerProgressionManager, Assembly-CSharp
+        m_MethodName: NewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3998810689410987537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2481,7 +2503,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4396891724988848768}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 309739267}
+        m_TargetAssemblyTypeName: PlayerProgressionManager, Assembly-CSharp
+        m_MethodName: ContinueGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7280144900934367928
 GameObject:
   m_ObjectHideFlags: 0
