@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64c4ad138104f7696266a4903d83d1e, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  _health: 20
-  _shield: 15
+  _health: 5
+  _shield: 2
   _maxEnergy: 10
   _handSize: 5
   _redrawCount: 1

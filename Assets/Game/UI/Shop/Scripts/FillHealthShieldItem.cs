@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FillHealthShield : Item
+public class FillHealthShieldItem : Item
 {
     [SerializeField] private PlayerData _playerData;
      
@@ -10,8 +10,8 @@ public class FillHealthShield : Item
 
     protected override void ApplyItem()
     {
-        var maxHealth = PlayerPrefs.GetInt(KMaxH, 0);
-        var maxShield = PlayerPrefs.GetInt(KShield, 0);
+        var maxHealth = PlayerPrefs.GetInt(KMaxH, 20);
+        var maxShield = PlayerPrefs.GetInt(KShield, 15);
           
         _playerData.Health = maxHealth;
         _playerData.SetShield(maxShield);

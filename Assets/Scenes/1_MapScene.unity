@@ -455,7 +455,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3336183666403803833, guid: f326f2d35f7d38847bd2385e9748a83c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 53795121}
+      addedObject: {fileID: 53795124}
   m_SourcePrefab: {fileID: 100100000, guid: f326f2d35f7d38847bd2385e9748a83c, type: 3}
 --- !u!224 &53795118 stripped
 RectTransform:
@@ -478,7 +478,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3336183666403803833, guid: f326f2d35f7d38847bd2385e9748a83c, type: 3}
   m_PrefabInstance: {fileID: 53795117}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &53795121
+--- !u!114 &53795124
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -487,13 +487,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 53795120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36428b49eb8146b1b9ccae83614c50da, type: 3}
+  m_Script: {fileID: 11500000, guid: f97e92e6af044afa80b135e46f809e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _price: 20
+  _price: 50
   _itemNameText: {fileID: 88330680}
   _buyButton: {fileID: 53795119}
-  _playerCardNames: 10
+  _playerData: {fileID: 11400000, guid: 9384ac7eaa685fc43a66723d5dfb8979, type: 2}
 --- !u!1 &75292222
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,10 +803,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 551155664055792470, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5866676068240844374, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 107934094}
   m_SourcePrefab: {fileID: 100100000, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
 --- !u!224 &107934091 stripped
 RectTransform:
@@ -815,15 +819,37 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &107934092 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 551155664055792470, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2295416442424518922, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
   m_PrefabInstance: {fileID: 107934090}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4405233066c4ca58da8d7889e53eef4, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &107934093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5866676068240844374, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+  m_PrefabInstance: {fileID: 107934090}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &107934094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107934093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ac912c876294e24ba88c3eea41157f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isUnlocked: 0
+  _neighboursPoints: []
+  _unlockedColor: {r: 0, g: 0.38951397, b: 1, a: 1}
+  _lockedColor: {r: 0.31572625, g: 0.3253809, b: 0.4056604, a: 1}
+  _viewImage: {fileID: 107934092}
 --- !u!1 &165820399
 GameObject:
   m_ObjectHideFlags: 0
@@ -5296,7 +5322,7 @@ MonoBehaviour:
   - {fileID: 2071993357}
   - {fileID: 1037412400}
   - {fileID: 593253379}
-  - {fileID: 107934092}
+  - {fileID: 107934094}
   - {fileID: 1355995183}
   _mapPlayer: {fileID: 754557469}
   _currentMapPoint: {fileID: 2076593501}
@@ -6399,7 +6425,7 @@ PrefabInstance:
     - target: {fileID: 551155664055792470, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: _neighboursPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 107934092}
+      objectReference: {fileID: 0}
     - target: {fileID: 5866676068240844374, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: m_Name
       value: MapPoint (2)
@@ -6544,7 +6570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isUnlocked: 0
   _neighboursPoints:
-  - {fileID: 107934092}
+  - {fileID: 107934094}
   _unlockedColor: {r: 0.006026864, g: 1, b: 0, a: 1}
   _lockedColor: {r: 0.26059097, g: 0.3018868, b: 0.2651794, a: 1}
   _viewImage: {fileID: 2071993355}
