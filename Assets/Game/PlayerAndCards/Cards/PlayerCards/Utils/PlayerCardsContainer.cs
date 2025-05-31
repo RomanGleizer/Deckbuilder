@@ -26,4 +26,14 @@ public class PlayerCardsContainer : MonoBehaviour
         var randomCard = _cardsDatasInstances[Random.Range(0, _cardsDatasInstances.Length)];
         return randomCard;
     }
+
+    public PlayerCardData GetCardData(PlayerCardNames cardName)
+    {
+        foreach (var cardData in _cardsDatasInstances)
+        {
+            if (cardData.Name == cardName) return cardData;
+        }
+        
+        throw new System.Exception("No card found with name: " + cardName);
+    }
 }

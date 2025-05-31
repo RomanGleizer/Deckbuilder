@@ -29,6 +29,8 @@ public class SceneContextInstaller : MonoInstaller
     [SerializeField] private WindowActivator _windowActivator;
     [SerializeField] private PlayerCardsContainer _cardsContainer;
     
+    [SerializeField] private CoinsCounter _coinsCounter;
+    
     public override void InstallBindings()
     {
         Bind();
@@ -53,6 +55,13 @@ public class SceneContextInstaller : MonoInstaller
 
         BindLevelPlacementStackController();
         BindLevelInitializator();
+
+        BindCoinsCounter();
+    }
+
+    private void BindCoinsCounter()
+    {
+        BindService(_coinsCounter);
     }
 
     private void BindPlayerCardsContainer()

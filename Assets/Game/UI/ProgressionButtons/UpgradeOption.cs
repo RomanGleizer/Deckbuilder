@@ -21,7 +21,7 @@ public class UpgradeOption : MonoBehaviour
         if (sprite != null)
             icon.sprite = sprite;
         else
-            Debug.LogWarning($"Иконка для апгрейда '{type}' не найдена в Images/UpgradeIcons");
+            Debug.LogWarning($"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '{type}' пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Images/UpgradeIcons");
 
         descriptionText.text = GetDescription(type);
 
@@ -33,16 +33,16 @@ public class UpgradeOption : MonoBehaviour
     private void OnSelect()
     {
         progression.ApplyUpgrade(type);
-        LoadScene.Load(0);
+        LoadScene.Load(1);
     }
 
     private string GetDescription(UpgradeType t) => t switch
     {
-        UpgradeType.MaxHealth => "+3 к максимальному здоровью",
-        UpgradeType.Shield => "+1 к броне",
-        UpgradeType.HandSize => "+1 к размеру руки",
-        UpgradeType.RedrawCount => "+1 к перебросу карт",
-        UpgradeType.RestoreHealth => "Полностью восстановить HP",
+        UpgradeType.MaxHealth => "+3 пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+        UpgradeType.Shield => "+1 пїЅ пїЅпїЅпїЅпїЅпїЅ",
+        UpgradeType.HandSize => "+1 пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
+        UpgradeType.RedrawCount => "+1 пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
+        UpgradeType.RestoreHealth => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ HP",
         _ => ""
     };
 }

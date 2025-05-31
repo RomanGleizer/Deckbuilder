@@ -30,11 +30,14 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     private SpriteRenderer _spriteRenderer;
     private Color _activeColor;
     private Color _defaultColor;
+    
+    private CoinsCounter _coinsCounter;
 
     [Inject]
-    private void Construct(CommandFactory commandFactory)
+    private void Construct(CommandFactory commandFactory, CoinsCounter coinsCounter)
     {
         _commandFactory = commandFactory;
+        _coinsCounter = coinsCounter;
     }
 
     public override void Init()
@@ -70,7 +73,13 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
             _indicators.UpdateIndicators(_hp, _shield);
         }
     }
-    
+
+    public override void Death()
+    {
+        base.Death();
+        _coinsCounter.AddCoins(_enemyData.Coins);
+    }
+
     public void AddShield(int value)
     {
         _shield += value;

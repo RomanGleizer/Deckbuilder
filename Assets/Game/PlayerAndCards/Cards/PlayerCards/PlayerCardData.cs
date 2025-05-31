@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game.PlayerAndCards.Cards.PlayerCards
@@ -26,8 +27,10 @@ namespace Game.PlayerAndCards.Cards.PlayerCards
         public string Description => _description;
 
         public Sprite Sprite => _sprite;
-        
+
         public int CountInChest => _countInChest;
 
     }
 }
+
+

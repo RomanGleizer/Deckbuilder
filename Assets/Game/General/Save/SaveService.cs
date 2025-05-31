@@ -9,6 +9,10 @@ public class SaveData
 {
     public int MapPointIndex = 0;
     public UnlockedPoints UnlockedPoints = new UnlockedPoints();
+
+    public int Coins = 0;
+    
+    public Deck Deck = new Deck();
 }
 
 [Serializable]

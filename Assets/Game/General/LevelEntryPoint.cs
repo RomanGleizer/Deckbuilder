@@ -13,6 +13,7 @@ public class LevelEntryPoint : MonoBehaviour
 
     private void Awake()
     {
+        SaveService.Load();
         _levelInitializator.InitializeLevel();
     }
 

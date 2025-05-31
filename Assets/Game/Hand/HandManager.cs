@@ -154,25 +154,6 @@ public class HandManager : MonoBehaviour
         Destroy(card.gameObject);
     }    
     
-    public void AddCardsInDeck(PlayerCardNames cardNames, int addCount)
-    {
-        var card = FindCardInDeck(cardNames);
-        
-        if (card == null) return;
-        card.CountOfCard += addCount;
-    }
-
-    private CardInDeck FindCardInDeck(PlayerCardNames cardName)
-    {
-        foreach (var card in cardInDeck)
-        {
-            if (card.PlayerCardData.Name == cardName) return card; 
-        }
-        
-        Debug.LogError($"Card with name {cardName} was not found in deck!");
-        return null;
-    }
-
     public void UpdateSpacing()
     {
         int cardCount = cardsInHand.Count;
