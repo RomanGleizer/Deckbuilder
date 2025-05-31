@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CampMapPoint : MapPoint
 {
     public override void ActivatePointEvent()
     {
-        Debug.Log("CampMapPointActivated");
+        SceneManager.LoadSceneAsync(3);
     }
 }

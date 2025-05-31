@@ -13,16 +13,9 @@ public class DeckInChest : CustomButton
     [SerializeField] private TextMeshProUGUI _countText;
 
     private PlayerCardData _playerCardData;
-    private HandManager _handManager;
 
     public event Action OnDeckChoosed;
-
-    [Inject]
-    private void Construct(HandManager handManager)
-    {
-        _handManager = handManager;
-    }
-
+    
     public void SetCardData(PlayerCardData cardData)
     {
         _cardImage.sprite = cardData.Sprite;
@@ -34,7 +27,8 @@ public class DeckInChest : CustomButton
     protected override void OnClick()
     {
         Debug.Log($"Add card {_playerCardData.Name} count: {_playerCardData.CountInChest}");
-        _handManager.AddCardsInDeck(_playerCardData.Name, _playerCardData.CountInChest);
+        SaveService.SaveData.Deck.AddCardInDeck(_playerCardData.Name, _playerCardData.CountInChest);
+        SaveService.Save();
         OnDeckChoosed?.Invoke();
     }
 }

@@ -3,5 +3,6 @@
     Deck,
     EnemyInfo,
     CardInfo,
-    Chest
+    Chest,
+    Shop
 }

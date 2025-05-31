@@ -1,10 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 public class ShopMapPoint : MapPoint
 {
+    private WindowActivator _windowActivator;
+    
+    [Inject]
+    private void Construct(WindowActivator windowActivator)
+    {
+        _windowActivator = windowActivator;
+    }
+    
     public override void ActivatePointEvent()
     {
-        Debug.Log("ShopMapPointActivated");
+        _windowActivator.ActivateWindow(WindowType.Shop);
     }
 }
