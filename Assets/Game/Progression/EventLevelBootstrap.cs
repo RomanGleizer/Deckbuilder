@@ -1,6 +1,4 @@
-// EventLevelBootstrap.cs
 using UnityEngine;
-using Game.PlayerAndCards.PlayerScripts;
 
 public class EventLevelBootstrap : MonoBehaviour
 {

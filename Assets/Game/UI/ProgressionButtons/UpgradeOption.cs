@@ -20,14 +20,13 @@ public class UpgradeOption : MonoBehaviour
         var sprite = Resources.Load<Sprite>($"UpgradeIcons/{type}");
         if (sprite != null)
             icon.sprite = sprite;
-        else
-            Debug.LogWarning($"������ ��� �������� '{type}' �� ������� � Images/UpgradeIcons");
 
         descriptionText.text = GetDescription(type);
 
         selectButton.onClick.RemoveAllListeners();
         selectButton.onClick.AddListener(OnSelect);
         selectButton.interactable = true;
+        selectButton.GetComponentInChildren<TextMeshProUGUI>().text = "Выбрать";
     }
 
     private void OnSelect()
@@ -38,11 +37,11 @@ public class UpgradeOption : MonoBehaviour
 
     private string GetDescription(UpgradeType t) => t switch
     {
-        UpgradeType.MaxHealth => "+3 � ������������� ��������",
-        UpgradeType.Shield => "+1 � �����",
-        UpgradeType.HandSize => "+1 � ������� ����",
-        UpgradeType.RedrawCount => "+1 � ��������� ����",
-        UpgradeType.RestoreHealth => "��������� ������������ HP",
+        UpgradeType.MaxHealth => "+3 к максимальному здоровью",
+        UpgradeType.Shield => "+1 к максимальной броне",
+        UpgradeType.HandSize => "+1 к размеру руки",
+        UpgradeType.RedrawCount => "+1 переброс карт за ход",
+        UpgradeType.RestoreHealth => "Полностью восстановить ХП",
         _ => ""
     };
 }
