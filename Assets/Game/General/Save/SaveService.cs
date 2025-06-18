@@ -13,6 +13,7 @@ public class SaveData
     public int Coins = 0;
     
     public Deck Deck = new Deck();
+    public float Volume = 0.5f;
 }
 
 [Serializable]
@@ -56,7 +57,8 @@ public static class SaveService
 
     public static void DeleteSavings()
     {
-        SaveData = new SaveData();
+        var volume = SaveData.Volume;
+        SaveData = new SaveData() {Volume = volume};
         PlayerPrefs.DeleteAll();
         Save();
     }

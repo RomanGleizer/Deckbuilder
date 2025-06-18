@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class PauseController : MonoBehaviour
 {
@@ -7,6 +8,15 @@ public class PauseController : MonoBehaviour
     public bool isInGame = true;
     public bool isPaused = false;
     public bool isSettings = false;
+    
+    private AudioPlayer _audioPlayer;
+
+    [Inject]
+    private void Construct(AudioPlayer audioPlayer)
+    {
+        _audioPlayer = audioPlayer;
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -15,6 +25,7 @@ public class PauseController : MonoBehaviour
         {
             AllBoolIsFasle();
             pauseCanvas.SetActive(false);
+            _audioPlayer.PlayAudio("main");
             isInGame = true;
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && isSettings)
@@ -39,6 +50,7 @@ public class PauseController : MonoBehaviour
 
     private void PauseIsActive()
     {
+        _audioPlayer.PlayAudio("menu");
         pauseCanvas.SetActive(true);
         isPaused = true;
     }

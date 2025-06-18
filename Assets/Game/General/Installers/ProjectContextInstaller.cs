@@ -8,6 +8,7 @@ public class ProjectContextInstaller : MonoInstaller
     [SerializeField] private SubscribeService _subscribeService;
     [SerializeField] private float _commandExecuteDelay;
     [SerializeField] private LevelDistributor _levelDistributor;
+    [SerializeField] private AudioPlayer _audioPlayer;
 
     public override void InstallBindings()
     {
@@ -22,7 +23,13 @@ public class ProjectContextInstaller : MonoInstaller
         BindCommandInvoker();
         BindCommandFactory();
 
+        BindAudioPlayer();
         BindLevelDistributor();
+    }
+
+    private void BindAudioPlayer()
+    {
+        Container.Bind<AudioPlayer>().FromComponentInNewPrefab(_audioPlayer).AsSingle();
     }
 
     private void BindLevelDistributor()
