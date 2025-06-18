@@ -53,4 +53,11 @@ public static class SaveService
         
         _isLoaded = true;
     }
+
+    public static void DeleteSavings()
+    {
+        SaveData = new SaveData();
+        PlayerPrefs.DeleteAll();
+        Save();
+    }
 }
