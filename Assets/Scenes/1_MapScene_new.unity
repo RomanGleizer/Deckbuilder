@@ -2926,6 +2926,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1653248847}
     m_Modifications:
     - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      propertyPath: _level
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: _neighboursPoints.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -4049,6 +4053,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1653248847}
     m_Modifications:
     - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      propertyPath: _level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: _neighboursPoints.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -4548,6 +4556,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1653248847}
     m_Modifications:
     - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      propertyPath: _level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: _isUnlocked
       value: 1
       objectReference: {fileID: 0}
@@ -4755,6 +4767,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653248847}
     m_Modifications:
+    - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      propertyPath: _level
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5866676068240844374, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: m_Name
       value: FightPoint_3
@@ -6428,6 +6444,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653248847}
     m_Modifications:
+    - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
+      propertyPath: _level
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 426125564153673289, guid: 3ca3a3b066bedda48ba9043014b270ea, type: 3}
       propertyPath: _isUnlocked
       value: 0

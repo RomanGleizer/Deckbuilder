@@ -76,3 +76,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _subscribeService: {fileID: 8466044356708294222, guid: af80e4e7195993d47b8c3f18c11a2744, type: 3}
   _commandExecuteDelay: 1
+  _levelDistributor: {fileID: 1111530756023573735, guid: e93b9054015f54f3292f05bd4672cad7, type: 3}

@@ -31,15 +31,19 @@ public class SceneContextInstaller : MonoInstaller
     
     [SerializeField] private CoinsCounter _coinsCounter;
     
+    private LevelDistributor _levelDistributor;
+    
     public override void InstallBindings()
     {
         Bind();
     }
 
     [Inject]
-    private void Construct(CommandFactory commandFactory)
+    private void Construct(CommandFactory commandFactory, LevelDistributor levelDistributor)
     {
         _commandFactory = commandFactory;
+        _levelDistributor = levelDistributor;
+        _levelPlacement = levelDistributor.GetCurrentLevel();
     }
 
     private void Bind()
