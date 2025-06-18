@@ -12,6 +12,7 @@ public class LevelPlacementStack
 #endif
 
     private Stack<EntityType>[] _mainStack;
+    public bool IsEmpty => _mainStack.All(stack => stack.Count == 0);
 
 #if UNITY_EDITOR
     public LevelPlacementStack(LevelPlacement levelPlacement, QueuesEditorVisual queuesEditorVisual)

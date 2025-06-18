@@ -8804,6 +8804,50 @@ MonoBehaviour:
   _countOfCard: 2
   _cardCountText: {fileID: 1651435541}
   _cardImage: {fileID: 1481235410}
+--- !u!1 &1311737109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1311737111}
+  - component: {fileID: 1311737110}
+  m_Layer: 0
+  m_Name: LevelService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1311737110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311737109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e47f5b53fe024568a3fc2ed4a73b336e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1311737111
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311737109}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.4858844, y: -0.2054063, z: 0.03873816}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1320465942
 GameObject:
   m_ObjectHideFlags: 0
@@ -17917,3 +17961,4 @@ SceneRoots:
   - {fileID: 455388521}
   - {fileID: 1661678820}
   - {fileID: 196607929}
+  - {fileID: 1311737111}

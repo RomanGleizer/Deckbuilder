@@ -15,7 +15,7 @@ public class LevelPlacementStackController
     private float _spawnPointX;
 
     private IInstantiator _instantiator;
-
+    
     [Inject]
     private void Construct(EntitySpawnSystem entitySpawnSystem, Field field, IInstantiator instantiator)
     {
@@ -96,5 +96,10 @@ public class LevelPlacementStackController
     private void Unsubscribe()
     {
         _moveToSpawnBh.OnPosRiched -= DestroyEntity;
+    }
+
+    public bool IsPlacementStackEmpty()
+    {
+        return _placementStack.IsEmpty;
     }
 }

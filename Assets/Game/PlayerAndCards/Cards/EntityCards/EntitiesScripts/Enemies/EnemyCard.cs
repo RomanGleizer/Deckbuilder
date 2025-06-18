@@ -32,12 +32,14 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     private Color _defaultColor;
     
     private CoinsCounter _coinsCounter;
+    private EnemyService _enemyService;
 
     [Inject]
-    private void Construct(CommandFactory commandFactory, CoinsCounter coinsCounter)
+    private void Construct(CommandFactory commandFactory, CoinsCounter coinsCounter, EnemyService enemyService)
     {
         _commandFactory = commandFactory;
         _coinsCounter = coinsCounter;
+        _enemyService = enemyService;
     }
 
     public override void Init()
@@ -77,6 +79,7 @@ public abstract class EnemyCard : EntityCard, ITakerDamage, IMoverToCell, IInvin
     public override void Death()
     {
         base.Death();
+        _enemyService.RemoveEnemy(this);
         _coinsCounter.AddCoins(_enemyData.Coins);
     }
 

@@ -8,11 +8,13 @@ public class EntitySpawnSystem
     private Dictionary<EntityType, EntityFactory> _factories = new Dictionary<EntityType, EntityFactory>();
 
     private IInstantiator _instantiator;
+    private EnemyService _enemyService;
 
     [Inject]
-    private void Construct(IInstantiator instantiator)
+    private void Construct(IInstantiator instantiator, EnemyService enemyService)
     {
         _instantiator = instantiator;
+        _enemyService = enemyService;
         InitializeFactories();
     }
 
@@ -39,6 +41,8 @@ public class EntitySpawnSystem
         {
             var entity = _factories[entityType].Create();
             entity.Init();
+            
+            if (entity is EnemyCard enemy) _enemyService.AddEnemy(enemy); 
             return entity;
         }
         else throw new System.ArgumentNullException("Argument with type " + entityType + " doesn't exist!");

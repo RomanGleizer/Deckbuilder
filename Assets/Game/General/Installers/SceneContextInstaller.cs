@@ -47,6 +47,7 @@ public class SceneContextInstaller : MonoInstaller
         BindField();
         BindPlayer();
         BindPlayerCardsContainer();
+        BindEnemyService();
         BindEntitySpawnSystem();
 
         BindHandManager();
@@ -57,6 +58,11 @@ public class SceneContextInstaller : MonoInstaller
         BindLevelInitializator();
 
         BindCoinsCounter();
+    }
+    
+    private void BindEnemyService()
+    {
+        Container.Bind<EnemyService>().FromNew().AsSingle();
     }
 
     private void BindCoinsCounter()
