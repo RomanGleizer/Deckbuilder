@@ -15,10 +15,11 @@ public class WindowActivator : MonoBehaviour
         }
     }
     
-    public void ActivateWindow(WindowType windowType)
+    public Window ActivateWindow(WindowType windowType)
     {
         var window = _windowsDict[windowType];
         window.ActivateWindow();
+        return window;
     }
 
     public void DeactivateWindow(WindowType windowType)

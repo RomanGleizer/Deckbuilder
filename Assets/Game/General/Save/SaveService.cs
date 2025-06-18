@@ -18,7 +18,7 @@ public class SaveData
 [Serializable]
 public class UnlockedPoints
 {
-    public List<int> Points = new List<int>() {0, 1, 2, 3};
+    public List<int> Points = new List<int>() {0, 1};
 }
 
 public static class SaveService
