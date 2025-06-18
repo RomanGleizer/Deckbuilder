@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ModestTree;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    [SerializeField] private List<MapPoint> _mapPoints = new List<MapPoint>();
+    [SerializeField] private List<MapPoint> _mapPoints = new();
     [SerializeField] private MapPlayer _mapPlayer;
 
     [SerializeField] private MapPoint _currentMapPoint;
@@ -23,11 +26,21 @@ public class MapController : MonoBehaviour
 
     private void InitMapPoints()
     {
+        if (_mapPoints.IsEmpty())
+        {
+            _mapPoints = transform
+                .GetComponentsInChildren<MapPoint>()
+                .ToList()
+                .OrderBy(b => b.gameObject.name)
+                .ToList();
+        }
+
         var counts = 0;
         foreach (var point in _mapPoints)
         {
             point.Init(counts);
-            if (SaveService.SaveData.UnlockedPoints.Points.Contains(counts)) point.UnlockPoint();
+            if (SaveService.SaveData.UnlockedPoints.Points.Contains(counts)) 
+                point.UnlockPoint();
             
             counts++;
         }

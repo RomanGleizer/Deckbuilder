@@ -4,5 +4,6 @@
     EnemyInfo,
     CardInfo,
     Chest,
-    Shop
+    Shop,
+    Choose
 }
